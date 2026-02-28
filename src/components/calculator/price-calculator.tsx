@@ -23,7 +23,7 @@ export function PriceCalculator({ items, categories }: PriceCalculatorProps) {
       const current = prev[id] || 0;
       const next = Math.max(0, current + delta);
       if (next === 0) {
-        const { [id]: _, ...rest } = prev;
+        const { [id]: _removed, ...rest } = prev;
         return rest;
       }
       return { ...prev, [id]: next };

@@ -53,9 +53,6 @@ export async function generateMetadata({
       images: [{ url: "/images/logo.png", width: 1200, height: 630 }],
     },
     robots: { index: true, follow: true },
-    other: {
-      "google-site-verification": "PLACEHOLDER",
-    },
   };
 }
 
