@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "title": "Higirap - Higienización con Rapidez",
+    "description": "Servicio profesional de limpieza de tapicerías y detailing de coches a domicilio. Eliminamos manchas, olores y bacterias con tecnología profesional."
+  },
+  "nav": {
+    "home": "Inicio",
+    "upholstery": "Limpieza de Tapicerías",
+    "carDetailing": "Detailing de Coches",
+    "gallery": "Antes y Después",
+    "faq": "Información y FAQ",
+    "getQuote": "Pedir Presupuesto"
+  },
+  "hero": {
+    "title": "Higienización profesional a domicilio",
+    "subtitle": "Tapicerías como nuevas, coches impecables. Eliminamos manchas, olores y bacterias con tecnología profesional de inyección-extracción.",
+    "cta1": "Pedir Presupuesto",
+    "cta2": "Nuestros Servicios",
+    "trustBadge": "+500 clientes satisfechos cada mes"
+  },
+  "trust": {
+    "safe": {
+      "title": "Seguro para niños y mascotas",
+      "description": "Productos profesionales certificados, seguros para toda la familia."
+    },
+    "eco": {
+      "title": "Productos ecológicos",
+      "description": "Soluciones respetuosas con el medio ambiente sin químicos agresivos."
+    },
+    "fast": {
+      "title": "Secado rápido",
+      "description": "Alta capacidad de extracción para un secado rápido y mayor frescura."
+    }
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Soluciones profesionales para tapicerías y vehículos",
+    "upholstery": {
+      "title": "Limpieza de Tapicerías",
+      "description": "Sofás, colchones, sillas, alfombras y todo tipo de muebles tapizados. Servicio a domicilio.",
+      "cta": "Ver Servicios"
+    },
+    "carDetailing": {
+      "title": "Detailing de Coches",
+      "description": "Limpieza interior y exterior profesional. Desde lavado básico hasta tratamiento cerámico.",
+      "cta": "Ver Servicios"
+    }
+  },
+  "popular": {
+    "title": "Servicios más solicitados",
+    "subtitle": "Descubre qué incluye cada uno de nuestros tratamientos especializados.",
+    "standard": {
+      "name": "Limpieza Estándar",
+      "tagline": "La opción más popular para el hogar",
+      "steps": ["Aspiración completa", "Pre-tratamiento de manchas", "Cepillado suave", "Inyección-Extracción", "Desodorización"]
+    },
+    "pet": {
+      "name": "Limpieza Mascotas",
+      "tagline": "Perfecto si tienes peludos en casa",
+      "steps": ["Aspiración intensiva", "Tratamiento enzimático", "Cepillado manual", "Extracción profunda", "Desinfección con vapor"]
+    },
+    "movein": {
+      "name": "Limpieza Mudanzas",
+      "tagline": "Para entrar a vivir o entregar piso",
+      "steps": ["Inspección detallada", "Aspirado de alta potencia", "Desinfección total", "Lavado intensivo", "Neutralización de olores"]
+    }
+  },
+  "why": {
+    "title": "¿Por qué elegir Higirap?",
+    "subtitle": "Más de 5.000 clientes satisfechos avalan nuestra calidad.",
+    "items": [
+      { "title": "Limpieza profesional garantizada", "description": "Eliminamos hasta el 99% de las manchas con resultados superiores." },
+      { "title": "Productos seguros y ecológicos", "description": "Certificados y aptos para niños, alérgicos y mascotas." },
+      { "title": "Servicio a domicilio", "description": "Nos desplazamos a tu hogar con todo el equipo necesario." },
+      { "title": "Servicio completo", "description": "Limpieza, desinfección, eliminación de olores y protección." },
+      { "title": "Precios justos y transparentes", "description": "Tarifas claras desde el principio, sin sorpresas." },
+      { "title": "Satisfacción asegurada", "description": "Si no quedas satisfecho, repetimos la limpieza sin coste." }
+    ]
+  },
+  "testimonials": {
+    "title": "Lo que dicen nuestros clientes",
+    "items": [
+      { "name": "María García", "location": "Madrid", "text": "Increíble resultado. Pensaba que tendría que tirar mi sofá, pero ha quedado como nuevo. Muy puntuales y amables." },
+      { "name": "Carlos Rodríguez", "location": "Barcelona", "text": "Muy profesionales. Limpiaron dos colchones y un sofá en una mañana. Se nota la diferencia." },
+      { "name": "Laura Méndez", "location": "Valencia", "text": "Relación calidad-precio excelente. Presupuesto rápido y vinieron al día siguiente." },
+      { "name": "Pedro Sánchez", "location": "Sevilla", "text": "El detailing del coche fue impresionante. Parece recién salido del concesionario." }
+    ]
+  },
+  "ctaBanner": {
+    "title": "¿Listo para renovar tus muebles o tu coche?",
+    "subtitle": "Contacta con nosotros por WhatsApp y recibe tu presupuesto en minutos.",
+    "cta": "Contactar por WhatsApp"
+  },
+  "upholsteryPage": {
+    "title": "Limpieza de Tapicerías",
+    "subtitle": "Servicio profesional a domicilio para todo tipo de muebles tapizados",
+    "categories": {
+      "sofas": "Sofás",
+      "mattresses": "Colchones",
+      "chairs": "Sillas y Sillones",
+      "carpets": "Alfombras",
+      "other": "Otros"
+    },
+    "sofas": {
+      "description": "Limpieza profunda de sofás de 2 a 7 plazas, con o sin chaiselongue.",
+      "benefits": ["Eliminación de manchas", "Desinfección anti-ácaros", "Recuperación del color", "Eliminación de olores"]
+    },
+    "mattresses": {
+      "description": "Higienización profunda de colchones de todos los tamaños.",
+      "benefits": ["Anti-ácaros y bacterias", "Eliminación de manchas de sudor", "Tratamiento anti-olores", "Mejora del descanso"]
+    },
+    "chairs": {
+      "description": "Limpieza profesional de sillas, sillones y pufs.",
+      "benefits": ["Eliminación de manchas y roces", "Higienización profunda", "Recuperación del aspecto original", "Neutralización de olores"]
+    },
+    "carpets": {
+      "description": "Limpieza profunda de alfombras y moquetas de todo tipo de fibra.",
+      "benefits": ["Polvo incrustado eliminado", "Eliminación de manchas", "Recuperación de volumen", "Eliminación de olores"]
+    },
+    "other": {
+      "description": "Cabeceros, estructuras de cama, canapés y otros elementos tapizados.",
+      "benefits": ["Limpieza delicada", "Eliminación de grasa capilar", "Higienización completa", "Recuperación del aspecto"]
+    },
+    "process": {
+      "title": "Nuestro Proceso",
+      "steps": [
+        { "title": "Inspección", "description": "Evaluamos el estado del tejido y determinamos el mejor tratamiento." },
+        { "title": "Aspiración", "description": "Retiramos polvo, pelos y residuos sólidos de toda la superficie." },
+        { "title": "Pre-tratamiento", "description": "Aplicamos productos específicos para ablandar manchas." },
+        { "title": "Limpieza profunda", "description": "Inyección-extracción con agua limpia y aspiración simultánea." },
+        { "title": "Desinfección", "description": "Tratamiento con vapor para eliminar bacterias y alérgenos." }
+      ]
+    }
+  },
+  "carDetailingPage": {
+    "title": "Detailing de Coches",
+    "subtitle": "Servicio profesional de limpieza y protección para tu vehículo",
+    "tiers": {
+      "basic": {
+        "name": "Lavado Básico",
+        "price": "30",
+        "duration": "1-2 horas",
+        "features": ["Lavado exterior a mano", "Limpieza de llantas", "Aspiración interior", "Limpieza de cristales"]
+      },
+      "interior": {
+        "name": "Detailing Interior",
+        "price": "80",
+        "duration": "2-3 horas",
+        "features": ["Aspiración profunda", "Limpieza de tapicería", "Limpieza de salpicadero", "Desinfección completa", "Eliminación de olores"]
+      },
+      "full": {
+        "name": "Detailing Completo",
+        "price": "150",
+        "duration": "4-5 horas",
+        "features": ["Todo del Interior", "Pulido exterior", "Descontaminación", "Cera protectora", "Limpieza de motor"]
+      },
+      "premium": {
+        "name": "Premium / Cerámico",
+        "price": "300",
+        "duration": "6-8 horas",
+        "features": ["Todo del Completo", "Corrección de pintura", "Tratamiento cerámico", "Protección UV", "Acabado showroom"]
+      }
+    },
+    "addons": {
+      "title": "Extras opcionales",
+      "items": [
+        { "name": "Limpieza de motor", "price": "40" },
+        { "name": "Restauración de faros", "price": "35" },
+        { "name": "Eliminación de olores", "price": "25" },
+        { "name": "Tratamiento de cuero", "price": "50" },
+        { "name": "Protección de tejido", "price": "30" },
+        { "name": "Limpieza de capo", "price": "20" }
+      ]
+    },
+    "process": {
+      "title": "Nuestro Proceso",
+      "steps": [
+        { "title": "Evaluación", "description": "Inspeccionamos tu vehículo y definimos el tratamiento ideal." },
+        { "title": "Pre-lavado", "description": "Eliminamos la suciedad superficial y descontaminamos." },
+        { "title": "Limpieza profunda", "description": "Tratamiento detallado interior y/o exterior." },
+        { "title": "Protección", "description": "Aplicamos productos de protección y acabado." },
+        { "title": "Inspección final", "description": "Revisamos cada detalle para asegurar el resultado." }
+      ]
+    }
+  },
+  "galleryPage": {
+    "title": "Antes y Después",
+    "subtitle": "No creas que está limpio hasta que lo veas. Resultados reales de nuestros servicios.",
+    "categories": {
+      "all": "Todos",
+      "sofas": "Sofás",
+      "mattresses": "Colchones",
+      "chairs": "Sillas",
+      "carpets": "Alfombras",
+      "carInterior": "Interior Coche",
+      "carExterior": "Exterior Coche"
+    }
+  },
+  "faqPage": {
+    "title": "Información y Preguntas Frecuentes",
+    "subtitle": "Todo lo que necesitas saber sobre nuestros servicios",
+    "about": {
+      "title": "Sobre Higirap",
+      "description": "Somos un equipo profesional especializado en la limpieza de tapicerías y detailing de coches a domicilio. Utilizamos tecnología de inyección-extracción y productos ecológicos certificados para ofrecer resultados excepcionales.",
+      "hours": "Lun–Sáb: 9:00–20:00",
+      "area": "Servicio en toda la zona"
+    },
+    "categories": {
+      "process": "Proceso",
+      "products": "Productos",
+      "pricing": "Precios",
+      "scheduling": "Citas",
+      "results": "Resultados"
+    },
+    "questions": [
+      { "category": "process", "q": "¿Cómo funciona el proceso de limpieza?", "a": "Utilizamos máquinas profesionales de inyección-extracción junto con productos ecológicos. Eliminamos la suciedad profunda, las manchas y los olores incrustados." },
+      { "category": "process", "q": "¿Cuánto tiempo tarda la limpieza?", "a": "Por lo general, entre 1 y 3 horas, dependiendo del nivel de suciedad y la cantidad de muebles." },
+      { "category": "process", "q": "¿La limpieza se realiza en casa?", "a": "Sí, todo el servicio se realiza a domicilio, sin necesidad de transportar los muebles." },
+      { "category": "process", "q": "¿Cuánto tiempo tarda en secarse?", "a": "Normalmente entre 12 y 24 horas, dependiendo de la ventilación y del tipo de tejido." },
+      { "category": "products", "q": "¿Qué productos utilizáis?", "a": "Usamos productos ecológicos e hipoalergénicos, seguros para niños y mascotas." },
+      { "category": "products", "q": "¿Eliminais ácaros y bacterias?", "a": "Sí, gracias a la limpieza profunda y la desinfección con vapor eliminamos ácaros, bacterias y alérgenos." },
+      { "category": "products", "q": "¿Usáis productos con aromas fuertes?", "a": "No, utilizamos productos con aromas suaves o neutros." },
+      { "category": "pricing", "q": "¿Cómo puedo saber el precio exacto?", "a": "Puedes usar la calculadora en la página de servicios o enviarnos fotos por WhatsApp para un presupuesto exacto." },
+      { "category": "pricing", "q": "¿Cobráis desplazamiento?", "a": "En la mayoría de los casos, el desplazamiento está incluido. Puede aplicarse un suplemento en zonas alejadas." },
+      { "category": "pricing", "q": "¿En qué casos puede cambiar el precio?", "a": "El precio puede variar si hay medidas incorrectas o características especiales no comunicadas previamente." },
+      { "category": "scheduling", "q": "¿Puedo cambiar la cita?", "a": "Sí, puede cambiar la fecha avisando con varios días de antelación, según disponibilidad." },
+      { "category": "scheduling", "q": "¿Ofrecéis servicio urgente?", "a": "Sí, ofrecemos servicio urgente según disponibilidad." },
+      { "category": "scheduling", "q": "¿En qué zonas ofrecéis el servicio?", "a": "Prestamos servicio en toda el área metropolitana y alrededores." },
+      { "category": "results", "q": "¿Qué pasa si una mancha no se elimina?", "a": "Siempre informamos si una mancha puede no desaparecer. Hacemos todo lo posible para el mejor resultado." },
+      { "category": "results", "q": "¿Qué ocurre si no quedo satisfecho?", "a": "Revisaremos el trabajo y buscaremos una solución para mejorar el resultado." },
+      { "category": "results", "q": "¿La limpieza elimina olores de mascotas?", "a": "Sí, eliminamos incluso los olores más persistentes con productos y técnicas profesionales." },
+      { "category": "results", "q": "¿Cada cuánto se recomienda limpiar?", "a": "Recomendamos al menos una vez al año, ya que se acumulan polvo, sudor y olores." }
+    ],
+    "stillHaveQuestions": "¿Aún tienes dudas?",
+    "contactUs": "Escríbenos por WhatsApp"
+  },
+  "calculator": {
+    "title": "Calcula tu Presupuesto",
+    "subtitle": "Selecciona los servicios que necesitas y obtén un precio estimado al instante.",
+    "total": "Total estimado",
+    "getQuote": "Pedir Presupuesto por WhatsApp",
+    "yourQuote": "Tu Presupuesto",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "city": "Ciudad o código postal",
+    "optional": "Opcional",
+    "noItems": "Selecciona algún servicio para calcular el presupuesto",
+    "whatsappMessage": "Hola! Me gustaría pedir presupuesto para:"
+  },
+  "footer": {
+    "services": "Servicios",
+    "upholstery": "Limpieza de Tapicerías",
+    "carDetailing": "Detailing de Coches",
+    "info": "Información",
+    "gallery": "Antes y Después",
+    "faq": "Preguntas Frecuentes",
+    "contact": "Contacto",
+    "hours": "Lun–Sáb: 9:00–20:00",
+    "rights": "Todos los derechos reservados.",
+    "legal": "Aviso Legal",
+    "privacy": "Política de Privacidad",
+    "cookies": "Política de Cookies"
+  },
+  "whatsapp": {
+    "tooltip": "¿Necesitas ayuda? Escríbenos",
+    "defaultMessage": "Hola! Me gustaría más información sobre sus servicios."
+  }
+}
