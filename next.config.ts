@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Skip ESLint during Vercel build (run `npm run lint` locally)
+  eslint: { ignoreDuringBuilds: true },
   // Use this project as root so Next doesn't infer parent directory (multiple lockfiles)
   outputFileTracingRoot: path.join(process.cwd()),
   turbopack: { root: path.join(process.cwd()) },
