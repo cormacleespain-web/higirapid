@@ -1,0 +1,142 @@
+{
+  "nav": {
+    "services": "Serveis",
+    "process": "Com treballem",
+    "gallery": "Galeria",
+    "testimonials": "Ressenyes",
+    "faq": "FAQ",
+    "contact": "Contacte"
+  },
+  "hero": {
+    "headline": "Neteja professional per a casa, oficina i cotxe",
+    "subhead": "Tapissos, catifes, estores, interiors de cotxe i higiene a casa. A El Masnou i Barcelona. Ràpid, fiable i respectuós amb el medi ambient.",
+    "ctaQuote": "Demana pressupost",
+    "ctaContactUs": "Contactar",
+    "ctaWhatsApp": "Contactar per WhatsApp"
+  },
+  "services": {
+    "title": "Els nostres serveis",
+    "subtitle": "Portem la neteja professional a casa o al negoci.",
+    "upholstery": {
+      "title": "Neteja de tapissos",
+      "description": "Sofàs, butaques i mobles tapissats. Eliminem taques, olors i al·lèrgens amb mètodes segurs i eficaços."
+    },
+    "carpet": {
+      "title": "Neteja de catifes",
+      "description": "Neteja en profunditat de catifes i estores. Recupera el color i la frescor amb el nostre equip professional."
+    },
+    "rug": {
+      "title": "Neteja d'estores",
+      "description": "Curem estores delicades i de gran mida. Tractem cada peça segons el material i l'acabat."
+    },
+    "car": {
+      "title": "Neteja d'interiors de cotxe",
+      "description": "Seients, tapisseria i revestiments. Deixa l'interior del cotxe net i sense olors."
+    },
+    "hygiene": {
+      "title": "Higiene a casa",
+      "description": "Tractaments d'higiene a fons per a llars i negocis. T'ajudem a mantenir un entorn saludable."
+    }
+  },
+  "process": {
+    "title": "Com funciona el nostre servei?",
+    "subtitle": "Reserva i neteja en tres passos.",
+    "step1": {
+      "title": "Reserva",
+      "description": "Contacta'ns per WhatsApp. Acordem el servei i una hora que et vagi bé."
+    },
+    "step2": {
+      "title": "Ens desplacem",
+      "description": "Arribem a casa teva amb el nostre equip. No cal que moguis mobles."
+    },
+    "step3": {
+      "title": "Gaudeix",
+      "description": "Netejem a fons i ho deixem tot endreçat. Assecat ràpid perquè puguis tornar a fer servir l'espai aviat."
+    }
+  },
+  "gallery": {
+    "title": "Exemples del nostre treball",
+    "subtitle": "Mira el abans i el després dels nostres treballs. Resultats reals que parlen per si sols.",
+    "prev": "Anterior",
+    "next": "Següent",
+    "item": "Imatge {current} de {total}",
+    "filterLabel": "Filtrar per categoria",
+    "categories": {
+      "all": "Tots",
+      "car": "Cotxes",
+      "upholstery": "Sofàs",
+      "carpetsAndRugs": "Moquetes i estores",
+      "business": "Empreses"
+    },
+    "fromPrice": "Des de {price} €"
+  },
+  "testimonials": {
+    "title": "Què diuen els nostres clients",
+    "subtitle": "Confien en nosaltres particulars i empreses de Barcelona i el Maresme.",
+    "1": {
+      "quote": "Molt professionals i puntuals. El meu sofà va quedar com nou després de la neteja. Els recomano.",
+      "author": "Maria G.",
+      "location": "El Masnou"
+    },
+    "2": {
+      "quote": "Van deixar l'interior del cotxe impecable. Bon preu i excel·lent resultat.",
+      "author": "Pau L.",
+      "location": "Barcelona"
+    },
+    "3": {
+      "quote": "Els contractem per a l'oficina. Seriosos i sempre una feina ben feta.",
+      "author": "Laura F.",
+      "location": "Barcelona"
+    }
+  },
+  "areas": {
+    "title": "Zones de servei",
+    "subtitle": "Atendem El Masnou, Barcelona i rodalies.",
+    "list": "El Masnou, Barcelona, Premià de Mar, Vilassar de Mar, Montgat, Badalona, Sant Adrià i altres localitats del Maresme i Barcelonès."
+  },
+  "faq": {
+    "title": "Preguntes freqüents",
+    "q1": "Quant costa netejar un sofà?",
+    "a1": "El preu depèn de la mida i l'estat del sofà. Contacta'ns per a un pressupost gratuït i sense compromís.",
+    "q2": "Quant triga a assecar després de la neteja?",
+    "a2": "Solen ser entre 4 i 8 hores segons ventilació i teixit. Fem servir mètodes que acceleren l'assecat.",
+    "q3": "Els productes són segurs per a nens i mascotes?",
+    "a3": "Sí. Utilitzem productes professionals segurs per a la llar i el medi ambient.",
+    "q4": "També netegen interiors de cotxe?",
+    "a4": "Sí. Oferim neteja d'interiors de cotxe: seients, tapisseria i revestiments. Demana pressupost."
+  },
+  "contact": {
+    "title": "Contacte",
+    "subtitle": "Sol·licita un pressupost gratuït o escriu-nos per WhatsApp.",
+    "ctaQuote": "Demana pressupost",
+    "ctaContactUs": "Contactar",
+    "form": {
+      "name": "Nom",
+      "email": "Correu electrònic",
+      "service": "Servei",
+      "servicePlaceholder": "Tria un servei",
+      "message": "Missatge",
+      "submit": "Enviar",
+      "sending": "Enviant…",
+      "success": "Gràcies. Et respondrem en breu.",
+      "error": "Quelcom ha fallat. Torna-ho a provar o contacta'ns per WhatsApp."
+    },
+    "whatsapp": "Contactar per WhatsApp",
+    "or": "o"
+  },
+  "footer": {
+    "links": "Enllaços",
+    "tagline": "Neteja de qualitat per a casa, oficina o cotxe.",
+    "contact": "Contacte",
+    "contactLink": "Contacta'ns",
+    "language": "Llengua",
+    "copyright": "© {year} HigiRapid. Tots els drets reservats."
+  },
+  "common": {
+    "skipToContent": "Anar al contingut principal",
+    "mainNav": "Navegació principal",
+    "openMenu": "Obrir menú",
+    "closeMenu": "Tancar menú",
+    "mobileMenu": "Menú mòbil"
+  }
+}

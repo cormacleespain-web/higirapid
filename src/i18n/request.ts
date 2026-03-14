@@ -1,15 +1,20 @@
 import { getRequestConfig } from "next-intl/server";
 import { routing } from "./routing";
-import { hasLocale } from "next-intl";
 
 export default getRequestConfig(async ({ requestLocale }) => {
-  const requested = await requestLocale;
-  const locale = hasLocale(routing.locales, requested)
-    ? requested
-    : routing.defaultLocale;
-
+  let locale = await requestLocale;
+  if (!locale || !routing.locales.includes(locale as "es" | "ca" | "en")) {
+    locale = routing.defaultLocale;
+  }
+  let messages;
+  try {
+    messages = (await import(`./messages/${locale}.json`)).default;
+  } catch {
+    messages = (await import(`./messages/${routing.defaultLocale}.json`)).default;
+  }
   return {
     locale,
-    messages: (await import(`../messages/${locale}.json`)).default,
+    messages,
+    timeZone: "Europe/Madrid",
   };
 });

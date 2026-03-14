@@ -1,118 +1,81 @@
-import type { Metadata, Viewport } from "next";
-import { Inter, Montserrat } from "next/font/google";
-import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getMessages } from "next-intl/server";
+import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { WhatsAppFab } from "@/components/shared/whatsapp-fab";
-import "../globals.css";
+import { fontSans, fontGaretExtrabold, fontNunitoHeading } from "@/lib/fonts";
+import type { Locale } from "@/i18n/config";
+import SetLocale from "@/components/layout/SetLocale";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import FloatingCta from "@/components/layout/FloatingCta";
+import MotionConfigProvider from "@/components/providers/MotionConfigProvider";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-});
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  themeColor: "#2B6098",
-};
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const isEs = locale === "es";
-
-  return {
-    title: {
-      default: isEs
-        ? "Higirap - Higienización con Rapidez"
-        : "Higirap - Professional Cleaning Services",
-      template: isEs ? "%s | Higirap" : "%s | Higirap",
-    },
-    description: isEs
-      ? "Servicio profesional de limpieza de tapicerías y detailing de coches a domicilio. Eliminamos manchas, olores y bacterias."
-      : "Professional upholstery cleaning and car detailing at your doorstep. We eliminate stains, odors, and bacteria.",
-    icons: { icon: "/images/logo.png" },
-    openGraph: {
-      type: "website",
-      locale: isEs ? "es_ES" : "en_US",
-      siteName: "Higirap",
-      images: [{ url: "/images/logo.png", width: 1200, height: 630 }],
-    },
-    robots: { index: true, follow: true },
-  };
-}
-
-function LocalBusinessJsonLd() {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "Higirap",
-    description:
-      "Professional upholstery cleaning and car detailing service.",
-    url: "https://higirap.com",
-    telephone: "+34600000000",
-    email: "info@higirap.com",
-    image: "https://higirap.com/images/logo.png",
-    priceRange: "€€",
-    openingHours: "Mo-Sa 09:00-20:00",
-    areaServed: {
-      "@type": "Country",
-      name: "Spain",
-    },
-    sameAs: [],
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
-
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
+type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
-}) {
+};
+
+const titles: Record<Locale, string> = {
+  es: "HigiRapid — Limpieza profesional | El Masnou, Barcelona",
+  ca: "HigiRapid — Neteja professional | El Masnou, Barcelona",
+  en: "HigiRapid — Professional cleaning | El Masnou, Barcelona",
+};
+
+const descriptions: Record<Locale, string> = {
+  es: "Limpieza de tapicerías, alfombras, interiores de coche e higiene en casa. El Masnou y Barcelona. Presupuesto sin compromiso.",
+  ca: "Neteja de tapissos, catifes, interiors de cotxe i higiene a casa. El Masnou i Barcelona. Pressupost sense compromís.",
+  en: "Upholstery, carpet, car interior and in-house hygiene cleaning. El Masnou and Barcelona. Free quote.",
+};
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) {
+  if (!routing.locales.includes(locale as Locale)) return {};
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://higirapid.com";
+  const alternates = {
+    languages: Object.fromEntries(
+      routing.locales.map((loc) => [loc, `${baseUrl}/${loc}`])
+    ) as Record<Locale, string>,
+  };
+  return {
+    title: titles[locale as Locale],
+    description: descriptions[locale as Locale],
+    alternates,
+  };
+}
+
+export default async function LocaleLayout({ children, params }: Props) {
+  const { locale } = await params;
+  if (!routing.locales.includes(locale as Locale)) {
     notFound();
   }
-
+  setRequestLocale(locale);
   const messages = await getMessages();
+  const t = await getTranslations("common");
 
   return (
-    <html lang={locale}>
-      <head>
-        <LocalBusinessJsonLd />
-      </head>
-      <body
-        className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}
-      >
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <WhatsAppFab />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages}>
+      <MotionConfigProvider>
+      <div className={`min-h-screen flex flex-col font-sans ${fontSans.variable} ${fontGaretExtrabold.variable} ${fontNunitoHeading.variable}`}>
+        <SetLocale />
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-content-inverse focus:rounded-md"
+        >
+          {t("skipToContent")}
+        </a>
+        <Header />
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+        <Footer />
+        <FloatingCta />
+      </div>
+      </MotionConfigProvider>
+    </NextIntlClientProvider>
   );
 }

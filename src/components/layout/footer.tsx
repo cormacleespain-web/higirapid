@@ -1,127 +1,127 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { Phone, Mail, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
+import { motion } from "motion/react";
+import { useTranslations, useLocale } from "next-intl";
+import LanguageSwitcher from "./LanguageSwitcher";
+import Button from "@/components/ui/Button";
+import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { getQuoteHref, getContactHref } from "@/lib/whatsapp";
+import { fadeUp, viewportOnce } from "@/lib/motion";
 
-export function Footer() {
-  const t = useTranslations("footer");
+const navKeys = ["services", "process", "gallery", "testimonials", "faq", "contact"] as const;
+
+export default function Footer() {
+  const t = useTranslations("nav");
+  const tFooter = useTranslations("footer");
+  const tContact = useTranslations("contact");
+  const locale = useLocale();
+  const year = new Date().getFullYear();
+  const quoteHref = getQuoteHref(locale);
+  const contactHref = getContactHref(locale);
 
   return (
-    <footer className="border-t bg-brand-dark text-white">
-      <div className="mx-auto max-w-7xl px-4 py-12 lg:py-16">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
-          <div className="space-y-4">
-            <Image
-              src="/images/logo.png"
-              alt="Higirap"
-              width={140}
-              height={40}
-              className="h-10 w-auto brightness-110"
-            />
-            <p className="text-sm text-white/70">
-              Higienización con Rapidez
+    <footer
+      id="contact"
+      className="bg-surface-subtle border-t border-border scroll-mt-16"
+    >
+      <div className="container-default w-full py-12 md:py-16">
+        <motion.div
+          className="flex flex-col gap-10"
+          initial={fadeUp.initial}
+          whileInView={fadeUp.animate}
+          viewport={viewportOnce}
+          transition={fadeUp.transition}
+        >
+          {/* Desktop: brand (left) | contact (right). Mobile: stacked. */}
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-6">
+            {/* Brand: logo with tagline stacked below */}
+            <div className="flex flex-col gap-2">
+              <a
+                href="/"
+                className="inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+                aria-label="HigiRapid home"
+              >
+<Image
+                src="/logos/web-footer.svg"
+                alt="HigiRapid"
+                width={240}
+                height={37}
+                className="h-8 w-auto"
+              />
+              </a>
+              <p className="text-content-secondary text-sm max-w-md">
+                {tFooter("tagline")}
+              </p>
+            </div>
+
+            {/* Contact: headline + subtitle + CTAs — right-aligned on desktop */}
+            <div className="md:text-right md:flex md:flex-col md:items-end">
+              <h2 className="text-xl font-bold text-content-primary">
+                {tContact("title")}
+              </h2>
+              <p className="mt-1 text-content-secondary text-sm max-w-md md:max-w-sm">
+                {tContact("subtitle")}
+              </p>
+              <div className="mt-4 flex flex-col sm:flex-row gap-3 md:justify-end">
+                <Button
+                  href={quoteHref}
+                  variant="primary"
+                  size="md"
+                  aria-label={tContact("ctaQuote")}
+                >
+                  {tContact("ctaQuote")}
+                </Button>
+                <Button
+                  href={contactHref}
+                  variant="whatsapp"
+                  size="md"
+                  aria-label={tContact("ctaContactUs")}
+                  className="inline-flex items-center gap-2"
+                >
+                  <WhatsAppIcon />
+                  {tContact("ctaContactUs")}
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Links (left) + Language (right), same row on desktop */}
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-content-secondary mb-3">
+                {tFooter("links")}
+              </p>
+              <ul className="flex flex-wrap gap-x-6 gap-y-2">
+                {navKeys.map((key) => (
+                  <li key={key}>
+                    <a
+                      href={`#${key}`}
+                      className="text-content-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+                    >
+                      {t(key)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="shrink-0 flex flex-col items-center">
+              <p className="text-sm font-medium text-content-secondary mb-2">
+                {tFooter("language")}
+              </p>
+              <div>
+                <LanguageSwitcher />
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="pt-2 border-t border-border">
+            <p className="text-sm text-content-secondary">
+              {tFooter("copyright", { year })}
             </p>
           </div>
-
-          {/* Services */}
-          <div className="space-y-3">
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-brand-green">
-              {t("services")}
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/upholstery"
-                  className="text-sm text-white/70 transition-colors hover:text-white"
-                >
-                  {t("upholstery")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/car-detailing"
-                  className="text-sm text-white/70 transition-colors hover:text-white"
-                >
-                  {t("carDetailing")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Info */}
-          <div className="space-y-3">
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-brand-green">
-              {t("info")}
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/gallery"
-                  className="text-sm text-white/70 transition-colors hover:text-white"
-                >
-                  {t("gallery")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-sm text-white/70 transition-colors hover:text-white"
-                >
-                  {t("faq")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div className="space-y-3">
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-brand-green">
-              {t("contact")}
-            </h3>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-sm text-white/70">
-                <Phone className="h-4 w-4 shrink-0" />
-                <a href="tel:+34600000000" className="hover:text-white">
-                  +34 600 000 000
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-sm text-white/70">
-                <Mail className="h-4 w-4 shrink-0" />
-                <a href="mailto:info@higirap.com" className="hover:text-white">
-                  info@higirap.com
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-sm text-white/70">
-                <Clock className="h-4 w-4 shrink-0" />
-                <span>{t("hours")}</span>
-              </li>
-              <li className="flex items-center gap-2 text-sm text-white/70">
-                <MapPin className="h-4 w-4 shrink-0" />
-                <span>España</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
-          <p className="text-xs text-white/50">
-            © {new Date().getFullYear()} Higirap. {t("rights")}
-          </p>
-          <div className="flex gap-4 text-xs text-white/50">
-            <span className="cursor-pointer hover:text-white/70">
-              {t("legal")}
-            </span>
-            <span className="cursor-pointer hover:text-white/70">
-              {t("privacy")}
-            </span>
-            <span className="cursor-pointer hover:text-white/70">
-              {t("cookies")}
-            </span>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

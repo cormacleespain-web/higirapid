@@ -1,0 +1,142 @@
+{
+  "nav": {
+    "services": "Servicios",
+    "process": "Cómo trabajamos",
+    "gallery": "Galería",
+    "testimonials": "Opiniones",
+    "faq": "FAQ",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "headline": "Limpieza profesional para tu hogar, oficina y coche",
+    "subhead": "Tapicerías, alfombras, mantas, interiores de coche e higiene en casa. En El Masnou y Barcelona. Rápido, fiable y respetuoso con el medio ambiente.",
+    "ctaQuote": "Pedir presupuesto",
+    "ctaContactUs": "Contactar",
+    "ctaWhatsApp": "Contactar por WhatsApp"
+  },
+  "services": {
+    "title": "Nuestros servicios",
+    "subtitle": "Llevamos la limpieza profesional a tu casa o negocio.",
+    "upholstery": {
+      "title": "Limpieza de tapicerías",
+      "description": "Sofás, sillones y muebles tapizados. Eliminamos manchas, olores y alérgenos con métodos seguros y eficaces."
+    },
+    "carpet": {
+      "title": "Limpieza de alfombras",
+      "description": "Limpieza en profundidad de alfombras y mantas. Recupera el color y la frescura con nuestro equipo profesional."
+    },
+    "rug": {
+      "title": "Limpieza de mantas",
+      "description": "Cuidamos mantas delicadas y de gran tamaño. Tratamos cada pieza según su material y acabado."
+    },
+    "car": {
+      "title": "Limpieza de interiores de coche",
+      "description": "Asientos, tapicería y revestimientos. Deja el interior de tu coche limpio y sin olores."
+    },
+    "hygiene": {
+      "title": "Higiene en casa",
+      "description": "Tratamientos de higiene a fondo para hogares y negocios. Te ayudamos a mantener un entorno saludable."
+    }
+  },
+  "process": {
+    "title": "¿Cómo funciona nuestro servicio?",
+    "subtitle": "Reserva y limpieza en tres pasos.",
+    "step1": {
+      "title": "Reserva",
+      "description": "Contáctanos por WhatsApp. Acordamos el servicio y una hora que te vaya bien."
+    },
+    "step2": {
+      "title": "Nos desplazamos",
+      "description": "Llegamos a tu domicilio con nuestro equipo. No hace falta que muevas muebles."
+    },
+    "step3": {
+      "title": "Disfruta",
+      "description": "Limpiamos a fondo y lo dejamos todo ordenado. Secado rápido para que puedas usar el espacio pronto."
+    }
+  },
+  "gallery": {
+    "title": "Ejemplos de nuestro trabajo",
+    "subtitle": "Mira el antes y después de nuestros trabajos. Resultados reales que hablan por sí solos.",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "item": "Imagen {current} de {total}",
+    "filterLabel": "Filtrar por categoría",
+    "categories": {
+      "all": "Todos",
+      "car": "Coches",
+      "upholstery": "Sofás",
+      "carpetsAndRugs": "Moquetas y alfombras",
+      "business": "Empresas"
+    },
+    "fromPrice": "Desde {price} €"
+  },
+  "testimonials": {
+    "title": "Lo que dicen nuestros clientes",
+    "subtitle": "Confían en nosotros particulares y empresas de Barcelona y el Maresme.",
+    "1": {
+      "quote": "Muy profesionales y puntuales. Mi sofá quedó como nuevo después de la limpieza. Los recomiendo.",
+      "author": "María G.",
+      "location": "El Masnou"
+    },
+    "2": {
+      "quote": "Dejaron el interior del coche impecable. Buen precio y excelente resultado.",
+      "author": "Pau L.",
+      "location": "Barcelona"
+    },
+    "3": {
+      "quote": "Los contratamos para la oficina. Serios y siempre un trabajo bien hecho.",
+      "author": "Laura F.",
+      "location": "Barcelona"
+    }
+  },
+  "areas": {
+    "title": "Zonas de servicio",
+    "subtitle": "Atendemos El Masnou, Barcelona y alrededores.",
+    "list": "El Masnou, Barcelona, Premià de Mar, Vilassar de Mar, Montgat, Badalona, Sant Adrià y otras localidades del Maresme y Barcelonès."
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "q1": "¿Cuánto cuesta limpiar un sofá?",
+    "a1": "El precio depende del tamaño y estado del sofá. Contáctanos para un presupuesto gratuito y sin compromiso.",
+    "q2": "¿Cuánto tarda en secar después de la limpieza?",
+    "a2": "Suele ser entre 4 y 8 horas según ventilación y tejido. Usamos métodos que aceleran el secado.",
+    "q3": "¿Los productos son seguros para niños y mascotas?",
+    "a3": "Sí. Utilizamos productos profesionales seguros para el hogar y el medio ambiente.",
+    "q4": "¿También limpian interiores de coche?",
+    "a4": "Sí. Ofrecemos limpieza de interiores de coche: asientos, tapicería y revestimientos. Pide presupuesto."
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "Solicita un presupuesto gratuito o escríbenos por WhatsApp.",
+    "ctaQuote": "Pedir presupuesto",
+    "ctaContactUs": "Contactar",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "service": "Servicio",
+      "servicePlaceholder": "Elige un servicio",
+      "message": "Mensaje",
+      "submit": "Enviar",
+      "sending": "Enviando…",
+      "success": "Gracias. Te responderemos en breve.",
+      "error": "Algo ha fallado. Inténtalo de nuevo o contáctanos por WhatsApp."
+    },
+    "whatsapp": "Contactar por WhatsApp",
+    "or": "o"
+  },
+  "footer": {
+    "links": "Enlaces",
+    "tagline": "Limpieza de calidad para tu hogar, oficina o coche.",
+    "contact": "Contacto",
+    "contactLink": "Contáctanos",
+    "language": "Idioma",
+    "copyright": "© {year} HigiRapid. Todos los derechos reservados."
+  },
+  "common": {
+    "skipToContent": "Ir al contenido principal",
+    "mainNav": "Navegación principal",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "mobileMenu": "Menú móvil"
+  }
+}

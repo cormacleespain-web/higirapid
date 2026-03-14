@@ -1,21 +1,27 @@
-import { Hero } from "@/components/home/hero";
-import { TrustIndicators } from "@/components/home/trust-indicators";
-import { ServicesOverview } from "@/components/home/services-overview";
-import { PopularServices } from "@/components/home/popular-services";
-import { WhyHigirap } from "@/components/home/why-higirap";
-import { Testimonials } from "@/components/home/testimonials";
-import { CtaBanner } from "@/components/home/cta-banner";
+import { setRequestLocale } from "next-intl/server";
+import Hero from "@/components/sections/Hero";
+import Services from "@/components/sections/Services";
+import Process from "@/components/sections/Process";
+import Gallery from "@/components/sections/Gallery";
+import Testimonials from "@/components/sections/Testimonials";
+import ServiceAreas from "@/components/sections/ServiceAreas";
+import FAQ from "@/components/sections/FAQ";
 
-export default function HomePage() {
+type Props = { params: Promise<{ locale: string }> };
+
+export default async function HomePage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <>
       <Hero />
-      <TrustIndicators />
-      <ServicesOverview />
-      <PopularServices />
-      <WhyHigirap />
+      <Services />
+      <Process />
+      <Gallery />
       <Testimonials />
-      <CtaBanner />
+      <ServiceAreas />
+      <FAQ />
     </>
   );
 }

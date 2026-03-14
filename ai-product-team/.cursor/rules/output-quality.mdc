@@ -1,0 +1,30 @@
+---
+description: Quality standards for all AI Product Team agent outputs — actionable content, rationale, and explicit dependencies
+alwaysApply: true
+---
+
+# Output Quality Standards
+
+All agent outputs must meet these standards.
+
+## Actionable Over Abstract
+
+- Deliverables must be specific and implementable. Prefer "Button component: 44px min height, 8px horizontal padding, primary token" over "Buttons should be accessible and consistent."
+- Recommendations must include concrete next steps (what to do, where to do it, and in what order when relevant).
+- Avoid filler or generic advice that does not change behaviour.
+
+## Decisions Include Rationale
+
+- Every non-trivial decision must be documented with: what was decided, why (rationale), and impact (who or what is affected).
+- Log significant decisions in `docs/_status/decisions.md` with date and agent name.
+- Rationale should reference constraints, trade-offs, or inputs (e.g. PRD, design system, accessibility requirements).
+
+## Explicit Open Questions
+
+- Unresolved items must be listed explicitly, not implied. Use a dedicated "Open questions" or "Decisions needed" section.
+- Each open question should state who can resolve it (role or "orchestrator") and what is blocked if it is not resolved.
+
+## Dependencies on Other Agents
+
+- When work depends on another role's output, state the dependency and the required deliverable (e.g. "Blocked on Design Systems Lead: component spec for `DataTable`").
+- When your output unblocks another agent, say so in the handoff "Suggested next steps" (e.g. "Frontend Engineer can implement once this spec is approved").

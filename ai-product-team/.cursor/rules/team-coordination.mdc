@@ -1,0 +1,36 @@
+---
+description: Standard handoff format, status reporting, and file naming for AI Product Team agent coordination
+alwaysApply: true
+---
+
+# Team Coordination Protocol
+
+All agents on the AI Product Team must follow these standards when collaborating.
+
+## Handoff Document Format
+
+When completing work that another agent will consume, write a handoff to `docs/_status/handoffs/`.
+
+**File naming**: `[YYYYMMDD]-[HHMM]-[from-agent]-to-[to-agent].md` (e.g. `20250313-1430-product-owner-to-design-lead.md`).
+
+**Required sections** (in order):
+
+1. **Context** — What was the task and why it was done
+2. **Decisions** — Key decisions made, with rationale
+3. **Deliverables** — List of paths to created/updated docs (e.g. `docs/product/prds/feature-x.md`)
+4. **Open Questions** — Unresolved items for the receiving agent or orchestrator
+5. **Suggested Next Steps** — What the receiving agent should do first
+
+## Status Reporting
+
+When an agent finishes work, it must:
+
+- Update or create the handoff file as above
+- If the agent made significant decisions, append one line per decision to `docs/_status/decisions.md` (date, agent, decision, rationale)
+- Not modify `docs/_status/progress.md` — the orchestrator maintains that file
+
+## Shared Doc Naming
+
+- Use lowercase and hyphens for file and folder names under `docs/`
+- Prefer descriptive names: `feature-checkout-prd.md`, not `prd-1.md`
+- Handoffs live only in `docs/_status/handoffs/`

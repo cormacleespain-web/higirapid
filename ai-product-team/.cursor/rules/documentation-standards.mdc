@@ -1,0 +1,39 @@
+---
+description: Markdown and frontmatter standards for all docs in the AI Product Team shared documentation
+globs: docs/**/*.md
+alwaysApply: false
+---
+
+# Documentation Standards
+
+All markdown files under `docs/` must follow these conventions.
+
+## Frontmatter
+
+Every document must include YAML frontmatter with:
+
+```yaml
+---
+title: Human-readable document title
+author-agent: role-name (e.g. product-owner, design-lead)
+date: YYYY-MM-DD
+status: draft | in-review | approved
+---
+```
+
+- `title`: Short, clear title
+- `author-agent`: Which agent role produced or last updated this doc
+- `date`: Date of creation or last substantive update
+- `status`: `draft` (work in progress), `in-review` (awaiting feedback), `approved` (accepted)
+
+## Markdown Conventions
+
+- Use ATX-style headers (`#`, `##`, `###`)
+- Use relative links for cross-references within `docs/`: `[PRD](../product/prds/feature-x.md)`
+- Use bullet lists for options or criteria; numbered lists for sequences
+- Keep line length under 120 characters where practical for readability in diffs
+
+## Version Tracking
+
+- Do not maintain separate version numbers in filenames; use `date` in frontmatter and git history for versioning
+- When making a breaking change to a doc that other agents depend on, update the `date` and set `status: draft` until dependent agents have been notified or have updated their work
