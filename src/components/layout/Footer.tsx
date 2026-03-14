@@ -86,8 +86,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links (left) + Language (right), same row on desktop */}
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          {/* Links (left) + Language (right), same row on desktop; left-aligned on mobile */}
+          <div className="flex flex-col items-start sm:flex-row sm:items-start sm:justify-between gap-4">
             <div>
               <p className="text-sm font-medium text-content-secondary mb-3">
                 {tFooter("links")}
@@ -105,7 +105,7 @@ export default function Footer() {
                 ))}
               </ul>
             </div>
-            <div className="shrink-0 flex flex-col items-center">
+            <div className="shrink-0 flex flex-col items-start sm:items-end">
               <p className="text-sm font-medium text-content-secondary mb-2">
                 {tFooter("language")}
               </p>
