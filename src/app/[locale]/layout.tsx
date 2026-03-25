@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { routing } from "@/i18n/routing";
 import { fontSans, fontGaretExtrabold, fontNunitoHeading } from "@/lib/fonts";
 import type { Locale } from "@/i18n/config";
@@ -86,6 +87,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         </MotionConfigProvider>
       </ContentOverridesProvider>
       <Analytics />
+      <SpeedInsights />
     </NextIntlClientProvider>
   );
 }
