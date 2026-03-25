@@ -1,25 +1,14 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
+import { useMergedT } from "@/hooks/useMergedT";
+import { getQuoteHref } from "@/lib/whatsapp";
 
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34600000000";
-
-function getQuoteMessage(locale: string): string {
-  switch (locale) {
-    case "es":
-      return "Hola, me gustaría solicitar un presupuesto.";
-    case "ca":
-      return "Hola, m'agradaria sol·licitar un pressupost.";
-    default:
-      return "Hi, I'd like to get a quote.";
-  }
-}
-
-export default function FloatingCta() {
-  const t = useTranslations("contact");
+export default function FloatingCta({ whatsappE164 }: { whatsappE164: string }) {
+  const t = useMergedT("contact");
   const locale = useLocale();
-  const href = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}?text=${encodeURIComponent(getQuoteMessage(locale))}`;
+  const href = getQuoteHref(locale, whatsappE164);
 
   return (
     <motion.a

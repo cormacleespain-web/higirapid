@@ -1,0 +1,96 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { AdminImageField } from "@/components/admin/AdminImageField";
+import { saveSiteSettingsAction } from "../../actions";
+
+export default function SiteSettingsForm({
+  defaultWhatsappDigits,
+  initialContactEmail,
+  initialHeroImageUrl,
+}: {
+  defaultWhatsappDigits: string;
+  initialContactEmail: string;
+  initialHeroImageUrl: string;
+}) {
+  const [heroUrl, setHeroUrl] = useState(initialHeroImageUrl);
+  const [message, setMessage] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setMessage(null);
+    const formData = new FormData(e.currentTarget);
+    startTransition(async () => {
+      await saveSiteSettingsAction(formData);
+      setMessage("Saved. The public site will update shortly.");
+    });
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+      {message && (
+        <p
+          className={`rounded-md px-4 py-2 text-sm ${message.includes("failed") ? "bg-red-50 text-error" : "bg-emerald-50 text-success"}`}
+          role="status"
+        >
+          {message}
+        </p>
+      )}
+
+      <div>
+        <label htmlFor="whatsapp_e164" className="block text-sm font-medium text-content-primary">
+          WhatsApp (digits only, country code included)
+        </label>
+        <input
+          id="whatsapp_e164"
+          name="whatsapp_e164"
+          type="text"
+          inputMode="numeric"
+          required
+          defaultValue={defaultWhatsappDigits}
+          className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-content-primary shadow-sm"
+        />
+        <p className="mt-1 text-xs text-content-secondary">Used for quote and contact links across the whole site.</p>
+      </div>
+
+      <div>
+        <label htmlFor="contact_email" className="block text-sm font-medium text-content-primary">
+          Contact email (optional)
+        </label>
+        <input
+          id="contact_email"
+          name="contact_email"
+          type="email"
+          defaultValue={initialContactEmail}
+          className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-content-primary shadow-sm"
+        />
+      </div>
+
+      <div>
+        <span className="block text-sm font-medium text-content-primary">Homepage hero image</span>
+        <p className="mt-1 text-xs text-content-secondary">
+          This is the large photo behind the headline on the homepage. You can upload a new file or paste a link under
+          Advanced.
+        </p>
+        <div className="mt-3">
+          <AdminImageField
+            name="hero_image_url"
+            value={heroUrl}
+            onChange={setHeroUrl}
+            variant="hero"
+            builtInFallbackSrc="/images/hero.png"
+          />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        disabled={pending}
+        className="focus-ring rounded-md bg-primary px-4 py-2 text-sm font-medium text-content-inverse hover:opacity-90 disabled:opacity-50"
+      >
+        {pending ? "Saving…" : "Save settings"}
+      </button>
+    </form>
+  );
+}

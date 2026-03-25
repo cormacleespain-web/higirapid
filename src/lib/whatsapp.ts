@@ -1,5 +1,12 @@
-export const WHATSAPP_NUMBER =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34600000000";
+export function normalizeWhatsAppDigits(raw: string): string {
+  return raw.replace(/\D/g, "");
+}
+
+const ENV_DEFAULT = normalizeWhatsAppDigits(
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34600000000"
+);
+
+export const WHATSAPP_NUMBER = ENV_DEFAULT;
 
 export function getQuoteMessage(locale: string): string {
   switch (locale) {
@@ -23,12 +30,12 @@ export function getContactMessage(locale: string): string {
   }
 }
 
-export function getQuoteHref(locale: string): string {
-  const base = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}`;
+export function getQuoteHref(locale: string, whatsappDigits: string = ENV_DEFAULT): string {
+  const base = `https://wa.me/${normalizeWhatsAppDigits(whatsappDigits)}`;
   return `${base}?text=${encodeURIComponent(getQuoteMessage(locale))}`;
 }
 
-export function getContactHref(locale: string): string {
-  const base = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}`;
+export function getContactHref(locale: string, whatsappDigits: string = ENV_DEFAULT): string {
+  const base = `https://wa.me/${normalizeWhatsAppDigits(whatsappDigits)}`;
   return `${base}?text=${encodeURIComponent(getContactMessage(locale))}`;
 }

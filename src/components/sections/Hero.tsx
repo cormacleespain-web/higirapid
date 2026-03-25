@@ -2,51 +2,34 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp } from "@/lib/motion";
+import { useMergedT } from "@/hooks/useMergedT";
+import { getContactHref, getQuoteHref, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
-/** Full-bleed hero background (professional cleaning scene). */
-const HERO_IMAGE = "/images/hero.png";
+const DEFAULT_HERO = "/images/hero.png";
 
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34600000000";
+type HeroProps = {
+  whatsappE164?: string;
+  heroImageSrc?: string | null;
+};
 
-function getQuoteMessage(locale: string): string {
-  switch (locale) {
-    case "es":
-      return "Hola, me gustaría solicitar un presupuesto.";
-    case "ca":
-      return "Hola, m'agradaria sol·licitar un pressupost.";
-    default:
-      return "Hi, I'd like to get a quote.";
-  }
-}
-
-function getContactMessage(locale: string): string {
-  switch (locale) {
-    case "es":
-      return "Hola, me gustaría hacer una consulta.";
-    case "ca":
-      return "Hola, m'agradaria fer una consulta.";
-    default:
-      return "Hi, I'd like to get in touch.";
-  }
-}
-
-export default function Hero() {
-  const t = useTranslations("hero");
+export default function Hero({ whatsappE164, heroImageSrc }: HeroProps) {
+  const t = useMergedT("hero");
   const locale = useLocale();
-  const quoteHref = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}?text=${encodeURIComponent(getQuoteMessage(locale))}`;
-  const contactHref = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}?text=${encodeURIComponent(getContactMessage(locale))}`;
+  const wa = whatsappE164 ?? WHATSAPP_NUMBER;
+  const quoteHref = getQuoteHref(locale, wa);
+  const contactHref = getContactHref(locale, wa);
+  const src = heroImageSrc?.trim() ? heroImageSrc.trim() : DEFAULT_HERO;
 
   return (
     <section className="relative overflow-hidden">
-      {/* Full-bleed background image */}
       <div className="absolute inset-0" aria-hidden>
         <Image
-          src={HERO_IMAGE}
+          src={src}
           alt=""
           fill
           className="object-cover"
@@ -54,10 +37,8 @@ export default function Hero() {
           priority
         />
       </div>
-      {/* Dark overlay for text legibility and WCAG contrast */}
       <div className="absolute inset-0 bg-black/60" aria-hidden />
 
-      {/* Centered content with accessible light-on-dark styling */}
       <div className="relative z-10 flex flex-col items-center justify-center px-4 py-20 sm:px-6 md:py-24 lg:py-28">
         <div className="mx-auto max-w-3xl text-center">
           <motion.h1
@@ -107,4 +88,3 @@ export default function Hero() {
     </section>
   );
 }
-

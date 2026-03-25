@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useMergedT } from "@/hooks/useMergedT";
 import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
@@ -49,7 +49,7 @@ function ChevronIcon({ open }: { open: boolean }) {
 }
 
 export default function FAQ() {
-  const t = useTranslations("faq");
+  const t = useMergedT("faq");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (

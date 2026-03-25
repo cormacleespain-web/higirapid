@@ -1,10 +1,35 @@
+import NextAuth from "next-auth";
 import createMiddleware from "next-intl/middleware";
+import { NextResponse, type NextRequest } from "next/server";
 import { routing } from "./i18n/routing";
+import authConfig from "./auth.config";
 
-export default createMiddleware(routing);
+const intlMiddleware = createMiddleware(routing);
+const { auth } = NextAuth(authConfig);
+
+export default async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/admin")) {
+    const session = await auth();
+    const isLogin = pathname === "/admin/login";
+
+    if (isLogin) {
+      if (session?.user?.email) {
+        return NextResponse.redirect(new URL("/admin", request.url));
+      }
+      return NextResponse.next();
+    }
+
+    if (!session?.user?.email) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+    return NextResponse.next();
+  }
+
+  return intlMiddleware(request);
+}
 
 export const config = {
-  // Run on all pathnames except api, _next, _vercel, and paths with a dot (static assets).
-  // Ensures next-intl always sets locale so language-by-URL never hits "middleware didn't run" errors.
   matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

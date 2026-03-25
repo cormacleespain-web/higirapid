@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useMergedT } from "@/hooks/useMergedT";
 import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const testimonialKeys = ["1", "2", "3"] as const;
 
 export default function Testimonials() {
-  const t = useTranslations("testimonials");
+  const t = useMergedT("testimonials");
 
   return (
     <section id="testimonials" className="py-20 md:py-24 bg-testimonials scroll-mt-16">

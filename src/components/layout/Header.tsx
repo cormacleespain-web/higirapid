@@ -2,26 +2,21 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { useMergedT } from "@/hooks/useMergedT";
+import { getQuoteHref } from "@/lib/whatsapp";
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
-
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "34600000000";
-
-function getQuoteHref(locale: string): string {
-  const msg = locale === "es" ? "Hola, me gustaría solicitar un presupuesto." : locale === "ca" ? "Hola, m'agradaria sol·licitar un pressupost." : "Hi, I'd like to get a quote.";
-  return `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}?text=${encodeURIComponent(msg)}`;
-}
 
 const navKeys = ["services", "process", "gallery", "testimonials", "faq"] as const;
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export default function Header() {
+export default function Header({ whatsappE164 }: { whatsappE164: string }) {
   const t = useTranslations("nav");
-  const tHero = useTranslations("hero");
+  const tHero = useMergedT("hero");
   const tCommon = useTranslations("common");
   const tFooter = useTranslations("footer");
   const locale = useLocale();
@@ -136,7 +131,7 @@ export default function Header() {
             <LanguageSwitcher variant="inverse" />
           </div>
           <a
-            href={getQuoteHref(locale)}
+            href={getQuoteHref(locale, whatsappE164)}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden md:inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-colors font-medium whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
@@ -211,7 +206,13 @@ export default function Header() {
             <p className="text-sm font-medium text-content-secondary mb-2 px-1">{tFooter("language")}</p>
             <LanguageSwitcher variant="default" />
           </div>
-          <a href={getQuoteHref(locale)} target="_blank" rel="noopener noreferrer" className="mt-6 block" onClick={closeMenu}>
+          <a
+            href={getQuoteHref(locale, whatsappE164)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 block"
+            onClick={closeMenu}
+          >
             <Button variant="whatsapp" fullWidth className="inline-flex items-center justify-center gap-2">
               <WhatsAppIcon />
               {tHero("ctaQuote")}

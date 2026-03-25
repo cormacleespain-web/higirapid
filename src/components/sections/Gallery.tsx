@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslations } from "next-intl";
+import { useMergedT } from "@/hooks/useMergedT";
+import type { GalleryItemDTO } from "@/lib/site-data";
 import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
@@ -106,11 +108,17 @@ function matchesCategory(item: GalleryItem, activeCategory: GalleryCategory): bo
   return item.category === activeCategory;
 }
 
-export default function Gallery() {
+type GalleryProps = {
+  initialItems?: GalleryItemDTO[] | null;
+};
+
+export default function Gallery({ initialItems }: GalleryProps) {
   const t = useTranslations("gallery");
+  const tm = useMergedT("gallery");
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>("all");
 
-  const items = PLACEHOLDER_ITEMS;
+  const items: GalleryItem[] =
+    initialItems && initialItems.length > 0 ? initialItems : PLACEHOLDER_ITEMS;
   const filteredItems = items.filter((item) => matchesCategory(item, activeCategory));
 
   const tabList: GalleryCategory[] = ["all", ...GALLERY_CATEGORIES];
@@ -138,7 +146,7 @@ export default function Gallery() {
           viewport={viewportOnce}
           transition={fadeUp.transition}
         >
-          {t("title")}
+          {tm("title")}
         </motion.h2>
         <motion.p
           className="mt-2 text-content-secondary text-center max-w-2xl mx-auto"
@@ -147,7 +155,7 @@ export default function Gallery() {
           viewport={viewportOnce}
           transition={{ ...fadeUp.transition, delay: 0.06 }}
         >
-          {t("subtitle")}
+          {tm("subtitle")}
         </motion.p>
 
         {/* Category filter tabs */}

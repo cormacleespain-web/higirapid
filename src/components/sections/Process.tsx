@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useMergedT } from "@/hooks/useMergedT";
 import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
@@ -14,7 +14,7 @@ const STEP_ILLUSTRATIONS = [
 ] as const;
 
 export default function Process() {
-  const t = useTranslations("process");
+  const t = useMergedT("process");
 
   return (
     <section id="process" className="py-20 md:py-24 bg-surface-subtle scroll-mt-16">

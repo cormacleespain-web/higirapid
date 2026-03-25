@@ -6,6 +6,7 @@ import Gallery from "@/components/sections/Gallery";
 import Testimonials from "@/components/sections/Testimonials";
 import ServiceAreas from "@/components/sections/ServiceAreas";
 import FAQ from "@/components/sections/FAQ";
+import { getSiteSettings, getServiceCards, getGalleryItems } from "@/lib/site-data";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -13,12 +14,16 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const settings = await getSiteSettings();
+  const dbServices = await getServiceCards(locale);
+  const dbGallery = await getGalleryItems(locale);
+
   return (
     <>
-      <Hero />
-      <Services />
+      <Hero whatsappE164={settings.whatsappE164} heroImageSrc={settings.heroImageUrl} />
+      <Services dbItems={dbServices} />
       <Process />
-      <Gallery />
+      <Gallery initialItems={dbGallery} />
       <Testimonials />
       <ServiceAreas />
       <FAQ />

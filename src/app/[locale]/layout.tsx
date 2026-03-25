@@ -10,6 +10,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingCta from "@/components/layout/FloatingCta";
 import MotionConfigProvider from "@/components/providers/MotionConfigProvider";
+import { ContentOverridesProvider } from "@/components/providers/ContentOverridesProvider";
+import { getSiteSettings, getContentOverrideMap } from "@/lib/site-data";
 
 type Props = {
   children: React.ReactNode;
@@ -56,26 +58,32 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
   const messages = await getMessages();
   const t = await getTranslations("common");
+  const settings = await getSiteSettings();
+  const contentOverrides = await getContentOverrideMap(locale);
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <MotionConfigProvider>
-      <div className={`min-h-screen flex flex-col font-sans ${fontSans.variable} ${fontGaretExtrabold.variable} ${fontNunitoHeading.variable}`}>
-        <SetLocale />
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-content-inverse focus:rounded-md"
-        >
-          {t("skipToContent")}
-        </a>
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <FloatingCta />
-      </div>
-      </MotionConfigProvider>
+      <ContentOverridesProvider value={contentOverrides}>
+        <MotionConfigProvider>
+          <div
+            className={`min-h-screen flex flex-col font-sans ${fontSans.variable} ${fontGaretExtrabold.variable} ${fontNunitoHeading.variable}`}
+          >
+            <SetLocale />
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-content-inverse focus:rounded-md"
+            >
+              {t("skipToContent")}
+            </a>
+            <Header whatsappE164={settings.whatsappE164} />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <Footer whatsappE164={settings.whatsappE164} />
+            <FloatingCta whatsappE164={settings.whatsappE164} />
+          </div>
+        </MotionConfigProvider>
+      </ContentOverridesProvider>
     </NextIntlClientProvider>
   );
 }

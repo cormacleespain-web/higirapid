@@ -7,18 +7,19 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { getQuoteHref, getContactHref } from "@/lib/whatsapp";
+import { useMergedT } from "@/hooks/useMergedT";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const navKeys = ["services", "process", "gallery", "testimonials", "faq", "contact"] as const;
 
-export default function Footer() {
+export default function Footer({ whatsappE164 }: { whatsappE164: string }) {
   const t = useTranslations("nav");
   const tFooter = useTranslations("footer");
-  const tContact = useTranslations("contact");
+  const tContact = useMergedT("contact");
   const locale = useLocale();
   const year = new Date().getFullYear();
-  const quoteHref = getQuoteHref(locale);
-  const contactHref = getContactHref(locale);
+  const quoteHref = getQuoteHref(locale, whatsappE164);
+  const contactHref = getContactHref(locale, whatsappE164);
 
   return (
     <footer
@@ -115,11 +116,17 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Copyright */}
-          <div className="pt-2 border-t border-border">
+          {/* Copyright + discreet admin */}
+          <div className="pt-2 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <p className="text-sm text-content-secondary">
               {tFooter("copyright", { year })}
             </p>
+            <a
+              href="/admin/login"
+              className="text-xs text-content-secondary/70 hover:text-content-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+            >
+              Admin
+            </a>
           </div>
         </motion.div>
       </div>
