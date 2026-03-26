@@ -1,13 +1,31 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getPublishedBlogPosts } from "@/lib/site-data";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import { locales, type Locale } from "@/i18n/config";
 
 type Props = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ category?: string }>;
 };
+
+export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
+  const { locale } = await params;
+  const safeLocale = locales.includes(locale as Locale) ? (locale as Locale) : "en";
+  const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || "https://higirapid.es").replace(/\/+$/, "");
+  const canonicalPath = `/${safeLocale}/blog`;
+
+  return {
+    alternates: {
+      canonical: `${baseUrl}${canonicalPath}`,
+      languages: Object.fromEntries(
+        locales.map((altLocale) => [altLocale, `${baseUrl}/${altLocale}/blog`])
+      ) as Record<Locale, string>,
+    },
+  };
+}
 
 export default async function BlogIndexPage({ params, searchParams }: Props) {
   const { locale } = await params;

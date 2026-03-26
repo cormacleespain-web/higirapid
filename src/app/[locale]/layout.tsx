@@ -39,7 +39,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!routing.locales.includes(locale as Locale)) return {};
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://higirapid.com";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://higirapid.es";
   const alternates = {
     languages: Object.fromEntries(
       routing.locales.map((loc) => [loc, `${baseUrl}/${loc}`])
