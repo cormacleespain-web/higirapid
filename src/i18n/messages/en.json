@@ -2,6 +2,8 @@
   "nav": {
     "services": "Services",
     "process": "How it works",
+    "hrClub": "HR-Club",
+    "blog": "Blog",
     "gallery": "Gallery",
     "testimonials": "Testimonials",
     "faq": "FAQ",
@@ -33,9 +35,21 @@
       "title": "Car interior cleaning",
       "description": "Seats, trim and upholstery. Leave your car interior clean and odour-free."
     },
-    "hygiene": {
-      "title": "In-house hygiene",
-      "description": "Thorough hygiene treatments for homes and businesses. We help you maintain a healthy environment."
+    "ozone": {
+      "title": "Ozone therapy",
+      "description": "Targeted ozone treatment to eliminate persistent odours, bacteria and airborne contaminants."
+    },
+    "facade": {
+      "title": "Facade cleaning with pressure washer",
+      "description": "Deep exterior wall cleaning for homes and businesses, removing dirt, mould and pollution marks."
+    },
+    "detailing": {
+      "title": "Car interior cleaning and detailing",
+      "description": "Deep interior detailing for dashboard, upholstery, carpets and odour elimination."
+    },
+    "commercialCarpet": {
+      "title": "Commercial carpet cleaning",
+      "description": "Professional carpet cleaning for offices and retail spaces with eco-friendly products."
     }
   },
   "process": {
@@ -104,6 +118,71 @@
     "a3": "Yes. We use professional products that are safe for the home and the environment.",
     "q4": "Do you also clean car interiors?",
     "a4": "Yes. We offer car interior cleaning: seats, trim and upholstery. Ask for a quote."
+  },
+  "hrClubTeaser": {
+    "title": "HigiRapid subscription plan",
+    "subtitle": "Regular cleaning and disinfection for homes and businesses with better pricing and predictable scheduling.",
+    "benefit1": "Three deep cleanings per year",
+    "benefit2": "Fixed discount per visit",
+    "benefit3": "Priority booking and fast turnaround",
+    "cta": "Join the Club",
+    "note": "*Perks and availability may vary by location.",
+    "imageAlt": "Bright modern kitchen cleaned by HigiRapid"
+  },
+  "whyChooseUs": {
+    "kicker": "Reasons to trust us",
+    "title": "Why choose HigiRapid?",
+    "subtitle": "Real disinfection, eco-friendly products, and reliable mobile service in Barcelona.",
+    "point1": "Real disinfection beyond surface cleaning",
+    "point2": "Safe products for children, pets and allergy-sensitive homes",
+    "point3": "Mobile service at your home, office or garage",
+    "point4": "Tailored treatment for every material and surface",
+    "reasonsLabel": "4 reasons that set HigiRapid apart"
+  },
+  "hrClubPage": {
+    "title": "HigiRapid HR-Club",
+    "subtitle": "Our annual plan keeps your spaces clean and hygienic all year with fixed pricing and convenient scheduling.",
+    "item1": "Three deep cleanings per year (home or business services)",
+    "item2": "Fixed discounted price on each service visit",
+    "item3": "Flexible scheduling aligned with your availability",
+    "item4": "Better long-term hygiene and lower surprise costs"
+  },
+  "hrClubForm": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "inquiryType": "Plan type",
+    "inquiryTypePlaceholder": "Select plan type",
+    "typeHome": "Home",
+    "typeBusiness": "Business",
+    "message": "Message",
+    "consent": "I agree to be contacted about the HR-Club subscription plan.",
+    "submit": "Send request",
+    "sending": "Sending…",
+    "success": "Thanks. We received your request and will contact you shortly.",
+    "error": "Something went wrong. Please try again."
+  },
+  "blog": {
+    "title": "Blog & articles",
+    "subtitle": "Practical cleaning and hygiene guidance for homes, cars and businesses. Explore fresh tips, service updates, and disinfection insights from the HigiRapid team.",
+    "readMore": "Read article",
+    "empty": "Articles are coming soon.",
+    "categoryNavLabel": "Filter blog by category",
+    "categoryAll": "All",
+    "uncategorized": "Uncategorized",
+    "backToBlog": "Back to blog"
+  },
+  "facadeCleaning": {
+    "title": "Facade Cleaning with Pressure Washer",
+    "intro": "We remove dirt, mould, lichen and pollution marks from exterior walls with controlled pressure and material-safe methods.",
+    "whatWeCleanTitle": "What we clean",
+    "whatWeClean1": "Brick, stone, concrete, wood and composite facades in good condition.",
+    "whatWeClean2": "Entrances, pillars, railings and decorative exterior details.",
+    "whatWeClean3": "Areas affected by humidity, algae or water stains.",
+    "benefitsTitle": "Benefits",
+    "benefit1": "Improves the appearance and image of your property.",
+    "benefit2": "Helps prevent moisture-related surface damage.",
+    "benefit3": "Safe, professional process with protection for nearby elements."
   },
   "contact": {
     "title": "Get in touch",

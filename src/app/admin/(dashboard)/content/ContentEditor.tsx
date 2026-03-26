@@ -11,8 +11,8 @@ function cellKey(locale: string, entryKey: string) {
   return `${locale}::${entryKey}`;
 }
 
-function visibleGroups(showAllSections: boolean) {
-  return CONTENT_GROUPS.filter((g) => showAllSections || g.editorTier === "essential");
+function visibleGroups() {
+  return CONTENT_GROUPS;
 }
 
 export default function ContentEditor({
@@ -29,11 +29,11 @@ export default function ContentEditor({
   const [translatePending, setTranslatePending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
-  const [showAllSections, setShowAllSections] = useState(false);
-  const [showFieldKeys, setShowFieldKeys] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [sourceLocale, setSourceLocale] = useState<Locale>("en");
+  const [previewLocale, setPreviewLocale] = useState<Locale>("en");
 
-  const groups = useMemo(() => visibleGroups(showAllSections), [showAllSections]);
+  const groups = useMemo(() => visibleGroups(), []);
   const safeIndex = activeSectionIndex >= groups.length ? 0 : activeSectionIndex;
   const activeGroup = groups[safeIndex] ?? groups[0];
 
@@ -62,6 +62,79 @@ export default function ContentEditor({
       }
     }
     return entries;
+  }
+
+  function effectiveValue(loc: Locale, key: string): string {
+    const override = (values[cellKey(loc, key)] ?? "").trim();
+    const fallback = (defaults[loc][key] ?? "").trim();
+    return override || fallback || "";
+  }
+
+  function sectionSnapshot(loc: Locale, mobile: boolean) {
+    const c = (key: string) => effectiveValue(loc, key);
+    const shell = mobile ? "mx-auto max-w-[360px]" : "max-w-full";
+    switch (activeGroup.id) {
+      case "hero":
+        return (
+          <div className={`${shell} space-y-3 rounded-xl border border-border bg-surface-primary p-4`}>
+            <h4 className={`${mobile ? "text-xl" : "text-2xl"} font-bold text-content-primary`}>{c("hero.headline")}</h4>
+            <p className="text-sm text-content-secondary">{c("hero.subhead")}</p>
+            <div className={`flex ${mobile ? "flex-col" : "flex-row"} gap-2`}>
+              <span className="rounded-md bg-primary px-3 py-2 text-xs font-medium text-content-inverse">{c("hero.ctaQuote")}</span>
+              <span className="rounded-md border border-border px-3 py-2 text-xs font-medium text-content-primary">{c("hero.ctaContactUs")}</span>
+            </div>
+          </div>
+        );
+      case "process":
+        return (
+          <div className={`${shell} space-y-3 rounded-xl border border-border bg-surface-primary p-4`}>
+            <h4 className={`${mobile ? "text-lg" : "text-xl"} font-bold text-content-primary`}>{c("process.title")}</h4>
+            <p className="text-sm text-content-secondary">{c("process.subtitle")}</p>
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="rounded-md border border-border bg-surface-subtle p-3">
+                <p className="text-sm font-medium text-content-primary">{c(`process.step${n}.title`)}</p>
+                <p className="mt-1 text-xs text-content-secondary">{c(`process.step${n}.description`)}</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "faq":
+        return (
+          <div className={`${shell} space-y-3 rounded-xl border border-border bg-surface-primary p-4`}>
+            <h4 className={`${mobile ? "text-lg" : "text-xl"} font-bold text-content-primary`}>{c("faq.title")}</h4>
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="rounded-md border border-border bg-surface-subtle p-3">
+                <p className="text-sm font-medium text-content-primary">{c(`faq.q${n}`)}</p>
+                <p className="mt-1 text-xs text-content-secondary">{c(`faq.a${n}`)}</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "hrClubTeaser":
+        return (
+          <div className={`${shell} space-y-3 rounded-xl border border-border bg-[#50d9b2] p-4`}>
+            <h4 className={`${mobile ? "text-lg" : "text-xl"} font-bold text-white`}>{c("hrClubTeaser.title")}</h4>
+            <p className="text-sm text-white/90">{c("hrClubTeaser.subtitle")}</p>
+            <ul className="space-y-1 text-xs text-white/95">
+              <li>• {c("hrClubTeaser.benefit1")}</li>
+              <li>• {c("hrClubTeaser.benefit2")}</li>
+              <li>• {c("hrClubTeaser.benefit3")}</li>
+            </ul>
+            <span className="inline-flex rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-content-inverse">
+              {c("hrClubTeaser.cta")}
+            </span>
+          </div>
+        );
+      default:
+        return (
+          <div className={`${shell} space-y-3 rounded-xl border border-border bg-surface-primary p-4`}>
+            <h4 className={`${mobile ? "text-lg" : "text-xl"} font-bold text-content-primary`}>
+              {c(`${activeGroup.id}.title`) || activeGroup.title}
+            </h4>
+            <p className="text-sm text-content-secondary">{c(`${activeGroup.id}.subtitle`)}</p>
+          </div>
+        );
+    }
   }
 
   function saveGroup(groupId: string) {
@@ -132,30 +205,6 @@ export default function ContentEditor({
           {message}
         </p>
       )}
-
-      <div className="flex flex-wrap items-center gap-4">
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-content-secondary">
-          <input
-            type="checkbox"
-            checked={showAllSections}
-            onChange={(e) => {
-              setShowAllSections(e.target.checked);
-              setActiveSectionIndex(0);
-            }}
-            className="h-4 w-4 rounded border-border text-primary"
-          />
-          Show all sections (FAQ, testimonials, process, areas, …)
-        </label>
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-content-secondary">
-          <input
-            type="checkbox"
-            checked={showFieldKeys}
-            onChange={(e) => setShowFieldKeys(e.target.checked)}
-            className="h-4 w-4 rounded border-border text-primary"
-          />
-          Show field keys (for support)
-        </label>
-      </div>
 
       <div className="flex flex-wrap gap-1 border-b border-border pb-2">
         {groups.map((g, i) => (
@@ -235,10 +284,6 @@ export default function ContentEditor({
                 )}
               </div>
               {field.hint && <p className="mt-1 text-xs text-content-secondary">{field.hint}</p>}
-              {showFieldKeys && (
-                <p className="mt-1 font-mono text-xs text-content-secondary/80">{field.key}</p>
-              )}
-
               <div className="mt-4 grid gap-6 md:grid-cols-3">
                 {LOCALES.map((loc) => {
                   const def = defaults[loc][field.key] ?? "";
@@ -288,7 +333,72 @@ export default function ContentEditor({
         >
           {pending ? "Saving…" : `Save “${activeGroup.title}”`}
         </button>
+        <button
+          type="button"
+          onClick={() => setPreviewOpen(true)}
+          className="focus-ring ml-2 rounded-md border border-border px-4 py-2 text-sm font-medium text-content-primary hover:bg-surface-subtle"
+        >
+          Preview
+        </button>
       </section>
+
+      {previewOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="max-h-[85vh] w-full max-w-5xl overflow-auto rounded-lg border border-border bg-surface-primary p-5 shadow-lg">
+            <h3 className="font-heading text-xl font-bold text-content-primary">{activeGroup.title} preview</h3>
+            <p className="mt-1 text-sm text-content-secondary">
+              Snapshot preview of the actual section layout.
+            </p>
+            <div className="mt-3">
+              <label htmlFor="preview-locale" className="block text-xs font-medium text-content-secondary">
+                Preview locale
+              </label>
+              <select
+                id="preview-locale"
+                value={previewLocale}
+                onChange={(e) => setPreviewLocale(e.target.value as Locale)}
+                className="focus-ring mt-1 rounded-md border border-border bg-surface-primary px-3 py-2 text-sm text-content-primary"
+              >
+                {LOCALES.map((loc) => (
+                  <option key={loc} value={loc}>
+                    {localeNames[loc as Locale]} ({loc})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mt-4 grid gap-6 lg:grid-cols-2">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wide text-content-secondary">Desktop</p>
+                {sectionSnapshot(previewLocale, false)}
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wide text-content-secondary">Mobile</p>
+                {sectionSnapshot(previewLocale, true)}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setPreviewOpen(false)}
+                className="focus-ring rounded-md border border-border px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-subtle"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                disabled={pending}
+                onClick={() => {
+                  saveGroup(activeGroup.id);
+                  setPreviewOpen(false);
+                }}
+                className="focus-ring rounded-md bg-primary px-4 py-2 text-sm font-medium text-content-inverse hover:opacity-90 disabled:opacity-50"
+              >
+                {pending ? "Saving…" : "Save changes"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

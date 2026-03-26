@@ -8,10 +8,12 @@ export default function SiteSettingsForm({
   defaultWhatsappDigits,
   initialContactEmail,
   initialHeroImageUrl,
+  initialHrClubRecipientEmail,
 }: {
   defaultWhatsappDigits: string;
   initialContactEmail: string;
   initialHeroImageUrl: string;
+  initialHrClubRecipientEmail: string;
 }) {
   const [heroUrl, setHeroUrl] = useState(initialHeroImageUrl);
   const [message, setMessage] = useState<string | null>(null);
@@ -22,8 +24,12 @@ export default function SiteSettingsForm({
     setMessage(null);
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
-      await saveSiteSettingsAction(formData);
-      setMessage("Saved. The public site will update shortly.");
+      const result = await saveSiteSettingsAction(formData);
+      if (result.ok) {
+        setMessage("Saved. The public site will update shortly.");
+      } else {
+        setMessage(result.error ?? "Save failed. Please check your settings and try again.");
+      }
     });
   }
 
@@ -31,7 +37,7 @@ export default function SiteSettingsForm({
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
       {message && (
         <p
-          className={`rounded-md px-4 py-2 text-sm ${message.includes("failed") ? "bg-red-50 text-error" : "bg-emerald-50 text-success"}`}
+          className={`rounded-md px-4 py-2 text-sm ${message.toLowerCase().includes("fail") || message.toLowerCase().includes("could not") || message.toLowerCase().includes("invalid") ? "bg-red-50 text-error" : "bg-emerald-50 text-success"}`}
           role="status"
         >
           {message}
@@ -65,6 +71,20 @@ export default function SiteSettingsForm({
           defaultValue={initialContactEmail}
           className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-content-primary shadow-sm"
         />
+      </div>
+
+      <div>
+        <label htmlFor="hr_club_recipient_email" className="block text-sm font-medium text-content-primary">
+          HR-Club recipient email
+        </label>
+        <input
+          id="hr_club_recipient_email"
+          name="hr_club_recipient_email"
+          type="email"
+          defaultValue={initialHrClubRecipientEmail}
+          className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-content-primary shadow-sm"
+        />
+        <p className="mt-1 text-xs text-content-secondary">New HR-Club leads are notified at this address.</p>
       </div>
 
       <div>

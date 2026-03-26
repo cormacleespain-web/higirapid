@@ -9,7 +9,17 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 
-const navKeys = ["services", "process", "gallery", "testimonials", "faq"] as const;
+const navItems = [
+  { key: "services", href: "#services" },
+  { key: "process", href: "#process" },
+  { key: "hrClub", href: "/hr-club" },
+  { key: "blog", href: "/blog" },
+  { key: "faq", href: "#faq" },
+] as const;
+
+function resolveNavHref(href: string): string {
+  return href.startsWith("#") ? `/${href}` : href;
+}
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -115,14 +125,14 @@ export default function Header({ whatsappE164 }: { whatsappE164: string }) {
         </Link>
 
         <nav className="hidden lg:flex items-center gap-4 xl:gap-6 shrink min-w-0 flex-1 justify-center" aria-label={tCommon("mainNav")}>
-          {navKeys.map((key) => (
-            <a
-              key={key}
-              href={`#${key}`}
+          {navItems.map((item) => (
+            <Link
+              key={item.key}
+              href={resolveNavHref(item.href)}
               className="text-white font-medium hover:text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary rounded px-1 whitespace-nowrap"
             >
-              {t(key)}
-            </a>
+              {t(item.key)}
+            </Link>
           ))}
         </nav>
 
@@ -134,7 +144,7 @@ export default function Header({ whatsappE164 }: { whatsappE164: string }) {
             href={getQuoteHref(locale, whatsappE164)}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-colors font-medium whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+            className="hidden md:inline-flex items-center justify-center gap-2 px-4 py-1.5 text-sm bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-colors font-medium whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
           >
             <WhatsAppIcon className="w-5 h-5 shrink-0" />
             {tHero("ctaQuote")}
@@ -192,15 +202,15 @@ export default function Header({ whatsappE164 }: { whatsappE164: string }) {
         aria-hidden={!menuOpen}
       >
         <div className="px-4 py-6 flex flex-col gap-1 min-h-full">
-          {navKeys.map((key) => (
-            <a
-              key={key}
-              href={`#${key}`}
+          {navItems.map((item) => (
+            <Link
+              key={item.key}
+              href={resolveNavHref(item.href)}
               className="py-3 text-content-primary font-medium hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset rounded px-3"
               onClick={closeMenu}
             >
-              {t(key)}
-            </a>
+              {t(item.key)}
+            </Link>
           ))}
           <div className="mt-4 pt-4 border-t border-border">
             <p className="text-sm font-medium text-content-secondary mb-2 px-1">{tFooter("language")}</p>

@@ -137,7 +137,7 @@ function stripEnvQuotes(s: string): string {
 
 /** If the hash was pasted into `ADMIN_PASSWORD_HASH` as base64 (no `$`), decode and parse. */
 function tryParseHashFromLikelyBase64(raw: string): string | null {
-  let t = stripEnvQuotes(raw)
+  const t = stripEnvQuotes(raw)
     .split("#")[0]
     .trim()
     .replace(/\s+/g, "");

@@ -2,6 +2,8 @@
   "nav": {
     "services": "Servicios",
     "process": "Cómo trabajamos",
+    "hrClub": "HR-Club",
+    "blog": "Blog",
     "gallery": "Galería",
     "testimonials": "Opiniones",
     "faq": "FAQ",
@@ -33,9 +35,21 @@
       "title": "Limpieza de interiores de coche",
       "description": "Asientos, tapicería y revestimientos. Deja el interior de tu coche limpio y sin olores."
     },
-    "hygiene": {
-      "title": "Higiene en casa",
-      "description": "Tratamientos de higiene a fondo para hogares y negocios. Te ayudamos a mantener un entorno saludable."
+    "ozone": {
+      "title": "Terapia de ozono",
+      "description": "Tratamiento con ozono para eliminar olores persistentes, bacterias y contaminantes del aire."
+    },
+    "facade": {
+      "title": "Limpieza de fachadas con hidrolimpiadora",
+      "description": "Limpieza profunda de paredes exteriores para hogares y negocios, eliminando suciedad, moho y marcas."
+    },
+    "detailing": {
+      "title": "Limpieza y detailing interior de coche",
+      "description": "Detailing interior completo: salpicadero, tapicería, alfombrillas y eliminación de olores."
+    },
+    "commercialCarpet": {
+      "title": "Limpieza de moqueta comercial",
+      "description": "Limpieza profesional de moquetas en oficinas y comercios con productos ecológicos."
     }
   },
   "process": {
@@ -104,6 +118,71 @@
     "a3": "Sí. Utilizamos productos profesionales seguros para el hogar y el medio ambiente.",
     "q4": "¿También limpian interiores de coche?",
     "a4": "Sí. Ofrecemos limpieza de interiores de coche: asientos, tapicería y revestimientos. Pide presupuesto."
+  },
+  "hrClubTeaser": {
+    "title": "Plan de suscripción HigiRapid",
+    "subtitle": "Limpieza y desinfección periódica para hogares y negocios con mejor precio y agenda predecible.",
+    "benefit1": "Tres limpiezas profundas al año",
+    "benefit2": "Descuento fijo en cada visita",
+    "benefit3": "Reserva prioritaria y secado rápido",
+    "cta": "Join the Club",
+    "note": "*Perks and availability may vary by location.",
+    "imageAlt": "Cocina moderna y luminosa limpiada por HigiRapid"
+  },
+  "whyChooseUs": {
+    "kicker": "Razones para confiar en nosotros",
+    "title": "¿Por qué elegir HigiRapid?",
+    "subtitle": "Desinfección real, productos eco y servicio móvil profesional en Barcelona.",
+    "point1": "Desinfección real más allá de la limpieza superficial",
+    "point2": "Productos seguros para niños, mascotas y personas alérgicas",
+    "point3": "Servicio a domicilio en hogar, oficina o garaje",
+    "point4": "Tratamiento personalizado según material y superficie",
+    "reasonsLabel": "4 razones que hacen diferente a HigiRapid"
+  },
+  "hrClubPage": {
+    "title": "HigiRapid HR-Club",
+    "subtitle": "Nuestro plan anual mantiene tus espacios limpios e higiénicos todo el año con precio fijo y agenda cómoda.",
+    "item1": "Tres limpiezas profundas al año (hogar o negocio)",
+    "item2": "Precio con descuento fijo por cada visita",
+    "item3": "Citas flexibles según tu disponibilidad",
+    "item4": "Mejor higiene continua y menos gastos imprevistos"
+  },
+  "hrClubForm": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono (opcional)",
+    "inquiryType": "Tipo de plan",
+    "inquiryTypePlaceholder": "Selecciona tipo de plan",
+    "typeHome": "Hogar",
+    "typeBusiness": "Negocio",
+    "message": "Mensaje",
+    "consent": "Acepto que me contacten sobre el plan de suscripción HR-Club.",
+    "submit": "Enviar solicitud",
+    "sending": "Enviando…",
+    "success": "Gracias. Hemos recibido tu solicitud y te contactaremos pronto.",
+    "error": "Algo ha fallado. Inténtalo de nuevo."
+  },
+  "blog": {
+    "title": "Blog y artículos",
+    "subtitle": "Consejos prácticos de limpieza e higiene para hogares, coches y negocios. Descubre novedades, guías y recomendaciones del equipo de HigiRapid.",
+    "readMore": "Leer artículo",
+    "empty": "Próximamente publicaremos artículos.",
+    "categoryNavLabel": "Filtrar blog por categoría",
+    "categoryAll": "Todos",
+    "uncategorized": "Sin categoría",
+    "backToBlog": "Volver al blog"
+  },
+  "facadeCleaning": {
+    "title": "Limpieza de fachadas con hidrolimpiadora",
+    "intro": "Eliminamos suciedad, moho, líquenes y marcas de contaminación en paredes exteriores con presión controlada.",
+    "whatWeCleanTitle": "Qué limpiamos",
+    "whatWeClean1": "Fachadas de ladrillo, piedra, hormigón, madera y composite en buen estado.",
+    "whatWeClean2": "Entradas, pilares, barandillas y detalles exteriores decorativos.",
+    "whatWeClean3": "Zonas con humedad, algas o marcas de agua.",
+    "benefitsTitle": "Beneficios",
+    "benefit1": "Mejora la imagen y apariencia de la propiedad.",
+    "benefit2": "Ayuda a prevenir daños por humedad.",
+    "benefit3": "Proceso profesional y seguro con protección de elementos cercanos."
   },
   "contact": {
     "title": "Contacto",

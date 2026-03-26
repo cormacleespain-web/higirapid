@@ -1,6 +1,10 @@
 import { cache } from "react";
 import { asc, eq } from "drizzle-orm";
 import {
+  blogCategories,
+  blogCategoryI18n,
+  blogPostI18n,
+  blogPosts,
   contentEntries,
   galleryItemI18n,
   galleryItems,
@@ -9,6 +13,7 @@ import {
   siteSettings,
 } from "@/db/schema";
 import { getDb, isDatabaseConfigured } from "@/db/index";
+import { ensureStarterBlogPosts } from "@/lib/blog-starter-sync";
 
 /** Matches `GalleryItemCategory` in components/sections/Gallery.tsx */
 type GalleryItemCategory = "car" | "upholstery" | "carpet" | "rug" | "business";
@@ -21,6 +26,7 @@ export type PublicSiteSettings = {
   whatsappE164: string;
   contactEmail: string | null;
   heroImageUrl: string | null;
+  hrClubRecipientEmail: string | null;
 };
 
 export const getSiteSettings = cache(async function getSiteSettings(): Promise<PublicSiteSettings> {
@@ -28,6 +34,7 @@ export const getSiteSettings = cache(async function getSiteSettings(): Promise<P
     whatsappE164: FALLBACK_WHATSAPP,
     contactEmail: process.env.CONTACT_EMAIL ?? null,
     heroImageUrl: null,
+    hrClubRecipientEmail: process.env.HR_CLUB_RECIPIENT_EMAIL ?? process.env.CONTACT_EMAIL ?? null,
   };
 
   if (!isDatabaseConfigured()) return fallback;
@@ -41,10 +48,129 @@ export const getSiteSettings = cache(async function getSiteSettings(): Promise<P
       whatsappE164: row.whatsappE164.replace(/\D/g, "") || FALLBACK_WHATSAPP,
       contactEmail: row.contactEmail,
       heroImageUrl: row.heroImageUrl,
+      hrClubRecipientEmail: row.hrClubRecipientEmail,
     };
   } catch {
     return fallback;
   }
+});
+
+export type BlogPostDTO = {
+  id: string;
+  slug: string;
+  publishedAt: string | null;
+  categorySlug: string | null;
+  categoryLabel: string | null;
+  primaryImageUrl: string | null;
+  primaryImageAlt: string | null;
+  primaryImageObjectPosition: string | null;
+  articleImageUrls: string[];
+  title: string;
+  excerpt: string;
+  body: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
+};
+
+export type BlogCategoryDTO = {
+  id: string;
+  slug: string;
+  label: string;
+};
+
+function parseJsonArray(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item): item is string => typeof item === "string" && item.length > 0);
+  } catch {
+    return [];
+  }
+}
+
+export const getActiveBlogCategories = cache(async function getActiveBlogCategories(
+  locale: string
+): Promise<BlogCategoryDTO[]> {
+  if (!isDatabaseConfigured()) return [];
+  try {
+    const db = getDb();
+    const categories = await db
+      .select()
+      .from(blogCategories)
+      .where(eq(blogCategories.active, true))
+      .orderBy(asc(blogCategories.sortOrder), asc(blogCategories.slug));
+    const labels = await db.select().from(blogCategoryI18n);
+    return categories
+      .map((category) => {
+        const row =
+          labels.find((label) => label.categoryId === category.id && label.locale === locale) ??
+          labels.find((label) => label.categoryId === category.id && label.locale === "en");
+        if (!row) return null;
+        return { id: category.id, slug: category.slug, label: row.label };
+      })
+      .filter((row): row is BlogCategoryDTO => Boolean(row));
+  } catch {
+    return [];
+  }
+});
+
+export const getPublishedBlogPosts = cache(async function getPublishedBlogPosts(
+  locale: string
+): Promise<BlogPostDTO[]> {
+  if (!isDatabaseConfigured()) return [];
+  try {
+    await ensureStarterBlogPosts();
+    const db = getDb();
+    const categories = await db.select().from(blogCategories);
+    const categoryLabels = await db.select().from(blogCategoryI18n);
+    const posts = await db
+      .select()
+      .from(blogPosts)
+      .where(eq(blogPosts.published, true))
+      .orderBy(asc(blogPosts.sortOrder), asc(blogPosts.slug));
+    const out: BlogPostDTO[] = [];
+    for (const post of posts) {
+      const i18nRows = await db
+        .select()
+        .from(blogPostI18n)
+        .where(eq(blogPostI18n.postId, post.id));
+      const row =
+        i18nRows.find((r) => r.locale === locale) ?? i18nRows.find((r) => r.locale === "en");
+      if (!row) continue;
+      const category = categories.find((c) => c.id === post.categoryId);
+      const label =
+        categoryLabels.find((l) => l.categoryId === post.categoryId && l.locale === locale) ??
+        categoryLabels.find((l) => l.categoryId === post.categoryId && l.locale === "en");
+      out.push({
+        id: post.id,
+        slug: post.slug,
+        publishedAt: post.publishedAt ?? null,
+        categorySlug: category?.slug ?? null,
+        categoryLabel: label?.label ?? null,
+        primaryImageUrl: post.primaryImageUrl ?? null,
+        primaryImageAlt: post.primaryImageAlt ?? null,
+        primaryImageObjectPosition: post.primaryImageObjectPosition ?? null,
+        articleImageUrls: parseJsonArray(post.articleImageUrls),
+        title: row.title,
+        excerpt: row.excerpt,
+        body: row.body,
+        seoTitle: row.seoTitle ?? null,
+        seoDescription: row.seoDescription ?? null,
+      });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+});
+
+export const getPublishedBlogPostBySlug = cache(async function getPublishedBlogPostBySlug(
+  locale: string,
+  slug: string
+): Promise<BlogPostDTO | null> {
+  const posts = await getPublishedBlogPosts(locale);
+  return posts.find((post) => post.slug === slug) ?? null;
 });
 
 export type ServiceCardDTO = {

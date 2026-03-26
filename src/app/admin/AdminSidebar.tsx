@@ -9,6 +9,8 @@ const links = [
   { href: "/admin", label: "Dashboard", match: (p: string) => p === "/admin" },
   { href: "/admin/settings", label: "Site settings", match: (p: string) => p.startsWith("/admin/settings") },
   { href: "/admin/services", label: "Services", match: (p: string) => p.startsWith("/admin/services") },
+  { href: "/admin/blog", label: "Blog posts", match: (p: string) => p.startsWith("/admin/blog") },
+  { href: "/admin/leads", label: "Leads", match: (p: string) => p.startsWith("/admin/leads") },
   { href: "/admin/gallery", label: "Gallery", match: (p: string) => p.startsWith("/admin/gallery") },
   { href: "/admin/content", label: "Page copy", match: (p: string) => p.startsWith("/admin/content") },
 ] as const;

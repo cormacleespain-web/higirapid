@@ -8,8 +8,15 @@ import { useMergedT } from "@/hooks/useMergedT";
 import type { ServiceCardDTO } from "@/lib/site-data";
 import { ServiceIconGlyph } from "@/components/ui/ServiceIconGlyph";
 
-const serviceKeys = ["upholstery", "carpet", "rug", "car", "hygiene"] as const;
-const serviceColors = ["primary", "accent", "secondary", "primary", "accent"] as const;
+const serviceKeys = [
+  "upholstery",
+  "carpet",
+  "ozone",
+  "facade",
+  "detailing",
+  "commercialCarpet",
+] as const;
+const serviceColors = ["primary", "accent", "secondary", "primary", "accent", "secondary"] as const;
 
 function resolveIconKey(raw: string): string {
   return raw?.trim() || "upholstery";

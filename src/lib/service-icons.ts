@@ -11,6 +11,10 @@ export const SERVICE_ICON_OPTIONS = [
   { key: "fresh-air", label: "Air refresh", iconName: "Wind" },
   { key: "eco", label: "Eco service", iconName: "Leaf" },
   { key: "premium", label: "Premium care", iconName: "BadgeCheck" },
+  { key: "facade", label: "Facade cleaning", iconName: "Building2" },
+  { key: "ozone", label: "Ozone therapy", iconName: "Wind" },
+  { key: "detailing", label: "Car detailing", iconName: "Car" },
+  { key: "commercial-carpet", label: "Commercial carpet", iconName: "Grid2x2" },
 ] as const;
 
 export type ServiceIconKey = (typeof SERVICE_ICON_OPTIONS)[number]["key"];

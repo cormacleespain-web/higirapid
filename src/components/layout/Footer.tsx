@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -10,7 +11,14 @@ import { getQuoteHref, getContactHref } from "@/lib/whatsapp";
 import { useMergedT } from "@/hooks/useMergedT";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
-const navKeys = ["services", "process", "gallery", "testimonials", "faq", "contact"] as const;
+const navItems = [
+  { key: "services", href: "#services" },
+  { key: "process", href: "#process" },
+  { key: "hrClub", href: "/hr-club" },
+  { key: "blog", href: "/blog" },
+  { key: "faq", href: "#faq" },
+  { key: "contact", href: "#contact" },
+] as const;
 
 export default function Footer({ whatsappE164 }: { whatsappE164: string }) {
   const t = useTranslations("nav");
@@ -38,7 +46,7 @@ export default function Footer({ whatsappE164 }: { whatsappE164: string }) {
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-6">
             {/* Brand: logo with tagline stacked below */}
             <div className="flex flex-col gap-2">
-              <a
+              <Link
                 href="/"
                 className="inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
                 aria-label="HigiRapid home"
@@ -50,7 +58,7 @@ export default function Footer({ whatsappE164 }: { whatsappE164: string }) {
                 height={37}
                 className="h-8 w-auto"
               />
-              </a>
+              </Link>
               <p className="text-content-secondary text-sm max-w-md">
                 {tFooter("tagline")}
               </p>
@@ -94,13 +102,13 @@ export default function Footer({ whatsappE164 }: { whatsappE164: string }) {
                 {tFooter("links")}
               </p>
               <ul className="flex flex-wrap gap-x-6 gap-y-2">
-                {navKeys.map((key) => (
-                  <li key={key}>
+                {navItems.map((item) => (
+                  <li key={item.key}>
                     <a
-                      href={`#${key}`}
+                      href={item.href}
                       className="text-content-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
                     >
-                      {t(key)}
+                      {t(item.key)}
                     </a>
                   </li>
                 ))}
@@ -121,12 +129,12 @@ export default function Footer({ whatsappE164 }: { whatsappE164: string }) {
             <p className="text-sm text-content-secondary">
               {tFooter("copyright", { year })}
             </p>
-            <a
+            <Link
               href="/admin/login"
               className="text-xs text-content-secondary/70 hover:text-content-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
             >
               Admin
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

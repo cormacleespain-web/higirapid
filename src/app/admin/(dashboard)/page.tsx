@@ -50,6 +50,18 @@ export default function AdminHomePage() {
           <span className="text-content-secondary"> — Homepage service cards in EN / ES / CA</span>
         </li>
         <li>
+          <Link href="/admin/leads" className="font-medium text-primary hover:underline">
+            Leads
+          </Link>
+          <span className="text-content-secondary"> — HR-Club submissions with status and notes</span>
+        </li>
+        <li>
+          <Link href="/admin/blog" className="font-medium text-primary hover:underline">
+            Blog
+          </Link>
+          <span className="text-content-secondary"> — Localized articles, template structure and SEO fields</span>
+        </li>
+        <li>
           <Link href="/admin/gallery" className="font-medium text-primary hover:underline">
             Gallery
           </Link>

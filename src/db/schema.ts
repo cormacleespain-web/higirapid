@@ -13,6 +13,7 @@ export const siteSettings = pgTable("site_settings", {
   whatsappE164: text("whatsapp_e164").notNull(),
   contactEmail: text("contact_email"),
   heroImageUrl: text("hero_image_url"),
+  hrClubRecipientEmail: text("hr_club_recipient_email"),
 });
 
 export const serviceOfferings = pgTable("service_offerings", {
@@ -74,3 +75,74 @@ export const contentEntries = pgTable(
     pk: primaryKey({ columns: [t.entryKey, t.locale] }),
   })
 );
+
+export const blogPosts = pgTable("blog_posts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  slug: text("slug").notNull().unique(),
+  categoryId: uuid("category_id").references(() => blogCategories.id, { onDelete: "set null" }),
+  status: text("status").notNull().default("draft"),
+  published: boolean("published").notNull().default(false),
+  sortOrder: integer("sort_order").notNull().default(0),
+  publishedAt: text("published_at"),
+  primaryImageUrl: text("primary_image_url"),
+  primaryImageAlt: text("primary_image_alt"),
+  primaryImageObjectPosition: text("primary_image_object_position"),
+  articleImageUrls: text("article_image_urls"),
+});
+
+export const blogCategories = pgTable("blog_categories", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  slug: text("slug").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+});
+
+export const blogCategoryI18n = pgTable(
+  "blog_category_i18n",
+  {
+    categoryId: uuid("category_id")
+      .notNull()
+      .references(() => blogCategories.id, { onDelete: "cascade" }),
+    locale: text("locale").notNull(),
+    label: text("label").notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.categoryId, t.locale] }),
+  })
+);
+
+export const blogPostI18n = pgTable(
+  "blog_post_i18n",
+  {
+    postId: uuid("post_id")
+      .notNull()
+      .references(() => blogPosts.id, { onDelete: "cascade" }),
+    locale: text("locale").notNull(),
+    title: text("title").notNull(),
+    excerpt: text("excerpt").notNull(),
+    body: text("body").notNull(),
+    seoTitle: text("seo_title"),
+    seoDescription: text("seo_description"),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.postId, t.locale] }),
+  })
+);
+
+export const hrClubLeads = pgTable("hr_club_leads", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  locale: text("locale").notNull(),
+  sourcePath: text("source_path").notNull(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  inquiryType: text("inquiry_type").notNull(),
+  message: text("message").notNull(),
+  consent: boolean("consent").notNull().default(false),
+  status: text("status").notNull().default("new"),
+  internalNotes: text("internal_notes"),
+  contactedAt: text("contacted_at"),
+  closedAt: text("closed_at"),
+});

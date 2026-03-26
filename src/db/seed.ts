@@ -8,17 +8,22 @@ import { drizzle } from "drizzle-orm/neon-http";
 import fs from "fs";
 import path from "path";
 import {
+  blogCategories,
+  blogCategoryI18n,
+  blogPostI18n,
+  blogPosts,
   galleryItemI18n,
   galleryItems,
   serviceOfferingI18n,
   serviceOfferings,
   siteSettings,
 } from "./schema";
+import { getBlogStarterArticles } from "@/lib/blog-starter-content";
 
 config({ path: path.join(process.cwd(), ".env.local") });
 config();
 
-const serviceSlugs = ["upholstery", "carpet", "rug", "car", "hygiene"] as const;
+const serviceSlugs = ["upholstery", "carpet", "ozone", "facade", "detailing", "commercial-carpet"] as const;
 
 const GALLERY_SEED = [
   {
@@ -103,7 +108,17 @@ async function main() {
   }
 
   const db = drizzle(neon(url), {
-    schema: { siteSettings, serviceOfferings, serviceOfferingI18n, galleryItems, galleryItemI18n },
+    schema: {
+      siteSettings,
+      blogCategories,
+      blogCategoryI18n,
+      serviceOfferings,
+      serviceOfferingI18n,
+      galleryItems,
+      galleryItemI18n,
+      blogPosts,
+      blogPostI18n,
+    },
   });
 
   const wa =
@@ -116,10 +131,14 @@ async function main() {
       whatsappE164: wa,
       contactEmail: process.env.CONTACT_EMAIL ?? null,
       heroImageUrl: null,
+      hrClubRecipientEmail: process.env.HR_CLUB_RECIPIENT_EMAIL ?? process.env.CONTACT_EMAIL ?? null,
     })
     .onConflictDoUpdate({
       target: siteSettings.id,
-      set: { whatsappE164: wa },
+      set: {
+        whatsappE164: wa,
+        hrClubRecipientEmail: process.env.HR_CLUB_RECIPIENT_EMAIL ?? process.env.CONTACT_EMAIL ?? null,
+      },
     });
   console.log("Seeded site_settings id=1");
 
@@ -205,6 +224,82 @@ async function main() {
     console.log(`Seeded ${GALLERY_SEED.length} gallery items`);
   } else {
     console.log("Gallery already present, skip gallery seed");
+  }
+
+  const existingPosts = await db.select().from(blogPosts).limit(1);
+  const categorySeed = [
+    { slug: "news", sortOrder: 0, labels: { en: "News", es: "Noticias", ca: "Noticies" } },
+    { slug: "hygiene-guides", sortOrder: 1, labels: { en: "Hygiene guides", es: "Guias de higiene", ca: "Guies d'higiene" } },
+    { slug: "service-tips", sortOrder: 2, labels: { en: "Service tips", es: "Consejos de servicio", ca: "Consells de servei" } },
+  ] as const;
+  const categoryMap = new Map<string, string>();
+  for (const category of categorySeed) {
+    const [saved] = await db
+      .insert(blogCategories)
+      .values({
+        slug: category.slug,
+        sortOrder: category.sortOrder,
+        active: true,
+      })
+      .onConflictDoUpdate({
+        target: blogCategories.slug,
+        set: { sortOrder: category.sortOrder, active: true },
+      })
+      .returning({ id: blogCategories.id });
+    categoryMap.set(category.slug, saved.id);
+    for (const locale of ["en", "es", "ca"] as const) {
+      await db
+        .insert(blogCategoryI18n)
+        .values({ categoryId: saved.id, locale, label: category.labels[locale] })
+        .onConflictDoUpdate({
+          target: [blogCategoryI18n.categoryId, blogCategoryI18n.locale],
+          set: { label: category.labels[locale] },
+        });
+    }
+  }
+  console.log(`Seeded ${categorySeed.length} blog categories`);
+
+  if (existingPosts.length === 0) {
+    const byLocale = {
+      en: getBlogStarterArticles("en"),
+      es: getBlogStarterArticles("es"),
+      ca: getBlogStarterArticles("ca"),
+    } as const;
+
+    let sortOrder = 0;
+    for (let i = 0; i < byLocale.en.length; i += 1) {
+      const row = byLocale.en[i];
+      const [post] = await db
+        .insert(blogPosts)
+        .values({
+          slug: row.slug,
+          categoryId: categoryMap.get(row.categorySlug) ?? null,
+          status: "published",
+          published: true,
+          sortOrder: sortOrder++,
+          publishedAt: row.publishedAt,
+          primaryImageUrl: row.primaryImageUrl,
+          primaryImageAlt: row.primaryImageAlt,
+          primaryImageObjectPosition: "center",
+          articleImageUrls: JSON.stringify(row.articleImageUrls),
+        })
+        .returning({ id: blogPosts.id });
+      for (const loc of ["en", "es", "ca"] as const) {
+        const localized = byLocale[loc][i] ?? row;
+        await db.insert(blogPostI18n).values({
+          postId: post.id,
+          locale: loc,
+          title: localized.title,
+          excerpt: localized.excerpt,
+          body: localized.body,
+          seoTitle: localized.seoTitle,
+          seoDescription: localized.seoDescription,
+        });
+      }
+    }
+    console.log(`Seeded ${byLocale.en.length} blog posts`);
+  } else {
+    console.log("Blog posts already present, skip blog seed");
   }
 
   console.log("Done.");

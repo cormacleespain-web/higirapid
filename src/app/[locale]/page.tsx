@@ -6,6 +6,8 @@ import Gallery from "@/components/sections/Gallery";
 import Testimonials from "@/components/sections/Testimonials";
 import ServiceAreas from "@/components/sections/ServiceAreas";
 import FAQ from "@/components/sections/FAQ";
+import HRClubTeaser from "@/components/sections/HRClubTeaser";
+import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import { getSiteSettings, getServiceCards, getGalleryItems } from "@/lib/site-data";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -23,9 +25,11 @@ export default async function HomePage({ params }: Props) {
       <Hero whatsappE164={settings.whatsappE164} heroImageSrc={settings.heroImageUrl} />
       <Services dbItems={dbServices} />
       <Process />
+      <HRClubTeaser />
       <Gallery initialItems={dbGallery} />
       <Testimonials />
       <ServiceAreas />
+      <WhyChooseUs />
       <FAQ />
     </>
   );

@@ -2,6 +2,8 @@
   "nav": {
     "services": "Serveis",
     "process": "Com treballem",
+    "hrClub": "HR-Club",
+    "blog": "Blog",
     "gallery": "Galeria",
     "testimonials": "Ressenyes",
     "faq": "FAQ",
@@ -33,9 +35,21 @@
       "title": "Neteja d'interiors de cotxe",
       "description": "Seients, tapisseria i revestiments. Deixa l'interior del cotxe net i sense olors."
     },
-    "hygiene": {
-      "title": "Higiene a casa",
-      "description": "Tractaments d'higiene a fons per a llars i negocis. T'ajudem a mantenir un entorn saludable."
+    "ozone": {
+      "title": "Teràpia d'ozó",
+      "description": "Tractament amb ozó per eliminar olors persistents, bacteris i contaminants de l'aire."
+    },
+    "facade": {
+      "title": "Neteja de façanes amb hidronetejadora",
+      "description": "Neteja profunda de parets exteriors de llars i negocis, eliminant brutícia, floridura i marques."
+    },
+    "detailing": {
+      "title": "Neteja i detailing interior de cotxe",
+      "description": "Detailing interior complet: tauler, tapisseria, catifes i eliminació d'olors."
+    },
+    "commercialCarpet": {
+      "title": "Neteja de moqueta comercial",
+      "description": "Neteja professional de moquetes en oficines i comerços amb productes ecològics."
     }
   },
   "process": {
@@ -104,6 +118,71 @@
     "a3": "Sí. Utilitzem productes professionals segurs per a la llar i el medi ambient.",
     "q4": "També netegen interiors de cotxe?",
     "a4": "Sí. Oferim neteja d'interiors de cotxe: seients, tapisseria i revestiments. Demana pressupost."
+  },
+  "hrClubTeaser": {
+    "title": "Pla de subscripció HigiRapid",
+    "subtitle": "Neteja i desinfecció periòdica per a llars i negocis amb millor preu i planificació estable.",
+    "benefit1": "Tres neteges profundes l'any",
+    "benefit2": "Descompte fix a cada visita",
+    "benefit3": "Reserva prioritària i assecat ràpid",
+    "cta": "Join the Club",
+    "note": "*Perks and availability may vary by location.",
+    "imageAlt": "Cuina moderna i lluminosa netejada per HigiRapid"
+  },
+  "whyChooseUs": {
+    "kicker": "Raons per confiar en nosaltres",
+    "title": "Per què triar HigiRapid?",
+    "subtitle": "Desinfecció real, productes ecològics i servei mòbil professional a Barcelona.",
+    "point1": "Desinfecció real més enllà de la neteja superficial",
+    "point2": "Productes segurs per a infants, mascotes i persones al·lèrgiques",
+    "point3": "Servei a domicili per a casa, oficina o garatge",
+    "point4": "Tractament personalitzat segons material i superfície",
+    "reasonsLabel": "4 raons que diferencien HigiRapid"
+  },
+  "hrClubPage": {
+    "title": "HigiRapid HR-Club",
+    "subtitle": "El nostre pla anual manté els teus espais nets i higiènics tot l'any amb preu fix i agenda flexible.",
+    "item1": "Tres neteges profundes l'any (llar o negoci)",
+    "item2": "Preu amb descompte fix per visita",
+    "item3": "Cites adaptades a la teva disponibilitat",
+    "item4": "Millor higiene contínua i menys despeses imprevistes"
+  },
+  "hrClubForm": {
+    "name": "Nom",
+    "email": "Correu electrònic",
+    "phone": "Telèfon (opcional)",
+    "inquiryType": "Tipus de pla",
+    "inquiryTypePlaceholder": "Selecciona tipus de pla",
+    "typeHome": "Llar",
+    "typeBusiness": "Negoci",
+    "message": "Missatge",
+    "consent": "Accepto que em contactin sobre el pla de subscripció HR-Club.",
+    "submit": "Enviar sol·licitud",
+    "sending": "Enviant…",
+    "success": "Gràcies. Hem rebut la teva sol·licitud i et contactarem aviat.",
+    "error": "Hi ha hagut un error. Torna-ho a provar."
+  },
+  "blog": {
+    "title": "Blog i articles",
+    "subtitle": "Consells pràctics de neteja i higiene per a llars, cotxes i negocis. Descobreix novetats, guies i recomanacions de l'equip de HigiRapid.",
+    "readMore": "Llegir article",
+    "empty": "Aviat publicarem articles.",
+    "categoryNavLabel": "Filtrar blog per categoria",
+    "categoryAll": "Tots",
+    "uncategorized": "Sense categoria",
+    "backToBlog": "Tornar al blog"
+  },
+  "facadeCleaning": {
+    "title": "Neteja de façanes amb hidronetejadora",
+    "intro": "Eliminem brutícia, floridura, líquens i marques de contaminació amb pressió controlada.",
+    "whatWeCleanTitle": "Què netegem",
+    "whatWeClean1": "Façanes de maó, pedra, formigó, fusta i composite en bon estat.",
+    "whatWeClean2": "Entrades, pilars, baranes i detalls exteriors decoratius.",
+    "whatWeClean3": "Zones afectades per humitat, algues o marques d'aigua.",
+    "benefitsTitle": "Beneficis",
+    "benefit1": "Millora la imatge i aparença de la propietat.",
+    "benefit2": "Ajuda a prevenir danys per humitat.",
+    "benefit3": "Procés segur i professional amb protecció dels elements propers."
   },
   "contact": {
     "title": "Contacte",

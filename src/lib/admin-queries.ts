@@ -1,13 +1,19 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import {
+  blogCategories,
+  blogCategoryI18n,
+  blogPostI18n,
+  blogPosts,
   contentEntries,
   galleryItemI18n,
   galleryItems,
+  hrClubLeads,
   serviceOfferingI18n,
   serviceOfferings,
   siteSettings,
 } from "@/db/schema";
 import { getDb, isDatabaseConfigured } from "@/db/index";
+import { ensureStarterBlogPosts } from "@/lib/blog-starter-sync";
 
 export async function getSiteSettingsRow() {
   if (!isDatabaseConfigured()) return null;
@@ -17,6 +23,92 @@ export async function getSiteSettingsRow() {
     return rows[0] ?? null;
   } catch {
     return null;
+  }
+}
+
+export async function getAllBlogPostsAdmin() {
+  if (!isDatabaseConfigured()) return [];
+  try {
+    await ensureStarterBlogPosts();
+    const db = getDb();
+    let categories: (typeof blogCategories.$inferSelect)[] = [];
+    let categoryI18nRows: (typeof blogCategoryI18n.$inferSelect)[] = [];
+    try {
+      categories = await db.select().from(blogCategories);
+      categoryI18nRows = await db.select().from(blogCategoryI18n);
+    } catch {
+      categories = [];
+      categoryI18nRows = [];
+    }
+
+    const posts = await db.select().from(blogPosts).orderBy(asc(blogPosts.sortOrder), asc(blogPosts.slug));
+    const out: {
+      post: (typeof posts)[0];
+      i18n: (typeof blogPostI18n.$inferSelect)[];
+      category: { id: string; slug: string; label: string } | null;
+    }[] = [];
+    for (const post of posts) {
+      const i18n = await db.select().from(blogPostI18n).where(eq(blogPostI18n.postId, post.id));
+      const category = categories.find((row) => row.id === post.categoryId);
+      const categoryLabel =
+        categoryI18nRows.find((row) => row.categoryId === post.categoryId && row.locale === "en")
+          ?.label ?? null;
+      out.push({
+        post,
+        i18n,
+        category: category ? { id: category.id, slug: category.slug, label: categoryLabel ?? category.slug } : null,
+      });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
+export async function getBlogPostByIdAdmin(id: string) {
+  if (!isDatabaseConfigured()) return null;
+  try {
+    const db = getDb();
+    const rows = await db.select().from(blogPosts).where(eq(blogPosts.id, id)).limit(1);
+    if (!rows[0]) return null;
+    const i18n = await db.select().from(blogPostI18n).where(eq(blogPostI18n.postId, id));
+    const categories = await getBlogCategoriesAdmin();
+    return { post: rows[0], i18n, categories };
+  } catch {
+    return null;
+  }
+}
+
+export async function getBlogCategoriesAdmin() {
+  if (!isDatabaseConfigured()) return [];
+  try {
+    const db = getDb();
+    const categories = await db
+      .select()
+      .from(blogCategories)
+      .where(eq(blogCategories.active, true))
+      .orderBy(asc(blogCategories.sortOrder), asc(blogCategories.slug));
+    const i18n = await db.select().from(blogCategoryI18n);
+    return categories.map((category) => ({
+      ...category,
+      label:
+        i18n.find((row) => row.categoryId === category.id && row.locale === "en")?.label ??
+        i18n.find((row) => row.categoryId === category.id)?.label ??
+        category.slug,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllHrClubLeadsAdmin() {
+  if (!isDatabaseConfigured()) return [];
+  try {
+    const db = getDb();
+    return await db.select().from(hrClubLeads).orderBy(desc(hrClubLeads.createdAt));
+  } catch (error) {
+    console.error("Could not load HR-Club leads. Did you run DB migrations?", error);
+    return [];
   }
 }
 
