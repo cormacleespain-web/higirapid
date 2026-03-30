@@ -1,3 +1,5 @@
+import { buildFaqContentGroupFields } from "./faq-content";
+
 export type ContentEditorTier = "essential" | "full";
 
 /**
@@ -87,17 +89,7 @@ export const CONTENT_GROUPS: {
     id: "faq",
     title: "FAQ",
     editorTier: "full",
-    fields: [
-      { key: "faq.title", label: "Section title" },
-      { key: "faq.q1", label: "Question 1" },
-      { key: "faq.a1", label: "Answer 1" },
-      { key: "faq.q2", label: "Question 2" },
-      { key: "faq.a2", label: "Answer 2" },
-      { key: "faq.q3", label: "Question 3" },
-      { key: "faq.a3", label: "Answer 3" },
-      { key: "faq.q4", label: "Question 4" },
-      { key: "faq.a4", label: "Answer 4" },
-    ],
+    fields: buildFaqContentGroupFields(),
   },
   {
     id: "hrClubTeaser",

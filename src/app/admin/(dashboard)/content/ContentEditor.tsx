@@ -6,6 +6,8 @@ import { CONTENT_GROUPS, LOCALES } from "@/lib/content-admin-keys";
 import type { ContentDefaultsMap } from "@/lib/content-defaults";
 import { localeNames, type Locale } from "@/i18n/config";
 import { saveContentEntriesAction, translateContentSectionAction } from "../../actions";
+import { parseFaqOrder } from "@/lib/faq-content";
+import FaqItemsAdmin from "./FaqItemsAdmin";
 
 function cellKey(locale: string, entryKey: string) {
   return `${locale}::${entryKey}`;
@@ -98,11 +100,14 @@ export default function ContentEditor({
             ))}
           </div>
         );
-      case "faq":
+      case "faq": {
+        const orderRaw =
+          (values[cellKey(loc, "faq.order")] ?? "").trim() || (defaults[loc]["faq.order"] ?? "").trim();
+        const slots = parseFaqOrder(orderRaw || null);
         return (
           <div className={`${shell} space-y-3 rounded-xl border border-border bg-surface-primary p-4`}>
             <h4 className={`${mobile ? "text-lg" : "text-xl"} font-bold text-content-primary`}>{c("faq.title")}</h4>
-            {[1, 2, 3, 4].map((n) => (
+            {slots.map((n) => (
               <div key={n} className="rounded-md border border-border bg-surface-subtle p-3">
                 <p className="text-sm font-medium text-content-primary">{c(`faq.q${n}`)}</p>
                 <p className="mt-1 text-xs text-content-secondary">{c(`faq.a${n}`)}</p>
@@ -110,6 +115,7 @@ export default function ContentEditor({
             ))}
           </div>
         );
+      }
       case "hrClubTeaser":
         return (
           <div className={`${shell} space-y-3 rounded-xl border border-border bg-[#50d9b2] p-4`}>
@@ -154,12 +160,14 @@ export default function ContentEditor({
   async function suggestTranslationsForSection() {
     if (!activeGroup) return;
     setMessage(null);
-    const fields = activeGroup.fields.map((field) => {
-      const override = (values[cellKey(sourceLocale, field.key)] ?? "").trim();
-      const fallback = (defaults[sourceLocale][field.key] ?? "").trim();
-      const text = override || fallback;
-      return { entryKey: field.key, text };
-    });
+    const fields = activeGroup.fields
+      .filter((field) => field.key !== "faq.order")
+      .map((field) => {
+        const override = (values[cellKey(sourceLocale, field.key)] ?? "").trim();
+        const fallback = (defaults[sourceLocale][field.key] ?? "").trim();
+        const text = override || fallback;
+        return { entryKey: field.key, text };
+      });
 
     setTranslatePending(true);
     try {
@@ -270,59 +278,120 @@ export default function ContentEditor({
         ) : null}
 
         <div className="space-y-8">
-          {activeGroup.fields.map((field) => (
-            <div
-              key={field.key}
-              className="rounded-lg border border-border bg-surface-primary p-4 shadow-sm"
-            >
-              <div className="flex flex-wrap items-baseline gap-2">
-                <p className="text-sm font-medium text-content-primary">{field.label}</p>
-                {LOCALES.some((loc) => (values[cellKey(loc, field.key)] ?? "").trim() !== "") && (
-                  <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium text-amber-900">
-                    Custom text
-                  </span>
-                )}
-              </div>
-              {field.hint && <p className="mt-1 text-xs text-content-secondary">{field.hint}</p>}
-              <div className="mt-4 grid gap-6 md:grid-cols-3">
-                {LOCALES.map((loc) => {
-                  const def = defaults[loc][field.key] ?? "";
-                  const overrideVal = values[cellKey(loc, field.key)] ?? "";
-                  return (
-                    <div key={loc} className="space-y-2">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-content-secondary">
-                        {localeNames[loc as Locale]} ({loc})
-                      </p>
-                      <div>
-                        <p className="text-xs text-content-secondary">Website default</p>
-                        <div className="mt-1 rounded-md border border-border bg-surface-subtle px-3 py-2 text-sm text-content-secondary">
-                          {def || (
-                            <span className="italic text-content-secondary/70">No default string in translations</span>
-                          )}
+          {activeGroup.id === "faq" ? (
+            <>
+              {activeGroup.fields
+                .filter((f) => f.key === "faq.title")
+                .map((field) => (
+                  <div
+                    key={field.key}
+                    className="rounded-lg border border-border bg-surface-primary p-4 shadow-sm"
+                  >
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <p className="text-sm font-medium text-content-primary">{field.label}</p>
+                      {LOCALES.some((loc) => (values[cellKey(loc, field.key)] ?? "").trim() !== "") && (
+                        <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium text-amber-900">
+                          Custom text
+                        </span>
+                      )}
+                    </div>
+                    {field.hint && <p className="mt-1 text-xs text-content-secondary">{field.hint}</p>}
+                    <div className="mt-4 grid gap-6 md:grid-cols-3">
+                      {LOCALES.map((loc) => {
+                        const def = defaults[loc][field.key] ?? "";
+                        const overrideVal = values[cellKey(loc, field.key)] ?? "";
+                        return (
+                          <div key={loc} className="space-y-2">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-content-secondary">
+                              {localeNames[loc as Locale]} ({loc})
+                            </p>
+                            <div>
+                              <p className="text-xs text-content-secondary">Website default</p>
+                              <div className="mt-1 rounded-md border border-border bg-surface-subtle px-3 py-2 text-sm text-content-secondary">
+                                {def || (
+                                  <span className="italic text-content-secondary/70">
+                                    No default string in translations
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-xs text-content-secondary" htmlFor={cellKey(loc, field.key)}>
+                                Your text
+                              </label>
+                              <textarea
+                                id={cellKey(loc, field.key)}
+                                name={cellKey(loc, field.key)}
+                                rows={2}
+                                value={overrideVal}
+                                onChange={(e) => setCell(loc, field.key, e.target.value)}
+                                placeholder="Leave empty to use the default above"
+                                className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-sm text-content-primary placeholder:text-content-secondary/60"
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              <FaqItemsAdmin values={values} setCell={setCell} defaults={defaults} />
+            </>
+          ) : (
+            activeGroup.fields.map((field) => (
+              <div
+                key={field.key}
+                className="rounded-lg border border-border bg-surface-primary p-4 shadow-sm"
+              >
+                <div className="flex flex-wrap items-baseline gap-2">
+                  <p className="text-sm font-medium text-content-primary">{field.label}</p>
+                  {LOCALES.some((loc) => (values[cellKey(loc, field.key)] ?? "").trim() !== "") && (
+                    <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium text-amber-900">
+                      Custom text
+                    </span>
+                  )}
+                </div>
+                {field.hint && <p className="mt-1 text-xs text-content-secondary">{field.hint}</p>}
+                <div className="mt-4 grid gap-6 md:grid-cols-3">
+                  {LOCALES.map((loc) => {
+                    const def = defaults[loc][field.key] ?? "";
+                    const overrideVal = values[cellKey(loc, field.key)] ?? "";
+                    return (
+                      <div key={loc} className="space-y-2">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-content-secondary">
+                          {localeNames[loc as Locale]} ({loc})
+                        </p>
+                        <div>
+                          <p className="text-xs text-content-secondary">Website default</p>
+                          <div className="mt-1 rounded-md border border-border bg-surface-subtle px-3 py-2 text-sm text-content-secondary">
+                            {def || (
+                              <span className="italic text-content-secondary/70">No default string in translations</span>
+                            )}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs text-content-secondary" htmlFor={cellKey(loc, field.key)}>
+                            Your text
+                          </label>
+                          <textarea
+                            id={cellKey(loc, field.key)}
+                            name={cellKey(loc, field.key)}
+                            rows={
+                              field.key.includes("description") || field.key.startsWith("faq.a") ? 4 : 2
+                            }
+                            value={overrideVal}
+                            onChange={(e) => setCell(loc, field.key, e.target.value)}
+                            placeholder="Leave empty to use the default above"
+                            className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-sm text-content-primary placeholder:text-content-secondary/60"
+                          />
                         </div>
                       </div>
-                      <div>
-                        <label className="text-xs text-content-secondary" htmlFor={cellKey(loc, field.key)}>
-                          Your text
-                        </label>
-                        <textarea
-                          id={cellKey(loc, field.key)}
-                          name={cellKey(loc, field.key)}
-                          rows={
-                            field.key.includes("description") || field.key.startsWith("faq.a") ? 4 : 2
-                          }
-                          value={overrideVal}
-                          onChange={(e) => setCell(loc, field.key, e.target.value)}
-                          placeholder="Leave empty to use the default above"
-                          className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-sm text-content-primary placeholder:text-content-secondary/60"
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <button

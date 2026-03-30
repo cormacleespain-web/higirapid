@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { useMergedT } from "@/hooks/useMergedT";
 import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
-
-const faqKeys = ["q1", "q2", "q3", "q4"] as const;
-const answerKeys = ["a1", "a2", "a3", "a4"] as const;
+import { parseFaqOrder } from "@/lib/faq-content";
 
 const accordionTransition = {
   height: {
@@ -50,7 +48,20 @@ function ChevronIcon({ open }: { open: boolean }) {
 
 export default function FAQ() {
   const t = useMergedT("faq");
+  const orderedSlots = parseFaqOrder(t("order"));
+  const visibleSlots = orderedSlots.filter((slot) => {
+    const q = t(`q${slot}` as never);
+    const a = t(`a${slot}` as never);
+    return q.trim() !== "" || a.trim() !== "";
+  });
+
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  useEffect(() => {
+    if (openIndex !== null && openIndex >= visibleSlots.length) {
+      setOpenIndex(visibleSlots.length > 0 ? 0 : null);
+    }
+  }, [visibleSlots.length, openIndex]);
 
   return (
     <section
@@ -68,11 +79,13 @@ export default function FAQ() {
           {t("title")}
         </motion.h2>
         <div className="mt-12 space-y-2">
-          {faqKeys.map((_, i) => {
+          {visibleSlots.map((slot, i) => {
             const isOpen = openIndex === i;
+            const qKey = `q${slot}` as never;
+            const aKey = `a${slot}` as never;
             return (
               <motion.div
-                key={i}
+                key={slot}
                 className="rounded-lg border border-border bg-surface-primary overflow-hidden"
                 initial={fadeUp.initial}
                 whileInView={fadeUp.animate}
@@ -84,16 +97,16 @@ export default function FAQ() {
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="w-full px-6 py-4 text-left font-bold text-content-primary hover:bg-surface-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset transition-colors duration-150 flex items-center justify-between gap-2"
                   aria-expanded={isOpen}
-                  aria-controls={`faq-answer-${i}`}
-                  id={`faq-question-${i}`}
+                  aria-controls={`faq-answer-${slot}`}
+                  id={`faq-question-${slot}`}
                 >
-                  <span>{t(faqKeys[i])}</span>
+                  <span>{t(qKey)}</span>
                   <ChevronIcon open={isOpen} />
                 </button>
                 <motion.div
-                  id={`faq-answer-${i}`}
+                  id={`faq-answer-${slot}`}
                   role="region"
-                  aria-labelledby={`faq-question-${i}`}
+                  aria-labelledby={`faq-question-${slot}`}
                   initial={false}
                   animate={{
                     height: isOpen ? "auto" : 0,
@@ -102,9 +115,7 @@ export default function FAQ() {
                   transition={accordionTransition}
                   style={{ overflow: "hidden" }}
                 >
-                  <p className="px-6 pb-4 text-content-secondary">
-                    {t(answerKeys[i])}
-                  </p>
+                  <p className="px-6 pb-4 text-content-secondary">{t(aKey)}</p>
                 </motion.div>
               </motion.div>
             );
