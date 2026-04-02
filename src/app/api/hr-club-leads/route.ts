@@ -23,7 +23,41 @@ function isValidEmail(email: string): boolean {
 
 type NotifyResult = { sent: boolean; resendId?: string };
 
-/** Sends via Resend. Check server logs for recipient, Resend id, and API errors. */
+const DEFAULT_RESEND_TEMPLATE_SERVICE = "higirapid-enquiry-template";
+const DEFAULT_RESEND_TEMPLATE_HR_CLUB = "hr-club-enquiry";
+
+/** Absolute URL for template "Source" links; falls back to path if no public base URL is set. */
+function sourceUrlForTemplate(sourcePath: string): string {
+  const path = String(sourcePath ?? "").trim();
+  if (!path) return "";
+  if (/^https?:\/\//i.test(path)) return path;
+  const base = (process.env.NEXT_PUBLIC_BASE_URL ?? "").replace(/\/$/, "");
+  if (!base) return path.startsWith("/") ? path : `/${path}`;
+  return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+}
+
+/**
+ * Keys match published Resend templates (hr-club-enquiry, higirapid-enquiry-template).
+ * Avoid bare `EMAIL` / `FIRST_NAME` / `LAST_NAME` — those are reserved by Resend.
+ */
+function buildTemplateVariables(payload: Payload, submittedAtIso: string): Record<string, string> {
+  const serviceSlug = String(payload.serviceSlug ?? "").trim();
+  const serviceTitle = String(payload.serviceTitle ?? "").trim();
+  return {
+    SUBMITTER_NAME: String(payload.name ?? ""),
+    SUBMITTER_EMAIL: String(payload.email ?? ""),
+    PHONE: String(payload.phone ?? "").trim(),
+    ENQUIRY_TYPE: String(payload.inquiryType ?? ""),
+    MESSAGE: String(payload.message ?? ""),
+    LOCALE: String(payload.locale ?? ""),
+    SOURCE_URL: sourceUrlForTemplate(String(payload.sourcePath ?? "")),
+    SERVICE_SLUG: serviceSlug,
+    SERVICE_TITLE: serviceTitle,
+    SUBMITTED_AT: submittedAtIso,
+  };
+}
+
+/** Sends via Resend (published templates). Check server logs for recipient, template, Resend id, and API errors. */
 async function notifyLead(recipient: string | null, payload: Payload): Promise<NotifyResult> {
   const to = recipient?.trim();
   if (!to) {
@@ -42,23 +76,16 @@ async function notifyLead(recipient: string | null, payload: Payload): Promise<N
   }
   const serviceSlug = String(payload.serviceSlug ?? "").trim();
   const serviceTitle = String(payload.serviceTitle ?? "").trim();
-  const subject =
-    serviceSlug && serviceTitle
-      ? `Service inquiry: ${serviceTitle} — ${payload.name ?? "Unknown"}`
-      : `New HR-Club lead: ${payload.name ?? "Unknown"}`;
-  const textLines = [
-    `Name: ${payload.name ?? ""}`,
-    `Email: ${payload.email ?? ""}`,
-    `Phone: ${payload.phone ?? ""}`,
-    `Type: ${payload.inquiryType ?? ""}`,
-    `Locale: ${payload.locale ?? ""}`,
-    `Source: ${payload.sourcePath ?? ""}`,
-  ];
-  if (serviceSlug) {
-    textLines.push(`Service slug: ${serviceSlug}`);
-    if (serviceTitle) textLines.push(`Service title: ${serviceTitle}`);
-  }
-  textLines.push("", payload.message ?? "");
+  const isServiceEnquiry = Boolean(serviceSlug && serviceTitle);
+  const templateId = (
+    isServiceEnquiry
+      ? process.env.RESEND_TEMPLATE_SERVICE?.trim() || DEFAULT_RESEND_TEMPLATE_SERVICE
+      : process.env.RESEND_TEMPLATE_HR_CLUB?.trim() || DEFAULT_RESEND_TEMPLATE_HR_CLUB
+  );
+  const subject = isServiceEnquiry
+    ? `Service inquiry: ${serviceTitle} — ${payload.name ?? "Unknown"}`
+    : `New HR-Club lead: ${payload.name ?? "Unknown"}`;
+  const submittedAtIso = new Date().toISOString();
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -71,7 +98,10 @@ async function notifyLead(recipient: string | null, payload: Payload): Promise<N
         to: [to],
         reply_to: payload.email,
         subject,
-        text: textLines.join("\n"),
+        template: {
+          id: templateId,
+          variables: buildTemplateVariables(payload, submittedAtIso),
+        },
       }),
     });
     const json = (await res.json().catch(() => ({}))) as {
@@ -85,7 +115,9 @@ async function notifyLead(recipient: string | null, payload: Payload): Promise<N
     }
     const resendId = typeof json.id === "string" ? json.id : undefined;
     if (resendId) {
-      console.info(`[hr-club-leads] Resend accepted → to=${to} id=${resendId}`);
+      console.info(
+        `[hr-club-leads] Resend accepted → to=${to} template=${templateId} id=${resendId}`
+      );
     } else {
       console.warn("[hr-club-leads] Resend returned OK but no id in body (unexpected):", JSON.stringify(json));
     }
