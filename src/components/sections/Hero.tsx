@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import { useLocale } from "next-intl";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
-import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp } from "@/lib/motion";
 import { useMergedT } from "@/hooks/useMergedT";
 import { getContactHref, getQuoteHref, WHATSAPP_NUMBER } from "@/lib/whatsapp";
@@ -42,7 +41,7 @@ export default function Hero({ whatsappE164, heroImageSrc }: HeroProps) {
       <div className="relative z-10 flex flex-col items-center justify-center px-4 py-20 sm:px-6 md:py-24 lg:py-28">
         <div className="mx-auto max-w-3xl text-center">
           <motion.h1
-            className={`text-4xl font-bold leading-tight text-content-inverse md:text-5xl ${fontNunitoHeading.className}`}
+            className="text-4xl font-bold font-heading leading-tight text-content-inverse md:text-5xl"
             initial={fadeUp.initial}
             animate={fadeUp.animate}
             transition={{ ...fadeUp.transition, delay: 0.05 }}

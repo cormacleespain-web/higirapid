@@ -22,6 +22,11 @@ export const serviceOfferings = pgTable("service_offerings", {
   sortOrder: integer("sort_order").notNull().default(0),
   published: boolean("published").notNull().default(true),
   iconKey: text("icon_key").notNull(),
+  imageUrl: text("image_url"),
+  imageObjectPosition: text("image_object_position"),
+  priceFrom: integer("price_from"),
+  /** When set and greater than `priceFrom`, UI shows a sale (was / now). */
+  priceWas: integer("price_was"),
 });
 
 export const serviceOfferingI18n = pgTable(
@@ -33,6 +38,7 @@ export const serviceOfferingI18n = pgTable(
     locale: text("locale").notNull(),
     title: text("title").notNull(),
     description: text("description").notNull(),
+    imageAlt: text("image_alt"),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.serviceId, t.locale] }),
@@ -139,6 +145,7 @@ export const hrClubLeads = pgTable("hr_club_leads", {
   email: text("email").notNull(),
   phone: text("phone"),
   inquiryType: text("inquiry_type").notNull(),
+  serviceSlug: text("service_slug"),
   message: text("message").notNull(),
   consent: boolean("consent").notNull().default(false),
   status: text("status").notNull().default("new"),

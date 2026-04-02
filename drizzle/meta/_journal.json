@@ -15,6 +15,20 @@
       "when": 1774700000000,
       "tag": "0001_blog-categories-and-images",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775000000000,
+      "tag": "0002_services-media-lead-slug",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1775100000000,
+      "tag": "0003_service-price-was",
+      "breakpoints": true
     }
   ]
 }

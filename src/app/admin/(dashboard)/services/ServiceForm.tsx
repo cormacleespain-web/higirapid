@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { AdminImageField } from "@/components/admin/AdminImageField";
 import { ServiceIconChoice } from "@/components/admin/ServiceIconChoice";
 import { saveServiceAction, translateServiceCopyAction } from "../../actions";
 import type { InferSelectModel } from "drizzle-orm";
@@ -34,6 +35,12 @@ export default function ServiceForm({
     es: byLocale("es")?.description ?? "",
     ca: byLocale("ca")?.description ?? "",
   });
+  const [imageUrl, setImageUrl] = useState(service?.imageUrl ?? "");
+  const [imageAlts, setImageAlts] = useState<Record<(typeof LOCALES)[number], string>>({
+    en: byLocale("en")?.imageAlt ?? "",
+    es: byLocale("es")?.imageAlt ?? "",
+    ca: byLocale("ca")?.imageAlt ?? "",
+  });
   const [sourceLocale, setSourceLocale] = useState<Locale>("en");
   const [message, setMessage] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -47,10 +54,16 @@ export default function ServiceForm({
     for (const loc of LOCALES) {
       fd.set(`title_${loc}`, titles[loc]);
       fd.set(`description_${loc}`, descriptions[loc]);
+      fd.set(`image_alt_${loc}`, imageAlts[loc]);
     }
+    fd.set("image_url", imageUrl);
     setPending(true);
     try {
-      await saveServiceAction(fd);
+      const res = await saveServiceAction(fd);
+      if (!res.ok) {
+        setMessage(res.error ?? "Could not save.");
+        return;
+      }
       setMessage("Saved. The public site will update shortly.");
     } finally {
       setPending(false);
@@ -107,7 +120,14 @@ export default function ServiceForm({
       {message && (
         <p
           className={`rounded-md px-4 py-2 text-sm ${
-            message.includes("failed") || message.includes("Unauthorized") || message.includes("not configured")
+            message.includes("failed") ||
+            message.includes("Unauthorized") ||
+            message.includes("not configured") ||
+            message.includes("Invalid") ||
+            message.includes("required") ||
+            message.includes("too long") ||
+            message.includes("Could not save") ||
+            message.includes("Add at least one")
               ? "bg-red-50 text-error"
               : "bg-emerald-50 text-success"
           }`}
@@ -120,9 +140,72 @@ export default function ServiceForm({
       <section className="space-y-4 rounded-lg border border-border bg-surface-primary p-4 shadow-sm">
         <h2 className="text-base font-semibold text-content-primary">What customers see</h2>
         <p className="text-sm text-content-secondary">
-          These titles and descriptions appear on the services section of the homepage. Fill at least one language;
-          empty fields fall back to English if present.
+          Titles and full descriptions appear on the Our Services page. The homepage carousel shows the same
+          description clamped to three lines, with a “Learn more” link. Fill at least one language; empty fields fall
+          back to English if present.
         </p>
+
+        <div className="rounded-lg border border-border bg-surface-subtle/50 p-4">
+          <h3 className="text-sm font-semibold text-content-primary">Service image and pricing</h3>
+          <p className="mt-1 text-xs text-content-secondary">
+            Image appears on carousel cards and the services page. If you add an image, you must add a short description
+            for screen readers in each language you publish.
+          </p>
+          <div className="mt-3">
+            <AdminImageField value={imageUrl} onChange={setImageUrl} variant="services" />
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="image_object_position" className="block text-xs font-medium text-content-secondary">
+                Image crop focus
+              </label>
+              <select
+                id="image_object_position"
+                name="image_object_position"
+                defaultValue={service?.imageObjectPosition ?? ""}
+                className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-sm text-content-primary"
+              >
+                <option value="">Default (center)</option>
+                <option value="bottom">Bottom (e.g. sofas)</option>
+                <option value="center">Center</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="price_from" className="block text-xs font-medium text-content-secondary">
+                Current / sale price (optional, whole euros)
+              </label>
+              <input
+                id="price_from"
+                name="price_from"
+                type="number"
+                min={0}
+                step={1}
+                placeholder="e.g. 55"
+                defaultValue={service?.priceFrom ?? ""}
+                className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-sm text-content-primary"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="price_was" className="block text-xs font-medium text-content-secondary">
+                Was price (optional — sale)
+              </label>
+              <input
+                id="price_was"
+                name="price_was"
+                type="number"
+                min={0}
+                step={1}
+                placeholder="e.g. 70 (must be higher than current price)"
+                defaultValue={service?.priceWas ?? ""}
+                className="focus-ring mt-1 w-full max-w-xs rounded-md border border-border bg-surface-primary px-3 py-2 text-sm text-content-primary"
+              />
+              <p className="mt-1 text-xs text-content-secondary">
+                If set above the current price, the site shows a Sale label with the old price struck through and the
+                current price highlighted.
+              </p>
+            </div>
+          </div>
+        </div>
 
         <div className="flex items-center gap-2">
           <input
@@ -202,6 +285,20 @@ export default function ServiceForm({
                   onChange={(e) => setDescriptions((p) => ({ ...p, [loc]: e.target.value }))}
                   className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-content-primary"
                 />
+              </div>
+              <div>
+                <label className="block text-xs text-content-secondary" htmlFor={`image_alt_${loc}`}>
+                  Image description for screen readers{imageUrl.trim() ? " (required if image is set)" : ""}
+                </label>
+                <input
+                  id={`image_alt_${loc}`}
+                  value={imageAlts[loc]}
+                  onChange={(e) => setImageAlts((p) => ({ ...p, [loc]: e.target.value }))}
+                  maxLength={200}
+                  className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-content-primary"
+                  placeholder="Describe the photo for assistive technology"
+                />
+                <p className="mt-1 text-xs text-content-secondary">Max 200 characters.</p>
               </div>
             </div>
           </div>

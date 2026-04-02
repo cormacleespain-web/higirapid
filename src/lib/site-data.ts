@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { getTranslations } from "next-intl/server";
 import { asc, eq } from "drizzle-orm";
 import {
   blogCategories,
@@ -14,6 +15,14 @@ import {
 } from "@/db/schema";
 import { getDb, isDatabaseConfigured } from "@/db/index";
 import { ensureStarterBlogPosts } from "@/lib/blog-starter-sync";
+import {
+  SERVICE_DISPLAY_KEYS,
+  SERVICE_FALLBACK_IMAGE,
+  SERVICE_FALLBACK_OBJECT_POSITION,
+  getServicePlaceholderImage,
+  getServicePlaceholderObjectPosition,
+  serviceKeyToSlug,
+} from "@/lib/service-public-config";
 
 /** Matches `GalleryItemCategory` in components/sections/Gallery.tsx */
 type GalleryItemCategory = "car" | "upholstery" | "carpet" | "rug" | "business";
@@ -179,6 +188,12 @@ export type ServiceCardDTO = {
   iconKey: string;
   title: string;
   description: string;
+  imageUrl: string | null;
+  imageAlt: string | null;
+  imageObjectPosition: "bottom" | "center" | null;
+  priceFrom: number | null;
+  /** Original “was” price when running a sale (`priceWas` &gt; `priceFrom`). */
+  priceWas: number | null;
 };
 
 export const getServiceCards = cache(async function getServiceCards(
@@ -204,18 +219,52 @@ export const getServiceCards = cache(async function getServiceCards(
 
       const row = i18n.find((r) => r.locale === locale) ?? i18n.find((r) => r.locale === "en");
       if (!row) continue;
+      const dbImage = s.imageUrl?.trim() || null;
+      const resolvedImageUrl = dbImage || getServicePlaceholderImage(s.slug, s.iconKey);
+      const pos = s.imageObjectPosition;
+      const imageObjectPosition = dbImage
+        ? pos === "bottom" || pos === "center"
+          ? pos
+          : null
+        : getServicePlaceholderObjectPosition(s.slug, s.iconKey);
       out.push({
         id: s.id,
         slug: s.slug,
         iconKey: s.iconKey,
         title: row.title,
         description: row.description,
+        imageUrl: resolvedImageUrl,
+        imageAlt: row.imageAlt ?? null,
+        imageObjectPosition,
+        priceFrom: s.priceFrom ?? null,
+        priceWas: s.priceWas ?? null,
       });
     }
     return out.length ? out : null;
   } catch {
     return null;
   }
+});
+
+/** Published services for carousel and `/services` page; falls back to locale JSON when DB is empty. */
+export const getPublishedServicesList = cache(async function getPublishedServicesList(
+  locale: string
+): Promise<ServiceCardDTO[]> {
+  const fromDb = await getServiceCards(locale);
+  if (fromDb?.length) return fromDb;
+  const t = await getTranslations({ locale, namespace: "services" });
+  return SERVICE_DISPLAY_KEYS.map((key) => ({
+    id: `fallback-${key}`,
+    slug: serviceKeyToSlug(key),
+    iconKey: serviceKeyToSlug(key),
+    title: t(`${key}.title`),
+    description: t(`${key}.description`),
+    imageUrl: SERVICE_FALLBACK_IMAGE[key],
+    imageAlt: t(`${key}.title`),
+    imageObjectPosition: SERVICE_FALLBACK_OBJECT_POSITION[key] ?? null,
+    priceFrom: null,
+    priceWas: null,
+  }));
 });
 
 export type GalleryItemDTO = {

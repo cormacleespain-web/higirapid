@@ -4,7 +4,6 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import { useMergedT } from "@/hooks/useMergedT";
 import { Link } from "@/i18n/navigation";
-import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 export default function HRClubTeaser() {
@@ -39,7 +38,7 @@ export default function HRClubTeaser() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
             </div>
             <div className="p-8 md:p-10 lg:p-12">
-              <h2 className={`text-3xl md:text-4xl font-bold text-content-primary ${fontNunitoHeading.className}`}>
+              <h2 className="text-3xl font-bold font-heading text-content-primary md:text-4xl">
                 {t("title")}
               </h2>
               <p className="mt-3 text-content-secondary max-w-3xl">{t("subtitle")}</p>

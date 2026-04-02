@@ -33,7 +33,7 @@ export default async function AdminLeadsPage({ searchParams }: Props) {
     <div>
       <h1 className="font-heading text-2xl font-bold text-content-primary">Leads</h1>
       <p className="mt-2 text-sm text-content-secondary">
-        HR-Club form submissions appear here. Update status and notes as you follow up.
+        HR-Club and service booking submissions appear here. Update status and notes as you follow up.
       </p>
       <nav className="mt-4 flex flex-wrap gap-2" aria-label="Lead status tabs">
         {tabs.map((key) => {
@@ -59,7 +59,7 @@ export default async function AdminLeadsPage({ searchParams }: Props) {
 
       {dbOk && filteredLeads.length === 0 ? (
         <p className="mt-6 rounded-md border border-border bg-surface-primary p-4 text-sm text-content-secondary">
-          No leads in this tab yet. New submissions from the HR-Club page will appear here.
+          No leads in this tab yet. New submissions from the HR-Club page or Our Services booking form will appear here.
         </p>
       ) : null}
 
@@ -78,6 +78,15 @@ export default async function AdminLeadsPage({ searchParams }: Props) {
               </span>
             </div>
 
+            {lead.serviceSlug ? (
+              <p className="mt-2 text-xs font-medium text-primary">
+                Service: <span className="font-mono">{lead.serviceSlug}</span>
+              </p>
+            ) : null}
+            <p className="mt-2 text-sm text-content-secondary">
+              <span className="text-xs uppercase text-content-secondary/80">Source</span> · {lead.sourcePath} · Type:{" "}
+              {lead.inquiryType}
+            </p>
             <p className="mt-3 text-sm text-content-secondary">{lead.message}</p>
 
             <LeadStatusForm leadId={lead.id} status={lead.status} internalNotes={lead.internalNotes} />

@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import { useMergedT } from "@/hooks/useMergedT";
-import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const LocationIcon = () => (
@@ -43,7 +42,7 @@ export default function ServiceAreas() {
       </div>
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
         <motion.h2
-          className={`text-3xl md:text-4xl font-bold text-content-primary text-center ${fontNunitoHeading.className}`}
+          className="text-center text-3xl font-bold font-heading text-content-primary md:text-4xl"
           initial={fadeUp.initial}
           whileInView={fadeUp.animate}
           viewport={viewportOnce}

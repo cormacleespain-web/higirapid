@@ -1,6 +1,6 @@
 {
   "nav": {
-    "services": "Servicios",
+    "services": "Nuestros servicios",
     "process": "Cómo trabajamos",
     "hrClub": "HR-Club",
     "blog": "Blog",
@@ -19,6 +19,14 @@
   "services": {
     "title": "Nuestros servicios",
     "subtitle": "Llevamos la limpieza profesional a tu casa o negocio.",
+    "learnMore": "Saber más",
+    "viewAllTitle": "Ver todos los servicios",
+    "viewAllHint": "Lista completa, precios y reservas",
+    "viewAllCta": "Ver lista completa",
+    "carouselPrev": "Servicios anteriores",
+    "carouselNext": "Siguientes servicios",
+    "sale": "Oferta",
+    "wasPrice": "Antes {price} €",
     "upholstery": {
       "title": "Limpieza de tapicerías",
       "description": "Sofás, sillones y muebles tapizados. Eliminamos manchas, olores y alérgenos con métodos seguros y eficaces."
@@ -50,7 +58,9 @@
     "commercialCarpet": {
       "title": "Limpieza de moqueta comercial",
       "description": "Limpieza profesional de moquetas en oficinas y comercios con productos ecológicos."
-    }
+    },
+    "bookNow": "Reservar",
+    "fromPrice": "Desde {price} €"
   },
   "process": {
     "title": "¿Cómo funciona nuestro servicio?",
@@ -181,6 +191,7 @@
     "item4": "Mejor higiene continua y menos gastos imprevistos"
   },
   "hrClubForm": {
+    "formHeading": "Contacto",
     "name": "Nombre",
     "email": "Correo electrónico",
     "phone": "Teléfono (opcional)",
@@ -193,7 +204,22 @@
     "submit": "Enviar solicitud",
     "sending": "Enviando…",
     "success": "Gracias. Hemos recibido tu solicitud y te contactaremos pronto.",
+    "successNoEmail": "Tu solicitud se ha guardado, pero el envío de correo no está configurado en este servidor. Aun así la veremos en el panel de administración.",
     "error": "Algo ha fallado. Inténtalo de nuevo."
+  },
+  "servicesPage": {
+    "metaTitle": "Nuestros servicios",
+    "metaDescription": "Descubre los servicios de limpieza HigiRapid: métodos orientados a la calidad, equipo experimentado y precios \"desde\". Reserva o contáctanos por WhatsApp.",
+    "title": "Nuestros servicios",
+    "subtitle": "Limpieza profesional de tapicerías, alfombras e interiores para hogares, vehículos y negocios en El Masnou y Barcelona. Métodos respetuosos con el medio ambiente, precios claros y plazos fiables.",
+    "fromPrice": "Desde {price} €",
+    "bookNow": "Reservar",
+    "contact": "Contactar",
+    "backHome": "Volver al inicio",
+    "contactMailSubject": "Consulta sobre servicios HigiRapid",
+    "bookingDialogTitle": "Reservar: {service}",
+    "closeBooking": "Cerrar formulario",
+    "bookingConsent": "Acepto ser contactado/a sobre esta solicitud de servicio."
   },
   "blog": {
     "title": "Blog y artículos",

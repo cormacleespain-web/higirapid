@@ -4,7 +4,6 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import { useMergedT } from "@/hooks/useMergedT";
 import { ServiceIconGlyph } from "@/components/ui/ServiceIconGlyph";
-import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const bulletKeys = ["point1", "point2", "point3", "point4"] as const;
@@ -32,7 +31,7 @@ export default function WhyChooseUs() {
                 height={128}
                 className="block h-auto w-32"
               />
-              <h2 className={`mt-5 text-3xl md:text-4xl font-bold text-white ${fontNunitoHeading.className}`}>
+              <h2 className="mt-5 text-3xl font-bold font-heading text-white md:text-4xl">
                 Why Choose Us?
               </h2>
               <p className="mt-3 text-white/90">{t("subtitle")}</p>
