@@ -8,6 +8,7 @@ const BUILT_IN_HERO = "/images/hero.png";
 const hints = {
   hero: "Wide image works best (about 16:9). Max 5 MB. JPG, PNG, or WebP.",
   gallery: "Landscape or square works well for the gallery. Max 5 MB.",
+  services: "4:3 or 16:9 works well for service cards (image on top, text below). Max 5 MB.",
 } as const;
 
 type Variant = keyof typeof hints;

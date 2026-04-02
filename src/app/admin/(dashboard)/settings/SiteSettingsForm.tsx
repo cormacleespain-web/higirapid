@@ -84,7 +84,11 @@ export default function SiteSettingsForm({
           defaultValue={initialHrClubRecipientEmail}
           className="focus-ring mt-1 w-full rounded-md border border-border bg-surface-primary px-3 py-2 text-content-primary shadow-sm"
         />
-        <p className="mt-1 text-xs text-content-secondary">New HR-Club leads are notified at this address.</p>
+        <p className="mt-1 text-xs text-content-secondary">
+          New HR-Club and service booking leads are emailed here. Leave blank to use{" "}
+          <code className="rounded bg-surface-subtle px-1">HR_CLUB_RECIPIENT_EMAIL</code> or{" "}
+          <code className="rounded bg-surface-subtle px-1">CONTACT_EMAIL</code> from the server (e.g. Vercel env).
+        </p>
       </div>
 
       <div>

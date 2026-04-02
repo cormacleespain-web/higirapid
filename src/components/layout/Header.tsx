@@ -10,7 +10,7 @@ import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 
 const navItems = [
-  { key: "services", href: "#services" },
+  { key: "services", href: "/services" },
   { key: "process", href: "#process" },
   { key: "hrClub", href: "/hr-club" },
   { key: "blog", href: "/blog" },

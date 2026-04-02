@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import { useMergedT } from "@/hooks/useMergedT";
-import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const testimonialKeys = ["1", "2", "3"] as const;
@@ -14,7 +13,7 @@ export default function Testimonials() {
     <section id="testimonials" className="py-20 md:py-24 bg-testimonials scroll-mt-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.h2
-          className={`text-3xl md:text-4xl font-bold text-content-inverse text-center ${fontNunitoHeading.className}`}
+          className="text-center text-3xl font-bold font-heading text-content-inverse md:text-4xl"
           initial={fadeUp.initial}
           whileInView={fadeUp.animate}
           viewport={viewportOnce}

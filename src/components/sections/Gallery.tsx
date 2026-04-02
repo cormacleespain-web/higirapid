@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useMergedT } from "@/hooks/useMergedT";
 import type { GalleryItemDTO } from "@/lib/site-data";
-import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 /** Display category (tab). carpetsAndRugs combines carpet + rug items. */
@@ -140,7 +139,7 @@ export default function Gallery({ initialItems }: GalleryProps) {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.h2
-          className={`text-3xl md:text-4xl font-bold text-content-primary text-center ${fontNunitoHeading.className}`}
+          className="text-center text-3xl font-bold text-content-primary font-heading md:text-4xl"
           initial={fadeUp.initial}
           whileInView={fadeUp.animate}
           viewport={viewportOnce}
@@ -215,43 +214,43 @@ export default function Gallery({ initialItems }: GalleryProps) {
           transition={{ ...fadeUp.transition, delay: 0.1 }}
         >
           <AnimatePresence mode="popLayout">
-            {filteredItems.map((item, i) => (
-              <motion.article
-                key={item.id}
-                layout
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25, delay: i * 0.04 }}
-                className="rounded-lg overflow-hidden border border-border shadow-sm"
-              >
-                <div className="relative aspect-video bg-surface-subtle overflow-hidden">
-                  <motion.div
-                    className="absolute inset-0"
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <Image
-                      src={item.imageSrc}
-                      alt={item.imageAlt}
-                      fill
-                      className={`object-cover ${item.objectPosition === "bottom" ? "object-bottom" : ""}`}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </motion.div>
-                  <div className="absolute inset-x-3 bottom-3 rounded-xl bg-surface-primary px-4 py-3 shadow-sm flex flex-col gap-0.5">
-                    {item.caption && (
-                      <p className="text-sm font-bold text-content-primary">
-                        {item.caption}
-                      </p>
-                    )}
-                    <p className="text-sm text-primary font-medium">
+            {filteredItems.map((item, i) => {
+              const title = item.caption?.trim() || item.imageAlt;
+              return (
+                <motion.article
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25, delay: i * 0.04 }}
+                  className="flex h-full min-h-[280px] w-full min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-surface-primary shadow-sm transition-shadow duration-150 hover:shadow-md"
+                >
+                  <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-surface-subtle">
+                    <motion.div
+                      className="absolute inset-0"
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <Image
+                        src={item.imageSrc}
+                        alt={item.imageAlt}
+                        fill
+                        className={`object-cover ${item.objectPosition === "bottom" ? "object-bottom" : "object-center"}`}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        unoptimized={item.imageSrc.startsWith("http")}
+                      />
+                    </motion.div>
+                  </div>
+                  <div className="flex min-h-0 min-w-0 flex-1 flex-col p-4 sm:p-5">
+                    <h3 className="shrink-0 text-lg font-bold text-content-primary">{title}</h3>
+                    <p className="mt-2 text-lg font-semibold text-primary">
                       {t("fromPrice", { price: item.priceFrom })}
                     </p>
                   </div>
-                </div>
-              </motion.article>
-            ))}
+                </motion.article>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
       </div>

@@ -1,6 +1,6 @@
 {
   "nav": {
-    "services": "Serveis",
+    "services": "Els nostres serveis",
     "process": "Com treballem",
     "hrClub": "HR-Club",
     "blog": "Blog",
@@ -19,6 +19,14 @@
   "services": {
     "title": "Els nostres serveis",
     "subtitle": "Portem la neteja professional a casa o al negoci.",
+    "learnMore": "Més informació",
+    "viewAllTitle": "Veure tots els serveis",
+    "viewAllHint": "Llista completa, preus i reserves",
+    "viewAllCta": "Veure llista completa",
+    "carouselPrev": "Serveis anteriors",
+    "carouselNext": "Següents serveis",
+    "sale": "Oferta",
+    "wasPrice": "Abans {price} €",
     "upholstery": {
       "title": "Neteja de tapissos",
       "description": "Sofàs, butaques i mobles tapissats. Eliminem taques, olors i al·lèrgens amb mètodes segurs i eficaços."
@@ -50,7 +58,9 @@
     "commercialCarpet": {
       "title": "Neteja de moqueta comercial",
       "description": "Neteja professional de moquetes en oficines i comerços amb productes ecològics."
-    }
+    },
+    "bookNow": "Reservar",
+    "fromPrice": "Des de {price} €"
   },
   "process": {
     "title": "Com funciona el nostre servei?",
@@ -181,6 +191,7 @@
     "item4": "Millor higiene contínua i menys despeses imprevistes"
   },
   "hrClubForm": {
+    "formHeading": "Contacte",
     "name": "Nom",
     "email": "Correu electrònic",
     "phone": "Telèfon (opcional)",
@@ -193,7 +204,22 @@
     "submit": "Enviar sol·licitud",
     "sending": "Enviant…",
     "success": "Gràcies. Hem rebut la teva sol·licitud i et contactarem aviat.",
+    "successNoEmail": "La teva sol·licitud s'ha desat, però l'enviament de correu no està configurat en aquest servidor. Tot i així la veurem al panell d'administració.",
     "error": "Hi ha hagut un error. Torna-ho a provar."
+  },
+  "servicesPage": {
+    "metaTitle": "Els nostres serveis",
+    "metaDescription": "Descobreix els serveis de neteja HigiRapid: mètodes orientats a la qualitat, equip experimentat i preus \"des de\". Reserva o contacta'ns per WhatsApp.",
+    "title": "Els nostres serveis",
+    "subtitle": "Neteja professional de tapissos, catifes i interiors per a cases, vehicles i negocis a El Masnou i Barcelona. Mètodes respectuosos amb el medi ambient, preus clars i cites fiables.",
+    "fromPrice": "Des de {price} €",
+    "bookNow": "Reservar",
+    "contact": "Contactar",
+    "backHome": "Tornar a l'inici",
+    "contactMailSubject": "Consulta sobre serveis HigiRapid",
+    "bookingDialogTitle": "Reservar: {service}",
+    "closeBooking": "Tancar formulari",
+    "bookingConsent": "Accepto ser contactat/da sobre aquesta sol·licitud de servei."
   },
   "blog": {
     "title": "Blog i articles",

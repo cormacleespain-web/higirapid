@@ -25,6 +25,47 @@ config();
 
 const serviceSlugs = ["upholstery", "carpet", "ozone", "facade", "detailing", "commercial-carpet"] as const;
 
+/** Maps DB slug to key under `services` in locale JSON files. */
+function serviceI18nKey(slug: (typeof serviceSlugs)[number]): string {
+  return slug === "commercial-carpet" ? "commercialCarpet" : slug;
+}
+
+const SERVICE_MEDIA: Record<
+  (typeof serviceSlugs)[number],
+  { imageUrl: string; imageObjectPosition: string | null; priceFrom: number }
+> = {
+  upholstery: {
+    imageUrl: "/images/sofa-after-cleaning.png",
+    imageObjectPosition: "bottom",
+    priceFrom: 55,
+  },
+  carpet: {
+    imageUrl: "/images/carpet-after-cleaning.png",
+    imageObjectPosition: null,
+    priceFrom: 40,
+  },
+  ozone: {
+    imageUrl: "/images/armchair-after-cleaning.png",
+    imageObjectPosition: "bottom",
+    priceFrom: 60,
+  },
+  facade: {
+    imageUrl: "/images/office-upholstery-cleaning.png",
+    imageObjectPosition: null,
+    priceFrom: 90,
+  },
+  detailing: {
+    imageUrl: "/images/car-seats-after-cleaning.png",
+    imageObjectPosition: null,
+    priceFrom: 45,
+  },
+  "commercial-carpet": {
+    imageUrl: "/images/commercial-space-after-cleaning.png",
+    imageObjectPosition: null,
+    priceFrom: 150,
+  },
+};
+
 const GALLERY_SEED = [
   {
     category: "car" as const,
@@ -154,6 +195,8 @@ async function main() {
 
     let order = 0;
     for (const slug of serviceSlugs) {
+      const msgKey = serviceI18nKey(slug);
+      const media = SERVICE_MEDIA[slug];
       const [svc] = await db
         .insert(serviceOfferings)
         .values({
@@ -161,19 +204,23 @@ async function main() {
           sortOrder: order++,
           published: true,
           iconKey: slug,
+          imageUrl: media.imageUrl,
+          imageObjectPosition: media.imageObjectPosition,
+          priceFrom: media.priceFrom,
         })
         .returning({ id: serviceOfferings.id });
       if (!svc) continue;
 
-      const sEn = en.services?.[slug];
-      const sEs = es.services?.[slug];
-      const sCa = ca.services?.[slug];
+      const sEn = en.services?.[msgKey];
+      const sEs = es.services?.[msgKey];
+      const sCa = ca.services?.[msgKey];
       if (sEn) {
         await db.insert(serviceOfferingI18n).values({
           serviceId: svc.id,
           locale: "en",
           title: sEn.title,
           description: sEn.description,
+          imageAlt: `${sEn.title} — HigiRapid`,
         });
       }
       if (sEs) {
@@ -182,6 +229,7 @@ async function main() {
           locale: "es",
           title: sEs.title,
           description: sEs.description,
+          imageAlt: `${sEs.title} — HigiRapid`,
         });
       }
       if (sCa) {
@@ -190,6 +238,7 @@ async function main() {
           locale: "ca",
           title: sCa.title,
           description: sCa.description,
+          imageAlt: `${sCa.title} — HigiRapid`,
         });
       }
     }

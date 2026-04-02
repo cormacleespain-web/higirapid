@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Link as I18nLink } from "@/i18n/navigation";
 import { motion } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -12,7 +13,7 @@ import { useMergedT } from "@/hooks/useMergedT";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const navItems = [
-  { key: "services", href: "#services" },
+  { key: "services", href: "/services" },
   { key: "process", href: "#process" },
   { key: "hrClub", href: "/hr-club" },
   { key: "blog", href: "/blog" },
@@ -104,12 +105,21 @@ export default function Footer({ whatsappE164 }: { whatsappE164: string }) {
               <ul className="flex flex-wrap gap-x-6 gap-y-2">
                 {navItems.map((item) => (
                   <li key={item.key}>
-                    <a
-                      href={item.href}
-                      className="text-content-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
-                    >
-                      {t(item.key)}
-                    </a>
+                    {item.href.startsWith("/") ? (
+                      <I18nLink
+                        href={item.href}
+                        className="text-content-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+                      >
+                        {t(item.key)}
+                      </I18nLink>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="text-content-primary hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+                      >
+                        {t(item.key)}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

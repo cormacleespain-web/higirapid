@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import { useMergedT } from "@/hooks/useMergedT";
-import { fontNunitoHeading } from "@/lib/fonts";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const steps = ["step1", "step2", "step3"] as const;
@@ -20,7 +19,7 @@ export default function Process() {
     <section id="process" className="py-20 md:py-24 bg-surface-subtle scroll-mt-16">
       <div className="container-default">
         <motion.h2
-          className={`text-3xl md:text-4xl font-bold text-content-primary text-center ${fontNunitoHeading.className}`}
+          className="text-center text-3xl font-bold font-heading text-content-primary md:text-4xl"
           initial={fadeUp.initial}
           whileInView={fadeUp.animate}
           viewport={viewportOnce}
@@ -59,7 +58,7 @@ export default function Process() {
               </div>
               <h3
                 id={`process-step-${i + 1}-title`}
-                className={`text-xl font-bold text-content-primary ${fontNunitoHeading.className}`}
+                className="text-xl font-bold font-heading text-content-primary"
               >
                 {i + 1}. {t(`${step}.title`)}
               </h3>

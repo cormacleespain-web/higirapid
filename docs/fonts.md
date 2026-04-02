@@ -39,6 +39,7 @@ Note: The body font uses the variable name `--font-garet` for historical reasons
 
 4. **Usage**
    - Use the new Tailwind class (e.g. `font-your-name`) where needed. Do not add a `<link>` or `@import` to Google Fonts; that would duplicate loading and break the single source of truth.
+   - In **`"use client"`** components, **never** import `src/lib/fonts.ts` (it uses `next/font`, which must run only from Server Components / layouts). Use Tailwind classes such as `font-heading` so headings pick up the variables already set on the root layout.
 
 ## Summary
 

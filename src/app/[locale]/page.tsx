@@ -8,7 +8,7 @@ import ServiceAreas from "@/components/sections/ServiceAreas";
 import FAQ from "@/components/sections/FAQ";
 import HRClubTeaser from "@/components/sections/HRClubTeaser";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import { getSiteSettings, getServiceCards, getGalleryItems } from "@/lib/site-data";
+import { getSiteSettings, getPublishedServicesList, getGalleryItems } from "@/lib/site-data";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -17,13 +17,13 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
 
   const settings = await getSiteSettings();
-  const dbServices = await getServiceCards(locale);
+  const servicesList = await getPublishedServicesList(locale);
   const dbGallery = await getGalleryItems(locale);
 
   return (
     <>
       <Hero whatsappE164={settings.whatsappE164} heroImageSrc={settings.heroImageUrl} />
-      <Services dbItems={dbServices} />
+      <Services items={servicesList} />
       <Process />
       <HRClubTeaser />
       <Gallery initialItems={dbGallery} />

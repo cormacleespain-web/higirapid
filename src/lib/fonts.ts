@@ -5,9 +5,12 @@
  *   This self-hosts at build time and avoids layout shift; use this for any new Google font.
  * - Local fonts: next/font/local for files in public/fonts.
  *
- * Usage: Import the font objects here and apply their .variable in the root layout
- * (e.g. src/app/[locale]/layout.tsx). Tailwind references the CSS variables in
- * tailwind.config.ts (fontFamily). See docs/fonts.md for how to add a new font.
+ * **Import only from Server Components** (root layouts). `next/font` must not be imported
+ * from `"use client"` modules — it breaks webpack/RSC chunking (`vendor-chunks/next.js`).
+ * In client components use Tailwind `font-sans` / `font-heading` (variables are on `<html>`).
+ *
+ * Usage: Apply `.variable` classes in `src/app/[locale]/layout.tsx` (and admin layout).
+ * See tailwind.config.ts `fontFamily` and docs/fonts.md.
  */
 import { DM_Sans, Nunito_Sans } from "next/font/google";
 import localFont from "next/font/local";

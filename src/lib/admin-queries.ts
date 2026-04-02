@@ -112,22 +112,38 @@ export async function getAllHrClubLeadsAdmin() {
   }
 }
 
-export async function getAllServicesAdmin() {
-  if (!isDatabaseConfigured()) return [];
-  const db = getDb();
-  const services = await db
-    .select()
-    .from(serviceOfferings)
-    .orderBy(asc(serviceOfferings.sortOrder), asc(serviceOfferings.slug));
-  const out: { service: (typeof services)[0]; i18n: (typeof serviceOfferingI18n.$inferSelect)[] }[] = [];
-  for (const s of services) {
-    const i18n = await db
+export type ServiceAdminRow = {
+  service: typeof serviceOfferings.$inferSelect;
+  i18n: (typeof serviceOfferingI18n.$inferSelect)[];
+};
+
+export async function getAllServicesAdmin(): Promise<
+  { rows: ServiceAdminRow[]; error: null } | { rows: []; error: string }
+> {
+  if (!isDatabaseConfigured()) return { rows: [], error: null };
+  try {
+    const db = getDb();
+    const services = await db
       .select()
-      .from(serviceOfferingI18n)
-      .where(eq(serviceOfferingI18n.serviceId, s.id));
-    out.push({ service: s, i18n });
+      .from(serviceOfferings)
+      .orderBy(asc(serviceOfferings.sortOrder), asc(serviceOfferings.slug));
+    const out: ServiceAdminRow[] = [];
+    for (const s of services) {
+      const i18n = await db
+        .select()
+        .from(serviceOfferingI18n)
+        .where(eq(serviceOfferingI18n.serviceId, s.id));
+      out.push({ service: s, i18n });
+    }
+    return { rows: out, error: null };
+  } catch (e) {
+    console.error("getAllServicesAdmin failed (run npm run db:migrate if schema is out of date):", e);
+    return {
+      rows: [],
+      error:
+        "Could not load services from the database. Run npm run db:migrate, confirm DATABASE_URL, then refresh.",
+    };
   }
-  return out;
 }
 
 export async function getServiceByIdAdmin(id: string) {

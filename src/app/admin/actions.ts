@@ -357,9 +357,11 @@ const iconKeySchema = z
   });
 const galleryCats = z.enum(["car", "upholstery", "carpet", "rug", "business"]);
 
-export async function saveServiceAction(formData: FormData): Promise<void> {
+export async function saveServiceAction(
+  formData: FormData
+): Promise<{ ok: boolean; error?: string }> {
   const session = await requireAdminSession();
-  if (!session) return;
+  if (!session) return { ok: false, error: "Unauthorized" };
 
   const id = String(formData.get("id") ?? "").trim();
   const slug = String(formData.get("slug") ?? "")
@@ -368,41 +370,93 @@ export async function saveServiceAction(formData: FormData): Promise<void> {
   const sortOrder = Number(formData.get("sort_order") ?? 0);
   const published = formData.get("published") === "on" || formData.get("published") === "true";
   const iconKey = iconKeySchema.safeParse(String(formData.get("icon_key") ?? ""));
-  if (!slug || !iconKey.success) return;
+  if (!slug || !iconKey.success) return { ok: false, error: "Invalid slug or icon." };
+
+  const imageUrlRaw = String(formData.get("image_url") ?? "").trim();
+  const imageUrl = imageUrlRaw.length > 0 ? imageUrlRaw : null;
+  const objPosRaw = String(formData.get("image_object_position") ?? "").trim();
+  const imageObjectPosition =
+    objPosRaw === "bottom" || objPosRaw === "center" ? objPosRaw : null;
+
+  const priceRaw = String(formData.get("price_from") ?? "").trim();
+  let priceFrom: number | null = null;
+  if (priceRaw.length > 0) {
+    const n = Number(priceRaw);
+    if (!Number.isFinite(n) || n < 0 || n > 1_000_000) {
+      return { ok: false, error: "From price must be a valid number." };
+    }
+    priceFrom = Math.round(n);
+  }
+
+  const priceWasRaw = String(formData.get("price_was") ?? "").trim();
+  let priceWas: number | null = null;
+  if (priceWasRaw.length > 0) {
+    const nw = Number(priceWasRaw);
+    if (!Number.isFinite(nw) || nw < 0 || nw > 1_000_000) {
+      return { ok: false, error: "Was price must be a valid number." };
+    }
+    priceWas = Math.round(nw);
+  }
+  if (priceWas != null && priceFrom == null) {
+    return {
+      ok: false,
+      error: "Set a current (from) price when using a sale was-price.",
+    };
+  }
+  if (priceWas != null && priceFrom != null && priceWas <= priceFrom) {
+    return {
+      ok: false,
+      error: "Was price must be higher than the current from price for a sale.",
+    };
+  }
 
   const titles: Record<string, string> = {};
   const descriptions: Record<string, string> = {};
+  const imageAlts: Record<string, string> = {};
   for (const loc of locales) {
     titles[loc] = String(formData.get(`title_${loc}`) ?? "").trim();
     descriptions[loc] = String(formData.get(`description_${loc}`) ?? "").trim();
+    imageAlts[loc] = String(formData.get(`image_alt_${loc}`) ?? "").trim();
   }
-  if (!titles.en && !titles.es && !titles.ca) return;
+  if (!titles.en && !titles.es && !titles.ca) {
+    return { ok: false, error: "Add at least one language with title and description." };
+  }
+
+  for (const loc of locales) {
+    const title = titles[loc] || titles.en || titles.es || titles.ca;
+    const description = descriptions[loc] || descriptions.en || descriptions.es || descriptions.ca;
+    if (!title || !description) continue;
+    if (imageUrl && !imageAlts[loc]) {
+      return {
+        ok: false,
+        error: `When a service image is set, add image description (alt) for ${loc.toUpperCase()}.`,
+      };
+    }
+    if (imageAlts[loc].length > 200) {
+      return { ok: false, error: `Image description for ${loc} is too long (max 200 characters).` };
+    }
+  }
 
   try {
     const db = ensureDb();
     let serviceId = id;
 
+    const baseValues = {
+      slug,
+      sortOrder: Number.isFinite(sortOrder) ? sortOrder : 0,
+      published,
+      iconKey: iconKey.data,
+      imageUrl,
+      imageObjectPosition,
+      priceFrom,
+      priceWas,
+    };
+
     if (!id) {
-      const [inserted] = await db
-        .insert(serviceOfferings)
-        .values({
-          slug,
-          sortOrder: Number.isFinite(sortOrder) ? sortOrder : 0,
-          published,
-          iconKey: iconKey.data,
-        })
-        .returning({ id: serviceOfferings.id });
+      const [inserted] = await db.insert(serviceOfferings).values(baseValues).returning({ id: serviceOfferings.id });
       serviceId = inserted.id;
     } else {
-      await db
-        .update(serviceOfferings)
-        .set({
-          slug,
-          sortOrder: Number.isFinite(sortOrder) ? sortOrder : 0,
-          published,
-          iconKey: iconKey.data,
-        })
-        .where(eq(serviceOfferings.id, id));
+      await db.update(serviceOfferings).set(baseValues).where(eq(serviceOfferings.id, id));
       serviceId = id;
       await db.delete(serviceOfferingI18n).where(eq(serviceOfferingI18n.serviceId, id));
     }
@@ -416,12 +470,15 @@ export async function saveServiceAction(formData: FormData): Promise<void> {
         locale: loc,
         title,
         description,
+        imageAlt: imageAlts[loc] || null,
       });
     }
 
     revalidateAllLocales();
+    return { ok: true };
   } catch (e) {
     console.error(e);
+    return { ok: false, error: "Could not save. Check the database connection." };
   }
 }
 

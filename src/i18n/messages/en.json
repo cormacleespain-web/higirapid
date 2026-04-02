@@ -1,6 +1,6 @@
 {
   "nav": {
-    "services": "Services",
+    "services": "Our Services",
     "process": "How it works",
     "hrClub": "HR-Club",
     "blog": "Blog",
@@ -19,6 +19,14 @@
   "services": {
     "title": "Our services",
     "subtitle": "We bring professional cleaning to your home or business.",
+    "learnMore": "Learn more",
+    "viewAllTitle": "View all services",
+    "viewAllHint": "Full list, pricing & booking",
+    "viewAllCta": "See full list",
+    "carouselPrev": "Previous services",
+    "carouselNext": "Next services",
+    "sale": "Sale",
+    "wasPrice": "Was €{price}",
     "upholstery": {
       "title": "Upholstery cleaning",
       "description": "Sofas, armchairs and fabric furniture. We remove stains, odours and allergens with safe, effective methods."
@@ -50,7 +58,9 @@
     "commercialCarpet": {
       "title": "Commercial carpet cleaning",
       "description": "Professional carpet cleaning for offices and retail spaces with eco-friendly products."
-    }
+    },
+    "bookNow": "Book now",
+    "fromPrice": "From €{price}"
   },
   "process": {
     "title": "How our service works?",
@@ -181,6 +191,7 @@
     "item4": "Better long-term hygiene and lower surprise costs"
   },
   "hrClubForm": {
+    "formHeading": "Get in Touch",
     "name": "Name",
     "email": "Email",
     "phone": "Phone (optional)",
@@ -193,7 +204,22 @@
     "submit": "Send request",
     "sending": "Sending…",
     "success": "Thanks. We received your request and will contact you shortly.",
+    "successNoEmail": "Your request was saved, but email delivery is not configured on this server. We will still see it in our admin inbox.",
     "error": "Something went wrong. Please try again."
+  },
+  "servicesPage": {
+    "metaTitle": "Our services",
+    "metaDescription": "Explore HigiRapid cleaning services: quality-focused methods, experienced team, and fair from-pricing. Book or reach us via WhatsApp.",
+    "title": "Our services",
+    "subtitle": "Professional upholstery, carpet and interior cleaning for homes, vehicles and businesses in El Masnou and Barcelona. Eco-conscious methods, clear pricing, and reliable scheduling.",
+    "fromPrice": "From €{price}",
+    "bookNow": "Book now",
+    "contact": "Contact",
+    "backHome": "Back to home",
+    "contactMailSubject": "Question about HigiRapid services",
+    "bookingDialogTitle": "Book: {service}",
+    "closeBooking": "Close booking form",
+    "bookingConsent": "I agree to be contacted about this service request."
   },
   "blog": {
     "title": "Blog & articles",
