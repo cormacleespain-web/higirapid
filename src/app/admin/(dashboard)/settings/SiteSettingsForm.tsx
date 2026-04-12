@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 import { AdminImageField } from "@/components/admin/AdminImageField";
 import { saveSiteSettingsAction } from "../../actions";
 
@@ -16,34 +17,23 @@ export default function SiteSettingsForm({
   initialHrClubRecipientEmail: string;
 }) {
   const [heroUrl, setHeroUrl] = useState(initialHeroImageUrl);
-  const [message, setMessage] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage(null);
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
       const result = await saveSiteSettingsAction(formData);
       if (result.ok) {
-        setMessage("Saved. The public site will update shortly.");
+        toast.success("Settings saved — stored in the database.");
       } else {
-        setMessage(result.error ?? "Save failed. Please check your settings and try again.");
+        toast.error(result.error ?? "Save failed. Please check your settings and try again.");
       }
     });
   }
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-      {message && (
-        <p
-          className={`rounded-md px-4 py-2 text-sm ${message.toLowerCase().includes("fail") || message.toLowerCase().includes("could not") || message.toLowerCase().includes("invalid") ? "bg-red-50 text-error" : "bg-emerald-50 text-success"}`}
-          role="status"
-        >
-          {message}
-        </p>
-      )}
-
       <div>
         <label htmlFor="whatsapp_e164" className="block text-sm font-medium text-content-primary">
           WhatsApp (digits only, country code included)

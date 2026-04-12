@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { AdminConfirmDeleteForm } from "@/components/admin/AdminConfirmDeleteForm";
 import { deleteServiceFormAction, updateServiceSortOrderAction } from "../../actions";
 
@@ -24,7 +25,6 @@ export default function ServicesOrderList({ initial }: { initial: ServiceItem[] 
   const [items, setItems] = useState(initial);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
 
   const dirty = useMemo(
     () => items.some((item, idx) => item.id !== initial[idx]?.id),
@@ -33,14 +33,13 @@ export default function ServicesOrderList({ initial }: { initial: ServiceItem[] 
 
   async function saveOrder() {
     setSaving(true);
-    setMessage(null);
     try {
       const res = await updateServiceSortOrderAction(items.map((x) => x.id));
       if (!res.ok) {
-        setMessage(res.error ?? "Could not save order.");
+        toast.error(res.error ?? "Could not save order.");
         return;
       }
-      setMessage("Order saved.");
+      toast.success("Services order saved — stored in the database.");
     } finally {
       setSaving(false);
     }
@@ -61,9 +60,6 @@ export default function ServicesOrderList({ initial }: { initial: ServiceItem[] 
           {saving ? "Saving..." : "Save order"}
         </button>
       </div>
-      {message ? (
-        <p className="rounded-md bg-surface-subtle px-3 py-2 text-sm text-content-secondary">{message}</p>
-      ) : null}
       <ul className="space-y-2">
         {items.map((item, index) => (
           <li

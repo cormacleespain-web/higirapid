@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
+import { toast } from "sonner";
 import { updateBlogSortOrderAction, deleteBlogPostFormAction } from "../../actions";
 import { AdminConfirmDeleteForm } from "@/components/admin/AdminConfirmDeleteForm";
 
@@ -20,8 +21,6 @@ export default function BlogOrderList({ initialRows }: { initialRows: BlogRow[] 
     [...initialRows].sort((a, b) => a.sortOrder - b.sortOrder || a.slug.localeCompare(b.slug))
   );
   const [pending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const isDirty = useMemo(
     () => rows.some((row, idx) => row.id !== initialRows[idx]?.id),
@@ -31,8 +30,6 @@ export default function BlogOrderList({ initialRows }: { initialRows: BlogRow[] 
   function moveRow(index: number, direction: -1 | 1) {
     const next = index + direction;
     if (next < 0 || next >= rows.length) return;
-    setMessage(null);
-    setError(null);
     setRows((prev) => {
       const copy = [...prev];
       const [row] = copy.splice(index, 1);
@@ -42,23 +39,19 @@ export default function BlogOrderList({ initialRows }: { initialRows: BlogRow[] 
   }
 
   function saveOrder() {
-    setMessage(null);
-    setError(null);
     startTransition(async () => {
       const result = await updateBlogSortOrderAction(rows.map((row) => row.id));
       if (!result.ok) {
-        setError(result.error ?? "Could not save order.");
+        toast.error(result.error ?? "Could not save order.");
         return;
       }
-      setMessage("Order saved. Blog cards now follow this sequence.");
+      toast.success("Blog order saved — stored in the database.");
     });
   }
 
   return (
     <div className="space-y-3">
       <p className="text-sm text-content-secondary">Change display order, then select Save order.</p>
-      {message ? <p className="rounded-md bg-emerald-50 px-4 py-2 text-sm text-success">{message}</p> : null}
-      {error ? <p className="rounded-md bg-red-50 px-4 py-2 text-sm text-error">{error}</p> : null}
       {rows.map((row, idx) => (
         <article
           key={row.id}

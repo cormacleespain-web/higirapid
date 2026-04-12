@@ -20,6 +20,9 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
+/** Public marketing routes read CMS data from Neon; force dynamic rendering so visitors always get fresh HTML/RSC, not a stale Full Route Cache after admin saves. */
+export const dynamic = "force-dynamic";
+
 const titles: Record<Locale, string> = {
   es: "HigiRapid — Limpieza profesional | El Masnou, Barcelona",
   ca: "HigiRapid — Neteja professional | El Masnou, Barcelona",
