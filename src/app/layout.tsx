@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { DEFAULT_SITE_ORIGIN } from "@/lib/seo/site-url";
 
 export const metadata: Metadata = {
-  title: "HigiRapid — Limpieza profesional | El Masnou, Barcelona",
-  description:
-    "Limpieza de tapicerías, alfombras, interiores de coche e higiene en casa. El Masnou y Barcelona. Presupuesto sin compromiso.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL?.trim() || DEFAULT_SITE_ORIGIN),
 };
 
 export default function RootLayout({

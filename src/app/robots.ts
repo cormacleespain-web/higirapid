@@ -1,14 +1,8 @@
 import type { MetadataRoute } from "next";
-
-const DEFAULT_BASE_URL = "https://higirapid.es";
-
-function getBaseUrl(): string {
-  const configured = process.env.NEXT_PUBLIC_BASE_URL?.trim() || DEFAULT_BASE_URL;
-  return configured.replace(/\/+$/, "");
-}
+import { getSiteOrigin } from "@/lib/seo/site-url";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = getBaseUrl();
+  const baseUrl = getSiteOrigin();
 
   return {
     rules: [

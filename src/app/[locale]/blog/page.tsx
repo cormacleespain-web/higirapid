@@ -5,6 +5,8 @@ import { getPublishedBlogPosts } from "@/lib/site-data";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { locales, type Locale } from "@/i18n/config";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
+import { routing } from "@/i18n/routing";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -13,18 +15,16 @@ type Props = {
 
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
-  const safeLocale = locales.includes(locale as Locale) ? (locale as Locale) : "en";
-  const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || "https://higirapid.es").replace(/\/+$/, "");
-  const canonicalPath = `/${safeLocale}/blog`;
-
-  return {
-    alternates: {
-      canonical: `${baseUrl}${canonicalPath}`,
-      languages: Object.fromEntries(
-        locales.map((altLocale) => [altLocale, `${baseUrl}/${altLocale}/blog`])
-      ) as Record<Locale, string>,
-    },
-  };
+  const safeLocale = locales.includes(locale as Locale) ? (locale as Locale) : "es";
+  if (!routing.locales.includes(safeLocale)) return {};
+  const t = await getTranslations({ locale: safeLocale, namespace: "blog" });
+  return buildPageMetadata({
+    locale: safeLocale,
+    pathAfterLocale: "/blog",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    ogImagePath: "/images/hero.png",
+  });
 }
 
 export default async function BlogIndexPage({ params, searchParams }: Props) {

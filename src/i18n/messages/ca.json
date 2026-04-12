@@ -9,6 +9,10 @@
     "faq": "FAQ",
     "contact": "Contacte"
   },
+  "homePage": {
+    "metaTitle": "Neteja a domicili a Barcelona — HigiRapid",
+    "metaDescription": "Servei mòbil de neteja professional a Barcelona i el Maresme. Tapissos, sofàs, cotxes i més. Pressupost gratuït."
+  },
   "hero": {
     "headline": "Neteja professional per a casa, oficina i cotxe",
     "subhead": "Tapissos, catifes, estores, interiors de cotxe i higiene a casa. A El Masnou i Barcelona. Ràpid, fiable i respectuós amb el medi ambient.",
@@ -184,6 +188,9 @@
   },
   "hrClubPage": {
     "title": "HigiRapid HR-Club",
+    "headline": "Pla de neteja anual per a llars i negocis",
+    "metaTitle": "Pla de neteja anual per a llars i negocis | HigiRapid",
+    "metaDescription": "Tres neteges profundes a l'any a preu fix. Pla anual per a llars i negocis a El Masnou i Barcelona.",
     "subtitle": "El nostre pla anual manté els teus espais nets i higiènics tot l'any amb preu fix i agenda flexible.",
     "item1": "Tres neteges profundes l'any (llar o negoci)",
     "item2": "Preu amb descompte fix per visita",
@@ -208,7 +215,7 @@
     "error": "Hi ha hagut un error. Torna-ho a provar."
   },
   "servicesPage": {
-    "metaTitle": "Els nostres serveis",
+    "metaTitle": "Serveis de neteja a domicili a Barcelona | HigiRapid",
     "metaDescription": "Descobreix els serveis de neteja HigiRapid: mètodes orientats a la qualitat, equip experimentat i preus \"des de\". Reserva o contacta'ns per WhatsApp.",
     "title": "Els nostres serveis",
     "subtitle": "Neteja professional de tapissos, catifes i interiors per a cases, vehicles i negocis a El Masnou i Barcelona. Mètodes respectuosos amb el medi ambient, preus clars i cites fiables.",
@@ -223,15 +230,23 @@
   },
   "blog": {
     "title": "Blog i articles",
+    "metaTitle": "Blog de neteja i detailing professional | HigiRapid",
+    "metaDescription": "Articles i guies sobre neteja professional, detailing i manteniment de la llar. Consells de HigiRapid.",
     "subtitle": "Consells pràctics de neteja i higiene per a llars, cotxes i negocis. Descobreix novetats, guies i recomanacions de l'equip de HigiRapid.",
     "readMore": "Llegir article",
     "empty": "Aviat publicarem articles.",
     "categoryNavLabel": "Filtrar blog per categoria",
     "categoryAll": "Tots",
     "uncategorized": "Sense categoria",
-    "backToBlog": "Tornar al blog"
+    "backToBlog": "Tornar al blog",
+    "articleGalleryAlt": "Fotografia {n} de l'article: {title}",
+    "relatedHeading": "Serveis relacionats",
+    "relatedServicesLink": "Tots els serveis de neteja",
+    "relatedFacadeLink": "Neteja de façanes a Barcelona"
   },
   "facadeCleaning": {
+    "metaTitle": "Neteja de façanes amb hidronetejadora a Barcelona | HigiRapid",
+    "metaDescription": "Neteja de façanes amb hidronetejadora professional. Eliminem brutícia, floridura i mofa a Barcelona i el Maresme.",
     "title": "Neteja de façanes amb hidronetejadora",
     "intro": "Eliminem brutícia, floridura, líquens i marques de contaminació amb pressió controlada.",
     "whatWeCleanTitle": "Què netegem",
@@ -271,6 +286,7 @@
     "copyright": "© {year} HigiRapid. Tots els drets reservats."
   },
   "common": {
+    "breadcrumbHome": "Inici",
     "skipToContent": "Anar al contingut principal",
     "mainNav": "Navegació principal",
     "openMenu": "Obrir menú",

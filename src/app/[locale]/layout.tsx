@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { routing } from "@/i18n/routing";
 import { fontSans, fontGaretExtrabold, fontNunitoHeading } from "@/lib/fonts";
 import type { Locale } from "@/i18n/config";
+import { getSiteOrigin, shouldAllowIndexing } from "@/lib/seo/site-url";
 import SetLocale from "@/components/layout/SetLocale";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -42,16 +43,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!routing.locales.includes(locale as Locale)) return {};
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://higirapid.es";
-  const alternates = {
-    languages: Object.fromEntries(
-      routing.locales.map((loc) => [loc, `${baseUrl}/${loc}`])
-    ) as Record<Locale, string>,
-  };
+  const robots = shouldAllowIndexing()
+    ? ({ index: true, follow: true, googleBot: { index: true, follow: true } } satisfies Metadata["robots"])
+    : ({ index: false, follow: false } satisfies Metadata["robots"]);
   return {
+    metadataBase: new URL(getSiteOrigin()),
     title: titles[locale as Locale],
     description: descriptions[locale as Locale],
-    alternates,
+    robots,
   };
 }
 

@@ -1,30 +1,35 @@
 import type { MetadataRoute } from "next";
 import { locales, type Locale } from "@/i18n/config";
 import { getPublishedBlogPosts } from "@/lib/site-data";
+import { getSiteOrigin } from "@/lib/seo/site-url";
 
-const DEFAULT_BASE_URL = "https://higirapid.es";
-
-function getBaseUrl(): string {
-  const configured = process.env.NEXT_PUBLIC_BASE_URL?.trim() || DEFAULT_BASE_URL;
-  return configured.replace(/\/+$/, "");
+function staticPriority(path: string): { changeFrequency: MetadataRoute.Sitemap[0]["changeFrequency"]; priority: number } {
+  if (path === "") return { changeFrequency: "monthly", priority: 1 };
+  if (path === "/blog") return { changeFrequency: "weekly", priority: 0.7 };
+  return { changeFrequency: "monthly", priority: 0.8 };
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = getBaseUrl();
+  const baseUrl = getSiteOrigin();
   const now = new Date();
 
   const staticPaths = ["", "/facade-cleaning", "/hr-club", "/blog", "/services"] as const;
 
   const staticEntries: MetadataRoute.Sitemap = locales.flatMap((locale) =>
-    staticPaths.map((path) => ({
-      url: `${baseUrl}/${locale}${path}`,
-      lastModified: now,
-      alternates: {
-        languages: Object.fromEntries(
-          locales.map((altLocale) => [altLocale, `${baseUrl}/${altLocale}${path}`])
-        ) as Record<Locale, string>,
-      },
-    }))
+    staticPaths.map((path) => {
+      const { changeFrequency, priority } = staticPriority(path);
+      return {
+        url: `${baseUrl}/${locale}${path}`,
+        lastModified: now,
+        changeFrequency,
+        priority,
+        alternates: {
+          languages: Object.fromEntries(
+            locales.map((altLocale) => [altLocale, `${baseUrl}/${altLocale}${path}`])
+          ) as Record<Locale, string>,
+        },
+      };
+    })
   );
 
   const blogEntries: MetadataRoute.Sitemap = [];
@@ -35,6 +40,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       blogEntries.push({
         url: `${baseUrl}/${locale}${path}`,
         lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
+        changeFrequency: "monthly",
+        priority: 0.6,
         alternates: {
           languages: Object.fromEntries(
             locales.map((altLocale) => [altLocale, `${baseUrl}/${altLocale}${path}`])

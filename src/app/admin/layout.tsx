@@ -1,9 +1,14 @@
+import type { Metadata } from "next";
 import "../globals.css";
 import AdminSessionProvider from "./AdminSessionProvider";
 import { AdminToaster } from "./AdminToaster";
 import { fontSans, fontGaretExtrabold, fontNunitoHeading } from "@/lib/fonts";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function AdminRootLayout({
   children,

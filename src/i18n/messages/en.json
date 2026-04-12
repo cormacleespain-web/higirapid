@@ -9,6 +9,10 @@
     "faq": "FAQ",
     "contact": "Contact"
   },
+  "homePage": {
+    "metaTitle": "Mobile Cleaning at Home in Barcelona — HigiRapid",
+    "metaDescription": "Professional mobile cleaning in Barcelona and the Maresme. Upholstery, sofas, car interiors and more. Free quote."
+  },
   "hero": {
     "headline": "Professional cleaning for your home, office and car",
     "subhead": "Upholstery, carpets, rugs, car interiors and in-house hygiene in El Masnou and Barcelona. Fast, reliable and eco-friendly.",
@@ -184,6 +188,9 @@
   },
   "hrClubPage": {
     "title": "HigiRapid HR-Club",
+    "headline": "Annual cleaning plan for homes and businesses",
+    "metaTitle": "Annual Cleaning Plan for Homes & Businesses | HigiRapid",
+    "metaDescription": "Three deep cleanings per year at a fixed price. Annual plan for homes and businesses in El Masnou and Barcelona.",
     "subtitle": "Our annual plan keeps your spaces clean and hygienic all year with fixed pricing and convenient scheduling.",
     "item1": "Three deep cleanings per year (home or business services)",
     "item2": "Fixed discounted price on each service visit",
@@ -208,7 +215,7 @@
     "error": "Something went wrong. Please try again."
   },
   "servicesPage": {
-    "metaTitle": "Our services",
+    "metaTitle": "Professional cleaning services at home in Barcelona | HigiRapid",
     "metaDescription": "Explore HigiRapid cleaning services: quality-focused methods, experienced team, and fair from-pricing. Book or reach us via WhatsApp.",
     "title": "Our services",
     "subtitle": "Professional upholstery, carpet and interior cleaning for homes, vehicles and businesses in El Masnou and Barcelona. Eco-conscious methods, clear pricing, and reliable scheduling.",
@@ -223,15 +230,23 @@
   },
   "blog": {
     "title": "Blog & articles",
+    "metaTitle": "Cleaning & detailing blog | HigiRapid",
+    "metaDescription": "Guides and tips on professional cleaning, detailing and home care from the HigiRapid team.",
     "subtitle": "Practical cleaning and hygiene guidance for homes, cars and businesses. Explore fresh tips, service updates, and disinfection insights from the HigiRapid team.",
     "readMore": "Read article",
     "empty": "Articles are coming soon.",
     "categoryNavLabel": "Filter blog by category",
     "categoryAll": "All",
     "uncategorized": "Uncategorized",
-    "backToBlog": "Back to blog"
+    "backToBlog": "Back to blog",
+    "articleGalleryAlt": "Article photo {n}: {title}",
+    "relatedHeading": "Related services",
+    "relatedServicesLink": "All cleaning services",
+    "relatedFacadeLink": "Facade cleaning in Barcelona"
   },
   "facadeCleaning": {
+    "metaTitle": "Facade cleaning with pressure washer in Barcelona | HigiRapid",
+    "metaDescription": "Professional facade cleaning. We remove dirt, algae and mould in Barcelona and the Maresme.",
     "title": "Facade Cleaning with Pressure Washer",
     "intro": "We remove dirt, mould, lichen and pollution marks from exterior walls with controlled pressure and material-safe methods.",
     "whatWeCleanTitle": "What we clean",
@@ -271,6 +286,7 @@
     "copyright": "© {year} HigiRapid. All rights reserved."
   },
   "common": {
+    "breadcrumbHome": "Home",
     "skipToContent": "Skip to main content",
     "mainNav": "Main navigation",
     "openMenu": "Open menu",

@@ -6,6 +6,16 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "higirapid.es" }],
+        destination: "https://www.higirapid.es/:path*",
+        permanent: true,
+      },
+    ];
+  },
   // Avoid webpack emitting broken `vendor-chunks/*.js` references on some dev builds (RSC / server paths).
   // Note: do not list `lucide-react` here — Next adds it via optimizePackageImports → transpilePackages and build will error.
   serverExternalPackages: ["drizzle-orm", "@neondatabase/serverless"],
@@ -15,6 +25,7 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(process.cwd()),
   turbopack: { root: path.join(process.cwd()) },
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "picsum.photos", pathname: "/**" },
       { protocol: "https", hostname: "placehold.co", pathname: "/**" },

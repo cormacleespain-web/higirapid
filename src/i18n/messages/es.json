@@ -9,6 +9,10 @@
     "faq": "FAQ",
     "contact": "Contacto"
   },
+  "homePage": {
+    "metaTitle": "Limpieza a Domicilio en Barcelona — HigiRapid",
+    "metaDescription": "Servicio móvil de limpieza a domicilio en Barcelona. Tapicerías, sofás, coches y más. Resultados profesionales. Pide presupuesto gratis."
+  },
   "hero": {
     "headline": "Limpieza profesional para tu hogar, oficina y coche",
     "subhead": "Tapicerías, alfombras, mantas, interiores de coche e higiene en casa. En El Masnou y Barcelona. Rápido, fiable y respetuoso con el medio ambiente.",
@@ -184,6 +188,9 @@
   },
   "hrClubPage": {
     "title": "HigiRapid HR-Club",
+    "headline": "Plan de limpieza anual para hogares y negocios",
+    "metaTitle": "Plan de Limpieza Anual para Hogares y Negocios | HigiRapid",
+    "metaDescription": "Tres limpiezas profundas al año a precio fijo. Plan anual para hogares y negocios en El Masnou y Barcelona.",
     "subtitle": "Nuestro plan anual mantiene tus espacios limpios e higiénicos todo el año con precio fijo y agenda cómoda.",
     "item1": "Tres limpiezas profundas al año (hogar o negocio)",
     "item2": "Precio con descuento fijo por cada visita",
@@ -208,7 +215,7 @@
     "error": "Algo ha fallado. Inténtalo de nuevo."
   },
   "servicesPage": {
-    "metaTitle": "Nuestros servicios",
+    "metaTitle": "Servicios de limpieza a domicilio en Barcelona | HigiRapid",
     "metaDescription": "Descubre los servicios de limpieza HigiRapid: métodos orientados a la calidad, equipo experimentado y precios \"desde\". Reserva o contáctanos por WhatsApp.",
     "title": "Nuestros servicios",
     "subtitle": "Limpieza profesional de tapicerías, alfombras e interiores para hogares, vehículos y negocios en El Masnou y Barcelona. Métodos respetuosos con el medio ambiente, precios claros y plazos fiables.",
@@ -223,15 +230,23 @@
   },
   "blog": {
     "title": "Blog y artículos",
+    "metaTitle": "Blog de Limpieza y Detailing Profesional | HigiRapid",
+    "metaDescription": "Artículos y guías sobre limpieza profesional, detailing y mantenimiento del hogar. Consejos de HigiRapid.",
     "subtitle": "Consejos prácticos de limpieza e higiene para hogares, coches y negocios. Descubre novedades, guías y recomendaciones del equipo de HigiRapid.",
     "readMore": "Leer artículo",
     "empty": "Próximamente publicaremos artículos.",
     "categoryNavLabel": "Filtrar blog por categoría",
     "categoryAll": "Todos",
     "uncategorized": "Sin categoría",
-    "backToBlog": "Volver al blog"
+    "backToBlog": "Volver al blog",
+    "articleGalleryAlt": "Fotografía {n} del artículo: {title}",
+    "relatedHeading": "Servicios relacionados",
+    "relatedServicesLink": "Todos los servicios de limpieza",
+    "relatedFacadeLink": "Limpieza de fachadas en Barcelona"
   },
   "facadeCleaning": {
+    "metaTitle": "Limpieza de Fachadas con Hidrolimpiadora en Barcelona | HigiRapid",
+    "metaDescription": "Limpieza de fachadas con hidrolimpiadora profesional. Eliminamos suciedad, hongos y moho en Barcelona y Maresme.",
     "title": "Limpieza de fachadas con hidrolimpiadora",
     "intro": "Eliminamos suciedad, moho, líquenes y marcas de contaminación en paredes exteriores con presión controlada.",
     "whatWeCleanTitle": "Qué limpiamos",
@@ -271,6 +286,7 @@
     "copyright": "© {year} HigiRapid. Todos los derechos reservados."
   },
   "common": {
+    "breadcrumbHome": "Inicio",
     "skipToContent": "Ir al contenido principal",
     "mainNav": "Navegación principal",
     "openMenu": "Abrir menú",
