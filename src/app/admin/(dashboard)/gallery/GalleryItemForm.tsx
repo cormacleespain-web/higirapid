@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 import { AdminImageField } from "@/components/admin/AdminImageField";
 import { saveGalleryItemAction } from "../../actions";
 import type { InferSelectModel } from "drizzle-orm";
@@ -27,18 +28,20 @@ export default function GalleryItemForm({
 }) {
   const byLocale = (loc: string) => i18n.find((r) => r.locale === loc);
   const [imageUrl, setImageUrl] = useState(item?.imageUrl ?? "");
-  const [message, setMessage] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage(null);
     const fd = new FormData(e.currentTarget);
     fd.set("image_url", imageUrl);
     setPending(true);
     try {
-      await saveGalleryItemAction(fd);
-      setMessage("Saved. The public site will update shortly.");
+      const res = await saveGalleryItemAction(fd);
+      if (!res.ok) {
+        toast.error(res.error ?? "Could not save.");
+        return;
+      }
+      toast.success("Gallery item saved — stored in the database.");
     } finally {
       setPending(false);
     }
@@ -47,15 +50,6 @@ export default function GalleryItemForm({
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
       {item && <input type="hidden" name="id" value={item.id} />}
-
-      {message && (
-        <p
-          className={`rounded-md px-4 py-2 text-sm ${message.includes("failed") ? "bg-red-50 text-error" : "bg-emerald-50 text-success"}`}
-          role="status"
-        >
-          {message}
-        </p>
-      )}
 
       <div>
         <span className="block text-sm font-medium text-content-primary">Photo</span>

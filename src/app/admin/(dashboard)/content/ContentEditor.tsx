@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { CONTENT_GROUPS, LOCALES } from "@/lib/content-admin-keys";
 import type { ContentDefaultsMap } from "@/lib/content-defaults";
 import { localeNames, type Locale } from "@/i18n/config";
@@ -29,7 +30,6 @@ export default function ContentEditor({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [translatePending, setTranslatePending] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [sourceLocale, setSourceLocale] = useState<Locale>("en");
@@ -144,22 +144,20 @@ export default function ContentEditor({
   }
 
   function saveGroup(groupId: string) {
-    setMessage(null);
     const entries = buildEntriesForGroup(groupId);
     startTransition(async () => {
       const res = await saveContentEntriesAction(entries);
       if (res.ok) {
-        setMessage("Saved. The public site will update shortly.");
+        toast.success("Content saved — stored in the database.");
         router.refresh();
       } else {
-        setMessage(res.error ?? "Save failed");
+        toast.error(res.error ?? "Save failed");
       }
     });
   }
 
   async function suggestTranslationsForSection() {
     if (!activeGroup) return;
-    setMessage(null);
     const fields = activeGroup.fields
       .filter((field) => field.key !== "faq.order")
       .map((field) => {
@@ -176,7 +174,7 @@ export default function ContentEditor({
         fields,
       });
       if (!res.ok) {
-        setMessage(res.error ?? "Translation failed");
+        toast.error(res.error ?? "Translation failed");
         return;
       }
       const { updates } = res;
@@ -187,7 +185,7 @@ export default function ContentEditor({
         }
         return next;
       });
-      setMessage(
+      toast.success(
         "Translations suggested for the other languages. Review them, then save this section. Machine translation—always review before publishing."
       );
     } finally {
@@ -201,19 +199,6 @@ export default function ContentEditor({
 
   return (
     <div className="space-y-6">
-      {message && (
-        <p
-          className={`rounded-md px-4 py-2 text-sm ${
-            message.includes("failed") || message.includes("Unauthorized") || message.includes("not configured")
-              ? "bg-red-50 text-error"
-              : "bg-emerald-50 text-success"
-          }`}
-          role="status"
-        >
-          {message}
-        </p>
-      )}
-
       <div className="flex flex-wrap gap-1 border-b border-border pb-2">
         {groups.map((g, i) => (
           <button

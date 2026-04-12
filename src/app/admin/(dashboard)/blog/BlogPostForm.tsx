@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
+import { toast } from "sonner";
 import { saveBlogPostAction } from "../../actions";
 
 type Locale = "en" | "es" | "ca";
@@ -43,21 +44,17 @@ type Props = {
 
 export default function BlogPostForm({ post, categories, i18n }: Props) {
   const [pending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage(null);
-    setError(null);
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
       const result = await saveBlogPostAction(formData);
       if (!result.ok) {
-        setError(result.error ?? "Could not save post.");
+        toast.error(result.error ?? "Could not save post.");
         return;
       }
-      setMessage("Saved. The public site will update shortly.");
+      toast.success("Post saved — stored in the database.");
     });
   }
 
@@ -66,8 +63,6 @@ export default function BlogPostForm({ post, categories, i18n }: Props) {
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
       {post && <input type="hidden" name="id" value={post.id} />}
-      {message && <p className="rounded-md bg-emerald-50 px-4 py-2 text-sm text-success">{message}</p>}
-      {error && <p className="rounded-md bg-red-50 px-4 py-2 text-sm text-error">{error}</p>}
 
       <section className="rounded-lg border border-border bg-surface-primary p-4">
         <h2 className="text-base font-semibold text-content-primary">Post settings</h2>

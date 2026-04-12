@@ -522,9 +522,11 @@ export async function updateServiceSortOrderAction(serviceIds: string[]) {
   }
 }
 
-export async function saveGalleryItemAction(formData: FormData): Promise<void> {
+export async function saveGalleryItemAction(
+  formData: FormData
+): Promise<{ ok: boolean; error?: string }> {
   const session = await requireAdminSession();
-  if (!session) return;
+  if (!session) return { ok: false, error: "Unauthorized" };
 
   const id = String(formData.get("id") ?? "").trim();
   const imageUrl = String(formData.get("image_url") ?? "").trim();
@@ -534,7 +536,9 @@ export async function saveGalleryItemAction(formData: FormData): Promise<void> {
   const sortOrder = Number(formData.get("sort_order") ?? 0);
   const objectPosition = String(formData.get("object_position") ?? "").trim() || null;
 
-  if (!imageUrl || !imageAlt || !category.success || !Number.isFinite(priceFrom)) return;
+  if (!imageUrl || !imageAlt || !category.success || !Number.isFinite(priceFrom)) {
+    return { ok: false, error: "Image, alt text, category, and price are required." };
+  }
 
   const captions: Record<string, string> = {};
   for (const loc of locales) {
@@ -587,8 +591,13 @@ export async function saveGalleryItemAction(formData: FormData): Promise<void> {
     }
 
     revalidateAllLocales();
+    return { ok: true };
   } catch (e) {
     console.error(e);
+    return {
+      ok: false,
+      error: "Could not save gallery item. Ensure database migrations are applied.",
+    };
   }
 }
 
@@ -756,5 +765,41 @@ export async function translateServiceCopyAction(payload: {
     return { ok: true as const, translations };
   } catch {
     return { ok: false as const, error: "Translation failed. Try again or edit manually." };
+  }
+}
+
+/** Manual public cache refresh (same paths as after CMS saves). */
+export async function refreshPublicContentAction(): Promise<{ ok: boolean; error?: string }> {
+  const session = await requireAdminSession();
+  if (!session) return { ok: false, error: "Unauthorized" };
+  try {
+    revalidateAllLocales();
+    return { ok: true };
+  } catch (e) {
+    console.error(e);
+    return { ok: false, error: "Could not refresh. Try again in a moment." };
+  }
+}
+
+/**
+ * Optional Vercel Deploy Hook — only when `VERCEL_DEPLOY_HOOK_URL` is set.
+ * Calm copy in UI; hook URL stays server-only.
+ */
+export async function applyLiveSiteUpdatesAction(): Promise<{ ok: boolean; error?: string }> {
+  const session = await requireAdminSession();
+  if (!session) return { ok: false, error: "Unauthorized" };
+  const hook = process.env.VERCEL_DEPLOY_HOOK_URL?.trim();
+  if (!hook) {
+    return { ok: false, error: "This action is not available." };
+  }
+  try {
+    const res = await fetch(hook, { method: "POST" });
+    if (!res.ok) {
+      return { ok: false, error: "The update could not be started. Please try again later." };
+    }
+    return { ok: true };
+  } catch (e) {
+    console.error(e);
+    return { ok: false, error: "The update could not be started. Please try again later." };
   }
 }

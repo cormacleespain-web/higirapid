@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 import { AdminImageField } from "@/components/admin/AdminImageField";
 import { ServiceIconChoice } from "@/components/admin/ServiceIconChoice";
 import { saveServiceAction, translateServiceCopyAction } from "../../actions";
@@ -42,13 +43,11 @@ export default function ServiceForm({
     ca: byLocale("ca")?.imageAlt ?? "",
   });
   const [sourceLocale, setSourceLocale] = useState<Locale>("en");
-  const [message, setMessage] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [translatePending, setTranslatePending] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage(null);
     const form = e.currentTarget;
     const fd = new FormData(form);
     for (const loc of LOCALES) {
@@ -61,19 +60,18 @@ export default function ServiceForm({
     try {
       const res = await saveServiceAction(fd);
       if (!res.ok) {
-        setMessage(res.error ?? "Could not save.");
+        toast.error(res.error ?? "Could not save.");
         return;
       }
-      setMessage("Saved. The public site will update shortly.");
+      toast.success("Service saved — stored in the database.");
     } finally {
       setPending(false);
     }
   }
 
   async function suggestTranslations() {
-    setMessage(null);
     if (!titles[sourceLocale].trim() && !descriptions[sourceLocale].trim()) {
-      setMessage("Add a title or description in the source language first.");
+      toast.error("Add a title or description in the source language first.");
       return;
     }
     setTranslatePending(true);
@@ -84,7 +82,7 @@ export default function ServiceForm({
         description: descriptions[sourceLocale],
       });
       if (!res.ok) {
-        setMessage(res.error ?? "Translation failed");
+        toast.error(res.error ?? "Translation failed");
         return;
       }
       setTitles((prev) => {
@@ -105,7 +103,7 @@ export default function ServiceForm({
         }
         return next;
       });
-      setMessage(
+      toast.success(
         "Translations suggested for the other languages. Review them, then save. Machine translation—always review before publishing."
       );
     } finally {
@@ -116,26 +114,6 @@ export default function ServiceForm({
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl space-y-8">
       {service && <input type="hidden" name="id" value={service.id} />}
-
-      {message && (
-        <p
-          className={`rounded-md px-4 py-2 text-sm ${
-            message.includes("failed") ||
-            message.includes("Unauthorized") ||
-            message.includes("not configured") ||
-            message.includes("Invalid") ||
-            message.includes("required") ||
-            message.includes("too long") ||
-            message.includes("Could not save") ||
-            message.includes("Add at least one")
-              ? "bg-red-50 text-error"
-              : "bg-emerald-50 text-success"
-          }`}
-          role="status"
-        >
-          {message}
-        </p>
-      )}
 
       <section className="space-y-4 rounded-lg border border-border bg-surface-primary p-4 shadow-sm">
         <h2 className="text-base font-semibold text-content-primary">What customers see</h2>
